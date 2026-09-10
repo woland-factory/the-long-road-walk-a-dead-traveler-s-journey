@@ -1,0 +1,15 @@
+**/node_modules
+**/dist
+web/playwright-report
+web/test-results
+web/coverage
+.git
+.env
+.env.*
+!.env.example
+*.md
+EPIC_SPEC.md
+PRODUCT_PLAN.md
+VALIDATION.md
+result.json
+.claude
