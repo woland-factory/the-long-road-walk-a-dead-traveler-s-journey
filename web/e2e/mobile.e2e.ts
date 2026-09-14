@@ -17,6 +17,22 @@ test("has no horizontal scroll at a 390px viewport", async ({ page }) => {
   expect(overflow).toBeLessThanOrEqual(1); // allow sub-pixel rounding
 });
 
+// AC8.1: the Arrival reading surface also fits 390px with no horizontal scroll.
+test("the Arrival has no horizontal scroll at a 390px viewport", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByText("Your road starts here")).toBeVisible();
+
+  await page.getByLabel("Miles walked today").fill("6");
+  await page.getByRole("button", { name: "Log miles" }).click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+
+  const overflow = await page.evaluate(() => {
+    const el = document.scrollingElement!;
+    return el.scrollWidth - el.clientWidth;
+  });
+  expect(overflow).toBeLessThanOrEqual(1);
+});
+
 // AC8.2: comfortably tappable input and submit, with a labeled input.
 test("check-in controls are ~44px tap targets and the input is labeled", async ({ page }) => {
   await page.goto("/");
