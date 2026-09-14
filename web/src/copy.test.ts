@@ -15,6 +15,8 @@ const FILES: string[] = [
   resolve(root, "src/trail/Odometer.tsx"),
   resolve(root, "src/trail/NextMilepost.tsx"),
   resolve(root, "src/trail/ReachedList.tsx"),
+  resolve(root, "src/trail/Arrival.tsx"),
+  resolve(root, "src/trail/facingLine.ts"),
   resolve(root, "src/trail/states.tsx"),
   resolve(root, "src/trail/validate.ts"),
   resolve(root, "src/ErrorBoundary.tsx"),

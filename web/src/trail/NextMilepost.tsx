@@ -2,8 +2,9 @@ import type { JourneyPack } from "../packs/types";
 import type { WalkerState } from "../state/types";
 import { milesToNext } from "../state/odometer";
 
-// Distance to the next milepost, with a progress bar. Shows a completion note
-// once every milepost is reached.
+// The non-unlock-day payoff: where the walker stands now, how far to the next
+// milepost in miles, and one authored approach line about the ground ahead that
+// never spoils the coming entry. Shows a completion note once all are reached.
 export function NextMilepost({ state, pack }: { state: WalkerState; pack: JourneyPack }) {
   const remaining = milesToNext(state, pack);
 
@@ -19,9 +20,11 @@ export function NextMilepost({ state, pack }: { state: WalkerState; pack: Journe
     .filter((m) => m.mileMark > state.cumulativeMiles)
     .sort((a, b) => a.mileMark - b.mileMark)[0];
 
-  const prevMark = pack.mileposts
+  const passed = pack.mileposts
     .filter((m) => m.mileMark <= state.cumulativeMiles)
-    .reduce((max, m) => Math.max(max, m.mileMark), 0);
+    .sort((a, b) => a.mileMark - b.mileMark);
+  const last = passed[passed.length - 1];
+  const prevMark = last ? last.mileMark : 0;
 
   const span = next.mileMark - prevMark;
   const done = state.cumulativeMiles - prevMark;
@@ -30,6 +33,9 @@ export function NextMilepost({ state, pack }: { state: WalkerState; pack: Journe
 
   return (
     <div className="next">
+      <p className="position">
+        {last ? `You last reached ${last.place}.` : "You are at the start of the road."}
+      </p>
       <p>
         <strong>{rounded}</strong> miles to {next.place}.
       </p>
@@ -43,6 +49,7 @@ export function NextMilepost({ state, pack }: { state: WalkerState; pack: Journe
       >
         <div className="progress-fill" style={{ width: `${pct}%` }} />
       </div>
+      <p className="approach">{next.approach}</p>
     </div>
   );
 }
