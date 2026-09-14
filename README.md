@@ -6,9 +6,26 @@ reaches a milepost on the route, the app hands you what the traveler wrote at
 that spot, keyed to the ground you reached. This is a deliberate daily
 check-in, not background step tracking, so you enter your miles by hand.
 
-This repository is the foundation: a single Trail screen with the check-in
-loop, local persistence, and a placeholder fixture route. Real journeys and the
-keepsake journal arrive in later work.
+This repository ships the check-in loop and the first real journey: John Muir's
+1867 walk to the Gulf. A single Trail screen, local persistence, and the
+verified Muir diary keyed to the miles you reach. The keepsake journal arrives
+in later work.
+
+## The journeys
+
+The first journey is John Muir's *A Thousand-Mile Walk to the Gulf*, his 1867
+walk from Kentucky to the Gulf coast of Florida. The diary text comes from
+[Project Gutenberg ebook #60749](https://www.gutenberg.org/files/60749/60749-0.txt),
+which is in the public domain. The words you earn at each milepost are Muir's
+own, verbatim. We frame them, and we never edit them. Muir wrote in 1867 and
+carries the views and language of his time, so the app shows a short framing
+note beside the diary.
+
+Packs live in `web/src/packs/`. Each pack is a JSON file plus a typed re-export,
+validated against its committed public-domain source. The schema and its rules
+are documented in [`web/src/packs/SCHEMA.md`](web/src/packs/SCHEMA.md); the
+source text a pack is verified against lives in `web/src/packs/sources/` and is
+read only by the tests.
 
 ## Run it locally
 
@@ -55,7 +72,7 @@ baked into the built bundle. See `.env.example` for the four variables:
 ```
 web/src/
   env.ts             runtime config reader
-  packs/             journey pack types and the fixture pack
+  packs/             journey pack schema, the Muir pack, validators, sources
   state/             IndexedDB storage, migrations, odometer logic
   trail/             the Trail screen and its parts
   observability/     Sentry and Umami wiring
@@ -68,10 +85,17 @@ docker-compose.staging.yml
 
 ```bash
 cd web
-npm run typecheck   # TypeScript, strict
-npm test            # Vitest unit and component tests
-npm run test:e2e    # Playwright end-to-end tests
+npm run typecheck      # TypeScript, strict
+npm test               # Vitest unit and component tests
+npm run validate:packs # validate every journey pack against its source
+npm run test:e2e       # Playwright end-to-end tests
 ```
+
+`npm test` and `npm run validate:packs` are the build gate for packs. They fail
+if any milepost's diary text is not verbatim against its committed source, if a
+pack breaks the schema, or if the ordering or spread rules are violated. Note
+that `npm run build` does not run the tests, so run the commands above to prove
+a pack.
 
 The end-to-end suite starts its own preview server on a random port and needs
 no external services. Each unit run uses a fresh in-memory database, so tests
