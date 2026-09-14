@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import type { JourneyPack } from "../packs/types";
 import type { WalkerState } from "./types";
-import { addMiles, freshState, recompute } from "./odometer";
+import { addMiles, freshState, newlyReached, recompute } from "./odometer";
 import { loadState, saveState } from "./store";
 import { buildSeededState } from "./seed";
+import { upsertFacingLine } from "./personalLog";
 import { env } from "../env";
 import { reportError } from "../observability/sentry";
 import { todayISO } from "../trail/validate";
+import { parseFacingLine } from "../trail/facingLine";
 
 export type WalkerStatus = "loading" | "ready" | "error";
 
@@ -14,6 +16,9 @@ export interface UseWalker {
   status: WalkerStatus;
   state: WalkerState | null; // null means no miles logged yet (empty trail)
   logMiles: (miles: number) => void;
+  saveFacingLine: (milepostId: string, text: string) => void;
+  pendingArrival: string[]; // ids newly reached by the most recent logMiles
+  clearPendingArrival: () => void;
 }
 
 // Loads walker state from IndexedDB, applies SEED_DEMO seeding on a fresh
@@ -22,6 +27,7 @@ export interface UseWalker {
 export function useWalker(pack: JourneyPack): UseWalker {
   const [status, setStatus] = useState<WalkerStatus>("loading");
   const [state, setState] = useState<WalkerState | null>(null);
+  const [pendingArrival, setPendingArrival] = useState<string[]>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -61,6 +67,9 @@ export function useWalker(pack: JourneyPack): UseWalker {
       setState((prev) => {
         const base = prev ?? freshState(pack.id, new Date().toISOString());
         const next = addMiles(base, miles, todayISO(), pack);
+        // The ids this check-in just earned, ascending by mileMark (computeReached
+        // iterates the pack in order). Drives the auto-open Arrival ceremony.
+        setPendingArrival(newlyReached(base, next));
         // Persist in the background; the UI already reflects `next`.
         void saveState(next).catch((err) => reportError(err));
         return next;
@@ -69,5 +78,17 @@ export function useWalker(pack: JourneyPack): UseWalker {
     [pack],
   );
 
-  return { status, state, logMiles };
+  const saveFacingLine = useCallback((milepostId: string, text: string) => {
+    const parsed = parseFacingLine(text);
+    setState((prev) => {
+      if (!prev) return prev; // only callable once a milepost is reached, so state exists
+      const next = upsertFacingLine(prev, milepostId, parsed.text, todayISO());
+      void saveState(next).catch((err) => reportError(err));
+      return next;
+    });
+  }, []);
+
+  const clearPendingArrival = useCallback(() => setPendingArrival([]), []);
+
+  return { status, state, logMiles, saveFacingLine, pendingArrival, clearPendingArrival };
 }

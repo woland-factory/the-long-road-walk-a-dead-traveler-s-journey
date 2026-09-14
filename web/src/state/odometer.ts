@@ -63,5 +63,6 @@ export function freshState(packId: string, createdAt: string): WalkerState {
     dailyLog: [],
     cumulativeMiles: 0,
     reachedMilepostIds: [],
+    personalLog: [],
   };
 }

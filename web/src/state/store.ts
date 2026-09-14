@@ -1,5 +1,5 @@
 import { openDB, type IDBPDatabase } from "idb";
-import type { WalkerState } from "./types";
+import type { WalkerState, WalkerStateV1 } from "./types";
 
 // IndexedDB-backed persistence for the single walker record.
 // This is the storage seam later EPICs extend (new fields via migrate()).
@@ -31,7 +31,13 @@ export function migrate(raw: unknown): WalkerState | null {
   if (!raw || typeof raw !== "object") return null;
   const version = (raw as { schemaVersion?: unknown }).schemaVersion;
   switch (version) {
-    case 1:
+    case 1: {
+      // Forward-only, non-destructive: a returning walker keeps every mile
+      // walked. Upgrade a v1 record to v2 by adding an empty personalLog.
+      const v1 = raw as WalkerStateV1;
+      return { ...v1, schemaVersion: 2, personalLog: [] };
+    }
+    case 2:
       return raw as WalkerState;
     default:
       return null;
