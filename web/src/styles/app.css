@@ -200,19 +200,47 @@ form.checkin label {
   font-size: 0.85rem;
 }
 
+.milepost .dateline {
+  margin: 2px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
 .milepost blockquote {
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   padding-left: 14px;
   border-left: 3px solid var(--accent);
+}
+
+.milepost blockquote .voice-text {
+  margin: 0;
   font-style: italic;
+  line-height: 1.55;
+}
+
+.milepost blockquote .voice-author {
+  margin-top: 6px;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  font-style: normal;
 }
 
 .milepost .approx {
-  display: block;
-  margin-top: 6px;
+  margin: 8px 0 0;
   color: var(--ink-soft);
   font-size: 0.8rem;
-  font-style: normal;
+}
+
+.framing h2 {
+  font-size: 1.05rem;
+  margin: 0 0 8px;
+}
+
+.framing p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.55;
 }
 
 .state {

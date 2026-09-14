@@ -13,6 +13,7 @@ export function Trail({ pack }: { pack: JourneyPack }) {
   const { status, state, logMiles } = useWalker(pack);
 
   const hasMiles = state !== null && state.dailyLog.length > 0;
+  const hasReached = state !== null && state.reachedMilepostIds.length > 0;
 
   return (
     <main className="page">
@@ -46,6 +47,13 @@ export function Trail({ pack }: { pack: JourneyPack }) {
           {hasMiles && state && (
             <section className="card">
               <NextMilepost state={state} pack={pack} />
+            </section>
+          )}
+
+          {hasReached && (
+            <section className="card framing" aria-label="About these words">
+              <h2>About these words</h2>
+              <p>{pack.framingNote}</p>
             </section>
           )}
 

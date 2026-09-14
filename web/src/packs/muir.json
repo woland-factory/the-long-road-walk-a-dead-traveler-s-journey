@@ -1,0 +1,498 @@
+{
+  "id": "muir-thousand-mile-walk",
+  "title": "A Thousand-Mile Walk to the Gulf",
+  "traveler": "John Muir",
+  "years": "1867",
+  "totalMiles": 1000,
+  "source": {
+    "name": "A Thousand-Mile Walk to the Gulf",
+    "author": "John Muir",
+    "gutenbergId": 60749,
+    "url": "https://www.gutenberg.org/files/60749/60749-0.txt",
+    "license": "Public domain (Project Gutenberg)"
+  },
+  "framingNote": "John Muir wrote these pages in 1867, walking through the American South just after the Civil War. He carries the views and language of his time, including remarks about the people he met that many readers today will find wrong and hurtful. You are reading his exact words, kept as he wrote them. We do not soften or edit them. This is a primary source from history, not a voice from now.",
+  "mileposts": [
+    {
+      "id": "muir-01-louisville",
+      "mileMark": 6,
+      "date": "1867-09-02",
+      "place": "Louisville, Kentucky",
+      "approxNote": "Near this ground Muir crossed the Ohio and struck south into the Kentucky oaks.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "My plan was simply to push on in a general southward direction by the wildest, leafiest, and least trodden way I could find, promising the greatest extent of virgin forest."
+        }
+      ]
+    },
+    {
+      "id": "muir-02-elizabethtown",
+      "mileMark": 30,
+      "date": "1867-09-03",
+      "place": "near Elizabethtown, Kentucky",
+      "approxNote": "Placed near this ground by his day's walk, not by any survey.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Escaped from the dust and squalor of my garret bedroom to the glorious forest. All the streams that I tasted hereabouts are salty and so are the wells. Salt River was nearly dry. Much of my way this forenoon was over naked limestone."
+        }
+      ]
+    },
+    {
+      "id": "muir-03-kentucky-barrens",
+      "mileMark": 54,
+      "date": "1867-09-04",
+      "place": "The Kentucky Barrens",
+      "approxNote": "A rough mile mark near this ground along his route.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "The sun was gilding the hill-tops when I was awakened by the alarm notes of birds whose dwelling in a hazel thicket I had disturbed."
+        }
+      ]
+    },
+    {
+      "id": "muir-04-munfordville",
+      "mileMark": 78,
+      "date": "1867-09-05",
+      "place": "Munfordville, Kentucky",
+      "approxNote": "Set near this ground where he camped by the caves.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Came to the region of caves. At the mouth of the first I discovered, I was surprised to find ferns which belonged to the coolest nooks of Wisconsin and northward, but soon observed that each cave rim has a zone of climate peculiar to itself, and it is always cool."
+        }
+      ]
+    },
+    {
+      "id": "muir-05-mammoth-cave",
+      "mileMark": 100,
+      "date": "1867-09-06",
+      "place": "Mammoth Cave, Kentucky",
+      "approxNote": "Near this ground, by his own reckoning of the day.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Arrived at the great Mammoth Cave. I was surprised to find it in so complete naturalness. A large hotel with fine walks and gardens is near it. But fortunately the cave has been unimproved, and were it not for the narrow trail that leads down the glen to its door, one would not know that it had been visited."
+        }
+      ]
+    },
+    {
+      "id": "muir-06-glasgow",
+      "mileMark": 125,
+      "date": "1867-09-07",
+      "place": "near Glasgow, Kentucky",
+      "approxNote": "A coarse mark near this ground, not a survey point.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Left the hospitable Kentuckians with their sincere good wishes and bore away southward again through the deep green woods. In noble forests all day. Saw mistletoe for the first time."
+        }
+      ]
+    },
+    {
+      "id": "muir-07-burkesville",
+      "mileMark": 150,
+      "date": "1867-09-08",
+      "place": "near Burkesville, Kentucky",
+      "approxNote": "Near this ground above the Cumberland River.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "The scenery on approaching the Cumberland River becomes still grander. Burkesville, in beautiful location, is embosomed in a glorious array of verdant flowing hills. The Cumberland must be a happy stream. I think I could enjoy traveling with it in the midst of such beauty all my life."
+        }
+      ]
+    },
+    {
+      "id": "muir-08-kentucky-hills",
+      "mileMark": 175,
+      "date": "1867-09-09",
+      "place": "the Kentucky hill country",
+      "approxNote": "Roughly near this ground along the green hills.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Kentucky is the greenest, leafiest State I have yet seen. The sea of soft temperate plant-green is deepest here."
+        }
+      ]
+    },
+    {
+      "id": "muir-09-cumberland-foot",
+      "mileMark": 200,
+      "date": "1867-09-10",
+      "place": "foot of the Cumberland Mountains",
+      "approxNote": "Near this ground where he began the climb.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "I began the ascent of the Cumberland Mountains, the first real mountains that my foot ever touched or eyes beheld."
+        }
+      ]
+    },
+    {
+      "id": "muir-10-cumberland-plateau",
+      "mileMark": 228,
+      "date": "1867-09-11",
+      "place": "the Cumberland Plateau, Tennessee",
+      "approxNote": "A coarse mark near this ground on the plateau.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Long stretch of level sand-stone plateau, lightly furrowed and dimpled with shallow groove-like valleys and hills. The trees are mostly oaks, planted wide apart like those in the Wisconsin woods."
+        }
+      ]
+    },
+    {
+      "id": "muir-11-emory-river",
+      "mileMark": 252,
+      "date": "1867-09-12",
+      "place": "near the Emory River, Tennessee",
+      "approxNote": "Near this ground by the mountain stream he crossed.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "There is nothing more eloquent in Nature than a mountain stream, and this is the first I ever saw. Its banks are luxuriantly peopled with rare and lovely flowers and overarching trees, making one of Nature’s coolest and most hospitable places."
+        }
+      ]
+    },
+    {
+      "id": "muir-12-loudon-valley",
+      "mileMark": 276,
+      "date": "1867-09-13",
+      "place": "the valley toward Philadelphia, Tennessee",
+      "approxNote": "Roughly near this ground among the parallel valleys.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Walked all day across small parallel valleys that flute the surface of the one wide valley. These flutings appear to have been formed by lateral pressure, are fertile, and contain some fine forms, though the seal of war is on all things. The roads never seem to proceed with any fixed purpose, but wander as if lost."
+        }
+      ]
+    },
+    {
+      "id": "muir-13-madisonville",
+      "mileMark": 300,
+      "date": "1867-09-14",
+      "place": "Madisonville, Tennessee",
+      "approxNote": "Near this ground below the Unaka Mountains.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Reached Madisonville, a brisk village. Came in full view of the Unaka Mountains, a magnificent sight."
+        }
+      ]
+    },
+    {
+      "id": "muir-14-unaka-mountains",
+      "mileMark": 322,
+      "date": "1867-09-15",
+      "place": "the Unaka Mountains, Tennessee",
+      "approxNote": "A coarse mark near this ground in the high country.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Most glorious billowy mountain scenery. Made many a halt at open places to take breath and to admire. The road, in many places cut into the rock, goes winding about among the knobs and gorges."
+        }
+      ]
+    },
+    {
+      "id": "muir-15-gold-ridge",
+      "mileMark": 344,
+      "date": "1867-09-16",
+      "place": "the mountain gold country, North Carolina",
+      "approxNote": "Near this ground among the mountain mines.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Gold is found in small quantities throughout the Alleghanies, and many farmers work at mining a few weeks or months every year when their time is not more valuable for other pursuits."
+        }
+      ]
+    },
+    {
+      "id": "muir-16-state-line",
+      "mileMark": 372,
+      "date": "1867-09-18",
+      "place": "the Tennessee and North Carolina state line",
+      "approxNote": "Near this ground on the high state-line ridge.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Up the mountain on the state line. The scenery is far grander than any I ever before beheld. The view extends from the Cumberland Mountains on the north far into Georgia and North Carolina to the south, an area of about five thousand square miles. Such an ocean of wooded, waving, swelling mountain beauty and grandeur is not to be described."
+        }
+      ]
+    },
+    {
+      "id": "muir-17-murphy",
+      "mileMark": 400,
+      "date": "1867-09-19",
+      "place": "Murphy, North Carolina",
+      "approxNote": "Near this ground in the mountain town.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "In Murphy I was hailed by the sheriff who could not determine by my colors and rigging to what country or craft I belonged."
+        }
+      ]
+    },
+    {
+      "id": "muir-18-hiwassee",
+      "mileMark": 420,
+      "date": "1867-09-20",
+      "place": "the Hiwassee River, North Carolina",
+      "approxNote": "Near this ground on the river banks.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Found a number of rare and strange plants on the rocky banks of the river Hiwassee. In the afternoon, from the summit of a commanding ridge, I obtained a magnificent view of blue, softly curved mountain scenery."
+        }
+      ]
+    },
+    {
+      "id": "muir-19-gainesville",
+      "mileMark": 455,
+      "date": "1867-09-23",
+      "place": "Gainesville, Georgia",
+      "approxNote": "Near this ground where he left the mountains.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Passed the comfortable, finely shaded little town of Gainesville. The Chattahoochee River is richly embanked with massive, bossy, dark green water oaks, and wreathed with a dense growth of muscadine grapevines, whose ornate foliage, so well adapted to bank embroidery was enriched with other interweaving species of vines and brightly colored flowers. This is the first truly southern stream I have met."
+        }
+      ]
+    },
+    {
+      "id": "muir-20-chattahoochee",
+      "mileMark": 478,
+      "date": "1867-09-24",
+      "place": "the Chattahoochee River, Georgia",
+      "approxNote": "Near this ground along the river.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Spent this day with Mr. Prater sailing on the Chattahoochee, feasting on grapes that had dropped from the overhanging vines."
+        }
+      ]
+    },
+    {
+      "id": "muir-21-river-crossing",
+      "mileMark": 505,
+      "date": "1867-09-25",
+      "place": "the Chattahoochee river bottom, Georgia",
+      "approxNote": "Near this ground where he forded the river.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "I succeeded in crossing the river by wading and swimming, careless of wetting, knowing that I would soon dry in the hot sunshine."
+        }
+      ]
+    },
+    {
+      "id": "muir-22-athens",
+      "mileMark": 540,
+      "date": "1867-09-26",
+      "place": "Athens, Georgia",
+      "approxNote": "Near this ground in the town he most admired.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Reached Athens in the afternoon, a remarkably beautiful and aristocratic town, containing many classic and magnificent mansions of wealthy planters, who formerly owned large negro-stocked plantations in the best cotton and sugar regions farther south. Unmistakable marks of culture and refinement, as well as wealth, were everywhere apparent. This is the most beautiful town I have seen on the journey, so far, and the only one in the South that I would like to revisit."
+        }
+      ]
+    },
+    {
+      "id": "muir-23-plantations",
+      "mileMark": 568,
+      "date": "1867-09-27",
+      "place": "the Georgia lowland plantations",
+      "approxNote": "Near this ground on the sandy lowland roads.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "When very thirsty I discovered a beautiful spring in a sandstone basin overhung with shady bushes and vines, where I enjoyed to the utmost the blessing of pure cold water."
+        }
+      ]
+    },
+    {
+      "id": "muir-24-purple-grass",
+      "mileMark": 600,
+      "date": "1867-09-29",
+      "place": "the Georgia meadows",
+      "approxNote": "A coarse mark near this ground among the meadows.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "To-day I met a magnificent grass, ten or twelve feet in stature, with a superb panicle of glossy purple flowers. Its leaves, too, are of princely mould and dimensions. Its home is in sunny meadows and along the wet borders of slow streams and swamps. It seems to be fully aware of its high rank, and waves with the grace and solemn majesty of a mountain pine."
+        }
+      ]
+    },
+    {
+      "id": "muir-25-augusta",
+      "mileMark": 640,
+      "date": "1867-09-30",
+      "place": "near Augusta, Georgia",
+      "approxNote": "Near this ground on the long road to Augusta.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Traveled to-day more than forty miles without dinner or supper. No family would receive me, so I had to push on to Augusta."
+        }
+      ]
+    },
+    {
+      "id": "muir-26-savannah-river",
+      "mileMark": 675,
+      "date": "1867-10-01",
+      "place": "along the Savannah River, Georgia",
+      "approxNote": "Near this ground where he turned down the river.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Found a cheap breakfast in a market-place; then set off along the Savannah River to Savannah."
+        }
+      ]
+    },
+    {
+      "id": "muir-27-perkins-house",
+      "mileMark": 705,
+      "date": "1867-10-02",
+      "place": "the Savannah River bottom, Georgia",
+      "approxNote": "Near this ground in the river bottom forest.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "The family table was unlike any I ever saw before. It was circular, and the central part of it revolved. When any one wished to be helped, he placed his plate on the revolving part, which was whirled around to the host, and then whirled back with its new load."
+        }
+      ]
+    },
+    {
+      "id": "muir-28-pine-barrens",
+      "mileMark": 735,
+      "date": "1867-10-03",
+      "place": "the Georgia pine barrens",
+      "approxNote": "A coarse mark near this ground in the barrens.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Here I sauntered in delightful freedom, meeting none of the cat-clawed vines, or shrubs, of the alluvial bottoms."
+        }
+      ]
+    },
+    {
+      "id": "muir-29-banana",
+      "mileMark": 770,
+      "date": "1867-10-05",
+      "place": "the coastal Georgia gardens",
+      "approxNote": "Near this ground among the wayside gardens.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Saw the stately banana for the first time, growing luxuriantly in the wayside gardens."
+        }
+      ]
+    },
+    {
+      "id": "muir-30-near-savannah",
+      "mileMark": 810,
+      "date": "1867-10-08",
+      "place": "near Savannah, Georgia",
+      "approxNote": "Near this ground as he came into the city.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Reached Savannah, but find no word from home, and the money that I had ordered to be sent by express from Portage by my brother had not yet arrived. Feel dreadfully lonesome and poor."
+        }
+      ]
+    },
+    {
+      "id": "muir-31-bonaventure",
+      "mileMark": 850,
+      "date": "1867-10-09",
+      "place": "Bonaventure, near Savannah, Georgia",
+      "approxNote": "Near this ground in the old forest graveyard.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "The most conspicuous glory of Bonaventure is its noble avenue of live-oaks. They are the most magnificent planted trees I have ever seen, about fifty feet high and perhaps three or four feet in diameter, with broad spreading leafy heads."
+        }
+      ]
+    },
+    {
+      "id": "muir-32-fernandina",
+      "mileMark": 895,
+      "date": "1867-10-15",
+      "place": "Fernandina, Florida",
+      "approxNote": "Near this ground where he stepped ashore in Florida.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "To-day, at last, I reached Florida, the so-called “Land of Flowers,” that I had so long waited for, wondering if after all my longings and prayers would be in vain, and I should die without a glimpse of the flowery Canaan."
+        }
+      ]
+    },
+    {
+      "id": "muir-33-florida-woods",
+      "mileMark": 930,
+      "date": "1867-10-16",
+      "place": "the Florida pine woods",
+      "approxNote": "A coarse mark near this ground in the wet woods.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "I walked rapidly for hours in the wet, level woods, but not a foot of dry ground could I find. Hollow-voiced owls were calling without intermission. All manner of night sounds came from strange insects and beasts, one by one, or crowded together. All had a home but I."
+        }
+      ]
+    },
+    {
+      "id": "muir-34-dry-land",
+      "mileMark": 960,
+      "date": "1867-10-18",
+      "place": "the Florida flatwoods",
+      "approxNote": "Near this ground on the low, dry levels.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "Am walking on land that is almost dry. The dead levels are interrupted here and there by sandy waves a few feet in height."
+        }
+      ]
+    },
+    {
+      "id": "muir-35-magnolia-country",
+      "mileMark": 980,
+      "date": "1867-10-19",
+      "place": "the Florida pond country",
+      "approxNote": "Near this ground among the magnolia groves.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "The magnolia is much more abundant here. It forms groves and almost exclusively forests the edges of ponds and the banks of streams."
+        }
+      ]
+    },
+    {
+      "id": "muir-36-palm-grove",
+      "mileMark": 992,
+      "date": "1867-10-21",
+      "place": "the great palm grove, Florida",
+      "approxNote": "Near this ground on the way to the palms.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "I set out for the grand palm grove. I had seen these dazzling sun-children in every day of my walk through Florida, but they were usually standing solitary, or in groups of three or four; but to-day I was to see them by the mile."
+        }
+      ]
+    },
+    {
+      "id": "muir-37-cedar-keys",
+      "mileMark": 1000,
+      "date": "1867-10-23",
+      "place": "Cedar Keys, Florida, on the Gulf of Mexico",
+      "approxNote": "Near this ground where the walk met the sea.",
+      "voices": [
+        {
+          "author": "John Muir",
+          "text": "To-day I reached the sea. While I was yet many miles back in the palmy woods, I caught the scent of the salt sea breeze which, although I had so many years lived far from sea breezes, suddenly conjured up Dunbar, its rocky coast, winds and waves; and my whole childhood, that seemed to have utterly vanished in the New World, was now restored amid the Florida woods by that one breath from the sea."
+        }
+      ]
+    }
+  ]
+}

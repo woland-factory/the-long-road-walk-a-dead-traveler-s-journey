@@ -56,7 +56,7 @@ test("the check-in loop is operable by keyboard with a visible focus state", asy
   // Submit via keyboard (Enter within the form).
   await page.keyboard.press("Enter");
   await expect(page.getByTestId("odometer-value")).toHaveText("6");
-  await expect(page.getByText(/We crossed the river at dawn/)).toBeVisible();
+  await expect(page.getByText(/My plan was simply to push on/)).toBeVisible();
 });
 
 // AC8.3: automated a11y check for contrast, labels, and landmarks.

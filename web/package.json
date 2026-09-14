@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "start": "vite preview",
     "test": "vitest run",
+    "validate:packs": "vitest run src/packs/",
     "test:e2e": "playwright test",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
