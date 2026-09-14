@@ -19,6 +19,7 @@
       "date": "1867-09-02",
       "place": "Louisville, Kentucky",
       "approxNote": "Near this ground Muir crossed the Ohio and struck south into the Kentucky oaks.",
+      "approach": "The road crosses the Ohio and heads south into the Kentucky oaks.",
       "voices": [
         {
           "author": "John Muir",
@@ -32,6 +33,7 @@
       "date": "1867-09-03",
       "place": "near Elizabethtown, Kentucky",
       "approxNote": "Placed near this ground by his day's walk, not by any survey.",
+      "approach": "Ahead the way runs south through rolling Kentucky farm country.",
       "voices": [
         {
           "author": "John Muir",
@@ -45,6 +47,7 @@
       "date": "1867-09-04",
       "place": "The Kentucky Barrens",
       "approxNote": "A rough mile mark near this ground along his route.",
+      "approach": "The trail opens onto the wide Kentucky barrens ahead.",
       "voices": [
         {
           "author": "John Muir",
@@ -58,6 +61,7 @@
       "date": "1867-09-05",
       "place": "Munfordville, Kentucky",
       "approxNote": "Set near this ground where he camped by the caves.",
+      "approach": "The road follows the Green River toward the cave country.",
       "voices": [
         {
           "author": "John Muir",
@@ -71,6 +75,7 @@
       "date": "1867-09-06",
       "place": "Mammoth Cave, Kentucky",
       "approxNote": "Near this ground, by his own reckoning of the day.",
+      "approach": "Ahead the ground rises over the great limestone cave lands.",
       "voices": [
         {
           "author": "John Muir",
@@ -84,6 +89,7 @@
       "date": "1867-09-07",
       "place": "near Glasgow, Kentucky",
       "approxNote": "A coarse mark near this ground, not a survey point.",
+      "approach": "The way carries on south across the Kentucky uplands.",
       "voices": [
         {
           "author": "John Muir",
@@ -97,6 +103,7 @@
       "date": "1867-09-08",
       "place": "near Burkesville, Kentucky",
       "approxNote": "Near this ground above the Cumberland River.",
+      "approach": "The road drops toward the Cumberland River ahead.",
       "voices": [
         {
           "author": "John Muir",
@@ -110,6 +117,7 @@
       "date": "1867-09-09",
       "place": "the Kentucky hill country",
       "approxNote": "Roughly near this ground along the green hills.",
+      "approach": "Ahead the trail winds into the green Kentucky hills.",
       "voices": [
         {
           "author": "John Muir",
@@ -123,6 +131,7 @@
       "date": "1867-09-10",
       "place": "foot of the Cumberland Mountains",
       "approxNote": "Near this ground where he began the climb.",
+      "approach": "The road climbs to the foot of the Cumberland Mountains.",
       "voices": [
         {
           "author": "John Muir",
@@ -136,6 +145,7 @@
       "date": "1867-09-11",
       "place": "the Cumberland Plateau, Tennessee",
       "approxNote": "A coarse mark near this ground on the plateau.",
+      "approach": "The way climbs onto the high Cumberland Plateau in Tennessee.",
       "voices": [
         {
           "author": "John Muir",
@@ -149,6 +159,7 @@
       "date": "1867-09-12",
       "place": "near the Emory River, Tennessee",
       "approxNote": "Near this ground by the mountain stream he crossed.",
+      "approach": "Ahead the trail descends to the Emory River.",
       "voices": [
         {
           "author": "John Muir",
@@ -162,6 +173,7 @@
       "date": "1867-09-13",
       "place": "the valley toward Philadelphia, Tennessee",
       "approxNote": "Roughly near this ground among the parallel valleys.",
+      "approach": "The road runs down through the parallel Tennessee valleys.",
       "voices": [
         {
           "author": "John Muir",
@@ -175,6 +187,7 @@
       "date": "1867-09-14",
       "place": "Madisonville, Tennessee",
       "approxNote": "Near this ground below the Unaka Mountains.",
+      "approach": "Ahead the way crosses the Tennessee valley toward Madisonville.",
       "voices": [
         {
           "author": "John Muir",
@@ -188,6 +201,7 @@
       "date": "1867-09-15",
       "place": "the Unaka Mountains, Tennessee",
       "approxNote": "A coarse mark near this ground in the high country.",
+      "approach": "The trail climbs into the high Unaka Mountains ahead.",
       "voices": [
         {
           "author": "John Muir",
@@ -201,6 +215,7 @@
       "date": "1867-09-16",
       "place": "the mountain gold country, North Carolina",
       "approxNote": "Near this ground among the mountain mines.",
+      "approach": "The road crosses into the North Carolina mountain mining country.",
       "voices": [
         {
           "author": "John Muir",
@@ -214,6 +229,7 @@
       "date": "1867-09-18",
       "place": "the Tennessee and North Carolina state line",
       "approxNote": "Near this ground on the high state-line ridge.",
+      "approach": "Ahead the way rises to the high state line ridge.",
       "voices": [
         {
           "author": "John Muir",
@@ -227,6 +243,7 @@
       "date": "1867-09-19",
       "place": "Murphy, North Carolina",
       "approxNote": "Near this ground in the mountain town.",
+      "approach": "The trail comes down to the mountain town of Murphy.",
       "voices": [
         {
           "author": "John Muir",
@@ -240,6 +257,7 @@
       "date": "1867-09-20",
       "place": "the Hiwassee River, North Carolina",
       "approxNote": "Near this ground on the river banks.",
+      "approach": "The road follows the Hiwassee River banks ahead.",
       "voices": [
         {
           "author": "John Muir",
@@ -253,6 +271,7 @@
       "date": "1867-09-23",
       "place": "Gainesville, Georgia",
       "approxNote": "Near this ground where he left the mountains.",
+      "approach": "Ahead the way leaves the mountains for the Georgia hills.",
       "voices": [
         {
           "author": "John Muir",
@@ -266,6 +285,7 @@
       "date": "1867-09-24",
       "place": "the Chattahoochee River, Georgia",
       "approxNote": "Near this ground along the river.",
+      "approach": "The road runs down to the Chattahoochee River.",
       "voices": [
         {
           "author": "John Muir",
@@ -279,6 +299,7 @@
       "date": "1867-09-25",
       "place": "the Chattahoochee river bottom, Georgia",
       "approxNote": "Near this ground where he forded the river.",
+      "approach": "Ahead the trail reaches the ford across the river bottom.",
       "voices": [
         {
           "author": "John Muir",
@@ -292,6 +313,7 @@
       "date": "1867-09-26",
       "place": "Athens, Georgia",
       "approxNote": "Near this ground in the town he most admired.",
+      "approach": "The way carries on through the Georgia hill country toward Athens.",
       "voices": [
         {
           "author": "John Muir",
@@ -305,6 +327,7 @@
       "date": "1867-09-27",
       "place": "the Georgia lowland plantations",
       "approxNote": "Near this ground on the sandy lowland roads.",
+      "approach": "The road runs onto the sandy Georgia lowland roads.",
       "voices": [
         {
           "author": "John Muir",
@@ -318,6 +341,7 @@
       "date": "1867-09-29",
       "place": "the Georgia meadows",
       "approxNote": "A coarse mark near this ground among the meadows.",
+      "approach": "Ahead the trail opens across the wide Georgia meadows.",
       "voices": [
         {
           "author": "John Muir",
@@ -331,6 +355,7 @@
       "date": "1867-09-30",
       "place": "near Augusta, Georgia",
       "approxNote": "Near this ground on the long road to Augusta.",
+      "approach": "The long road carries on toward Augusta.",
       "voices": [
         {
           "author": "John Muir",
@@ -344,6 +369,7 @@
       "date": "1867-10-01",
       "place": "along the Savannah River, Georgia",
       "approxNote": "Near this ground where he turned down the river.",
+      "approach": "The way turns down along the Savannah River ahead.",
       "voices": [
         {
           "author": "John Muir",
@@ -357,6 +383,7 @@
       "date": "1867-10-02",
       "place": "the Savannah River bottom, Georgia",
       "approxNote": "Near this ground in the river bottom forest.",
+      "approach": "The road threads the forest of the river bottom.",
       "voices": [
         {
           "author": "John Muir",
@@ -370,6 +397,7 @@
       "date": "1867-10-03",
       "place": "the Georgia pine barrens",
       "approxNote": "A coarse mark near this ground in the barrens.",
+      "approach": "Ahead the trail crosses the wide Georgia pine barrens.",
       "voices": [
         {
           "author": "John Muir",
@@ -383,6 +411,7 @@
       "date": "1867-10-05",
       "place": "the coastal Georgia gardens",
       "approxNote": "Near this ground among the wayside gardens.",
+      "approach": "The road passes the wayside gardens near the coast.",
       "voices": [
         {
           "author": "John Muir",
@@ -396,6 +425,7 @@
       "date": "1867-10-08",
       "place": "near Savannah, Georgia",
       "approxNote": "Near this ground as he came into the city.",
+      "approach": "The way comes down toward the city of Savannah.",
       "voices": [
         {
           "author": "John Muir",
@@ -409,6 +439,7 @@
       "date": "1867-10-09",
       "place": "Bonaventure, near Savannah, Georgia",
       "approxNote": "Near this ground in the old forest graveyard.",
+      "approach": "Ahead the trail reaches the old forest at Bonaventure.",
       "voices": [
         {
           "author": "John Muir",
@@ -422,6 +453,7 @@
       "date": "1867-10-15",
       "place": "Fernandina, Florida",
       "approxNote": "Near this ground where he stepped ashore in Florida.",
+      "approach": "The road crosses to the Florida coast at Fernandina.",
       "voices": [
         {
           "author": "John Muir",
@@ -435,6 +467,7 @@
       "date": "1867-10-16",
       "place": "the Florida pine woods",
       "approxNote": "A coarse mark near this ground in the wet woods.",
+      "approach": "Ahead the way enters the wet Florida pine woods.",
       "voices": [
         {
           "author": "John Muir",
@@ -448,6 +481,7 @@
       "date": "1867-10-18",
       "place": "the Florida flatwoods",
       "approxNote": "Near this ground on the low, dry levels.",
+      "approach": "The trail crosses the low, dry Florida flatwoods.",
       "voices": [
         {
           "author": "John Muir",
@@ -461,6 +495,7 @@
       "date": "1867-10-19",
       "place": "the Florida pond country",
       "approxNote": "Near this ground among the magnolia groves.",
+      "approach": "The road runs through the Florida pond and magnolia country.",
       "voices": [
         {
           "author": "John Muir",
@@ -474,6 +509,7 @@
       "date": "1867-10-21",
       "place": "the great palm grove, Florida",
       "approxNote": "Near this ground on the way to the palms.",
+      "approach": "Ahead the way leads to the great Florida palm grove.",
       "voices": [
         {
           "author": "John Muir",
@@ -487,6 +523,7 @@
       "date": "1867-10-23",
       "place": "Cedar Keys, Florida, on the Gulf of Mexico",
       "approxNote": "Near this ground where the walk met the sea.",
+      "approach": "The road reaches the Gulf shore at Cedar Keys.",
       "voices": [
         {
           "author": "John Muir",

@@ -13,6 +13,9 @@ export interface Milepost {
   date: string; // YYYY-MM-DD of the entry; non-decreasing across mileposts
   place: string; // a real place on the route (drawn from the traveler's text/geography)
   approxNote: string; // approximate-location framing; contains "near this ground"; never coordinates
+  approach: string; // one short authored line about the ground AHEAD toward this milepost.
+  // Present-day plain English, our words (not the traveler's), never spoils the entry,
+  // swept for tone. Shown on the Trail before arrival, never at arrival.
   voices: Voice[]; // >= 1 entry. For Muir, exactly one (a single traveler).
 }
 

@@ -1,4 +1,4 @@
-# EPIC SPEC — Journey pack format and the Muir pack (the content engine)
+# EPIC SPEC — The milepost unlock and between-milepost pacing (the signature)
 
 *The Long Road: walk a dead traveler's journey, mile for mile, diary for diary.*
 
@@ -12,96 +12,126 @@ We compete on the meaning of the reward, not on gamification, breadth, or
 automation.
 
 **What that demands of THIS epic.** This is the EPIC where the reward stops
-being a placeholder and becomes real. EPIC 1 proved the withhold-then-reveal
-loop with invented fixture lines. This EPIC pours the actual verbatim words of a
-real dead traveler into that exact loop. The whole differentiator now rests on
-one promise: the words the walker earns are John Muir's own, unedited, keyed to
-real ground he actually reached. That promise is only worth anything if it is
-machine-proven, not hand-checked. So the heart of this EPIC is not UI, it is a
-build-time verifier that fails the build unless every earned line is byte-for-byte
-Muir. If a single word is paraphrased, softened, or borrowed from a copyrighted
-editor, the differentiator is a lie. Build the verifier as if a historian will
-audit the output, because the product's one claim to meaning is exactly this.
+being a line in a list and becomes the moment the whole product exists for.
+EPIC 1 built the loop, EPIC 2 poured in Muir's verified words. This EPIC builds
+the Arrival: the ceremony that hands the walker the words they just earned, set
+to be read, not skimmed. Two promises carry the differentiator here and both are
+provable. First, the ceremony must feel like arriving somewhere. The verbatim
+entry gets a real reading surface with its dateline, its place, and its framing,
+so the payoff reads like a page from a book and not a toast notification.
+Second, the withholding must be airtight. A walker must never be able to read,
+peek at, or skip to an entry the odometer has not reached. If the wall around
+tomorrow's words has a single gap, the reward stops being earned and the
+differentiator is a lie. Build the reveal so that unearned words are not merely
+hidden in the UI, they are absent from the page.
 
 ---
 
 ## 1. Scope
 
 ### In scope
-- **A documented journey-pack schema**, defined once, as the contract every pack
-  (this one and future ones) must satisfy: TypeScript types plus a prose schema
-  document.
-- **A pack validator** (structural + intra-pack semantic rules) that runs as part
-  of the test suite and fails the build on any violation.
-- **A committed public-domain source** for John Muir's *A Thousand-Mile Walk to
-  the Gulf* (Project Gutenberg #60749), used only at test time as the ground
-  truth for verification.
-- **A build-time source verifier** that machine-checks the Muir pack against that
-  committed source: entry dates ordered, cumulative `mileMark` strictly
-  increasing, every `voices[].text` verbatim (byte-identical after a defined
-  whitespace normalization, apparatus excluded), at least 30 mileposts spread
-  across the route, and no editorial apparatus in any voice text.
-- **The real Muir pack** (`muir.json`): at least 30 verified mileposts, each with
-  a real place, a real date, an `approxNote` phrased as "near this ground", and
-  Muir's verbatim words. Plus a short, plain framing note for the period content.
-- **Wiring the Muir pack into the existing EPIC 1 loop in place of the fixture**:
-  the running app drives its odometer, reveal, and reached-list against the Muir
-  pack. This includes the small render and seed changes the new schema requires
-  (the reached list renders `voices`; the `SEED_DEMO` seed crosses a real Muir
-  milepost; the framing note is shown where real period text can be read).
-- **Surfacing the framing note** in the loop so real 1867 period content is never
-  presented without its frame.
+- **The Arrival ceremony**: a dedicated reading surface that opens when a
+  check-in crosses one or more mileposts. It presents the reached milepost's
+  verbatim diary entry in a readable typographic setting, with a dateline, the
+  place, the milepost's `approxNote` ("near this ground"), the pack's framing
+  note, and a field where the walker writes one line facing the entry.
+- **Multi-voice rendering** in the Arrival surface: when a milepost carries more
+  than one journalist's voice, each voice renders cleanly and distinctly
+  (attributed, separated). Muir is single-voice, so this is proven with a small
+  multi-voice test pack, and the surface must not assume exactly one voice.
+- **Strict withholding, enforced at the render boundary**: an entry's verbatim
+  text is present in the DOM only for mileposts whose ids are in
+  `reachedMilepostIds`. There is no affordance, route, or parameter that reveals
+  an unreached milepost's text or lets the walker skip ahead.
+- **The walker's facing line**: writing one short line per reached milepost,
+  stored locally so it survives reload. This adds a `personalLog` to the walker
+  state by a forward-only migration. (Rendering the interleaved double journal is
+  EPIC 4; this EPIC only writes and stores the line, and shows the walker their
+  own saved line when they re-open an entry.)
+- **The Trail's non-unlock-day payoff**: on a day that does not cross a milepost,
+  the Trail shows current position, the exact distance to the next milepost in
+  the walker's units, and one short authored "approach" line about the ground
+  ahead that does not spoil the coming entry. This adds an authored `approach`
+  field to each milepost (schema evolution, authored for the Muir pack).
+- **Re-readability from the Trail**: every reached milepost is listed on the
+  Trail as a compact, tappable row that re-opens its Arrival surface. The heavy
+  verbatim text renders only inside the Arrival surface, one entry at a time.
+- **All designed states, sub-100ms interaction feedback, mobile-first** on every
+  surface this EPIC adds or changes, per the QUALITY BAR.
 
 ### Out of scope (Non-goals — binding, do not build)
-- **No second pack.** Only Muir. Do not add Lewis & Clark or any other journey
-  (that is EPIC 6).
-- **No user-submitted or user-editable packs.** Packs are curated and shipped in
-  the repo. No upload surface, no pack editor.
-- **No map polyline.** Coarse `mileMark` positioning is sufficient. The `route`
-  field stays optional and is left unpopulated this EPIC. Do not render a map.
-- **No runtime text generation.** No LLM, no BYOK surface, no paraphrase engine.
-  The corpus is curated and verified at build time and served verbatim.
-- **No Arrival ceremony and no double-journal screen.** The reached entries stay
-  shown inline on the Trail exactly as EPIC 1 shows them (EPIC 3 owns the reveal
-  ceremony; EPIC 4 owns the journal). This EPIC changes *what* text the loop
-  reveals (real Muir), not the ceremony around it.
-- **No unit switching, no accounts, no server state.** Unchanged from EPIC 1.
+- **No badges, medals, points, levels, confetti, or any celebratory
+  gamification beyond the entry itself.** The earned words are the reward. The
+  Arrival ceremony celebrates by handing over the words, nothing more.
+- **No streak counters, no "days walked", no streak-shaming.** Do not add any
+  count whose purpose is to reward consistency rather than distance.
+- **No social sharing, share links, feeds, or export-to-social.** (Data/print
+  export is EPIC 4 and is not built here.)
+- **No double-journal screen and no export/import.** That is EPIC 4. This EPIC
+  stores the facing line but does not render the interleaved journal or any
+  export.
+- **No journey picker, no onboarding walkthrough, no health-export import.** That
+  is EPIC 5. The app still boots straight into the Muir Trail.
+- **No second pack, no map/polyline, no runtime text generation, no accounts, no
+  server state.** Unchanged from earlier EPICs.
+- **No unit switching UI (miles/kilometres toggle).** See interpretation 1: "the
+  walker's units" resolves to miles for this EPIC, because the product ships a
+  single unit and no EPIC owns a unit preference yet. Do not build a toggle.
 
 ### Interpretations resolved (so the implementer never has to guess)
 These are decisions the planner's criteria imply but do not spell out. They are
-resolved here; do not re-litigate them, and do not treat them as license to
+resolved here. Do not re-litigate them, and do not treat them as license to
 expand scope.
 
-1. **"Byte-identical" means verbatim after a defined whitespace normalization,
-   with editorial apparatus excluded.** The Gutenberg plain text is
-   machine-wrapped at ~70 columns, marks italics with `_underscores_`, and
-   carries the editor's bracketed insertions (`[rolling Fork]`), footnote markers
-   (`[1]`), and `[Illustration]` tags. Reproducing hard-wrap newlines or `_`
-   markers in the app would render badly, and the bracketed matter is the
-   editor's, not Muir's. So "byte-identical" is enforced as: after removing `_`
-   markers and any `[...]` bracketed spans from the source, and collapsing every
-   run of whitespace to a single space on both sides, each `voices[].text` MUST
-   be an exact substring of the source's narrative body. This preserves every one
-   of Muir's words and their order exactly, with zero paraphrase, and is the only
-   workable reading of the criterion. Section 2.5 gives the exact algorithm.
+1. **"The walker's units" means miles.** The product currently has exactly one
+   unit (the odometer reads "miles walked", `mileMark`/`totalMiles` are miles)
+   and `WalkerState` has no unit preference. The plan sketches a `unitPref` and a
+   Settings screen, but no EPIC has built a unit toggle, and EPIC 2 listed unit
+   switching as a non-goal. Building one now is drift under SCOPE DISCIPLINE §2
+   and §4. So distances render in miles. A `requested_task` flags the unowned
+   Settings/units gap for the orchestrator rather than absorbing it here.
 
-2. **"Entry dates strictly ordered" means non-decreasing; `mileMark` is strictly
-   increasing.** A real one-way walk can pass two mileposts on one long day, so
-   dates may repeat, but the walk never goes backward: `date[i] >= date[i-1]`.
-   `mileMark` is strictly increasing (`mileMark[i] > mileMark[i-1]`), which alone
-   guarantees every milepost is a distinct position on the route.
+2. **The Arrival is an in-app surface, not a URL route.** The app is a
+   single-screen SPA with no router. Adding routing to satisfy "opens the Arrival
+   screen" is speculative generality (SCOPE DISCIPLINE §2). The Arrival is a
+   full-viewport overlay dialog driven by component state, opened by a fresh
+   crossing or by tapping a reached row, and dismissed back to the Trail.
+   Re-readability does not require deep-linking; it requires that tapping a
+   reached row always re-opens the entry.
 
-3. **The primary text is exempt from the copy sweep; the framing note is not.**
-   QUALITY BAR §8 bans em-dashes and period phrasing in user-visible strings.
-   Muir's 1867 prose is full of both, and the criterion says the text is "framed,
-   never edited." Editing Muir to pass the sweep would break the verbatim promise
-   this whole product is built on. Resolution, backed by the plan's own EPIC 7
-   scope ("copy sweep across every user-visible string and every shipped pack
-   framing note"): the sweep covers our authored copy (the `framingNote`, each
-   `approxNote`, the pack `title`, and all UI strings) and MUST NOT be run over
-   `voices[].text` or `place` (real toponyms drawn from the source). The framing
-   note is where the human, present-day voice lives and must clear the sweep. See
-   §2.7 and T6.
+3. **The Trail's reached list becomes compact tappable rows, not inline entries.**
+   EPIC 2 rendered each reached milepost's full verbatim text inline on the
+   Trail. With 38 Muir mileposts of multi-sentence prose, that grows into a wall
+   of text (QUALITY BAR §1 unbounded growth, §7 radical simplicity). This EPIC
+   moves the reading into the Arrival surface and turns the Trail list into
+   compact rows (place, dateline, mile mark) that re-open the ceremony. The heavy
+   text is mounted one entry at a time, in the overlay. The row list is bounded
+   by the pack's milepost count (a few dozen), so it is not user-growth
+   unbounded; the full growing journal with pagination is EPIC 4's job.
+
+4. **The "approach" line is a new authored pack field, not the `approxNote`.**
+   `approxNote` is location framing shown *at* arrival ("near this ground …") and
+   often references the entry's own ground, so reusing it before arrival would
+   read wrong and risk spoiling. The planner asks for "one short approach line
+   about the ground ahead without spoiling the entry", which is purpose-built
+   pre-arrival copy. So `Milepost` gains an authored `approach: string`, written
+   by us in present-day plain English, swept for LLM tells, and machine-proven
+   to be our words (not a verbatim slice of Muir's source). See §2.4 and §2.7.
+
+5. **One facing line per reached milepost, editable, empty allowed.** The field
+   writes the walker's own single line for the entry they just reached, keyed by
+   `milepostId`. Re-opening a reached entry shows the saved line, editable. An
+   empty line is allowed (the walker may skip it) and clears any stored line for
+   that milepost. This is the minimum that satisfies "a field to write one facing
+   line" and gives EPIC 4 real data to interleave. No free-form daily journaling
+   on non-arrival days is built (not in the planner's criteria).
+
+6. **A single check-in may cross several mileposts.** A large mile figure (or a
+   future health-export drop) can push the odometer past more than one milepost
+   at once. The Arrival presents them as an ordered sequence (ascending
+   `mileMark`), one at a time, each with its own facing-line field, so none is
+   skipped and each earned entry is honored. This is not a badge or a streak, it
+   is the honest consequence of the miles walked.
 
 ---
 
@@ -110,448 +140,499 @@ expand scope.
 ### 2.1 Files and modules to touch
 
 ```
+web/src/state/
+  types.ts               # CHANGE: WalkerStateV2 adds personalLog; PersonalEntry; bump CURRENT_SCHEMA_VERSION to 2
+  store.ts               # CHANGE: migrate() upgrades a v1 record to v2 (adds personalLog: []) instead of nulling it
+  odometer.ts            # CHANGE: freshState builds v2 (personalLog: []); no other logic change
+  personalLog.ts         # NEW: pure upsertFacingLine + facingLineFor helpers (no IndexedDB, no React)
+  personalLog.test.ts    # NEW: unit tests for the pure helpers
+  useWalker.ts           # CHANGE: logMiles records the newly reached ids; expose pendingArrival + clearPendingArrival + saveFacingLine
+  store.test.ts          # CHANGE: add a v1 -> v2 upgrade case; keep round-trip green with personalLog
+
 web/src/packs/
-  types.ts               # CHANGE: evolve Milepost + JourneyPack to the real schema (2.2)
-  SCHEMA.md              # NEW: the documented pack schema (the contract)
-  fixturePack.ts         # CHANGE: update to the new schema (keeps EPIC 1 unit tests green)
-  muir.json              # NEW: the real, verified Muir pack (bundled via a typed import)
-  muir.ts                # NEW: typed re-export -> `export const muirPack: JourneyPack`
-  validatePack.ts        # NEW: structural + intra-pack semantic validator (pure, no fs)
-  verifySource.ts        # NEW: normalization + source-window helpers used by the verifier test
-  sources/
-    gutenberg-60749.txt  # NEW: committed public-domain source, read only by tests (never imported)
-  validatePack.test.ts   # NEW: runs validatePack over muir + fixture; asserts zero violations
-  muir.verify.test.ts    # NEW: source verification against gutenberg-60749.txt
-  muir.copy.test.ts      # NEW: copy sweep over Muir's AUTHORED fields only (not voices/place)
+  types.ts               # CHANGE: Milepost gains `approach: string`
+  SCHEMA.md              # CHANGE: document `approach` and its rules
+  fixturePack.ts         # CHANGE: add an `approach` to each fixture milepost (authored sample copy, swept)
+  muir.json              # CHANGE: add an authored `approach` to every one of the 38 mileposts
+  validatePack.ts        # CHANGE: add S9 (approach is a non-empty string)
+  validatePack.test.ts   # CHANGE: prove S9 bites (missing/empty approach -> violation)
+  verifySource.ts        # CHANGE: export a helper to prove a string is NOT in the cleaned source (authored)
+  muir.verify.test.ts    # CHANGE: add V8 (every approach is authored, not verbatim source; length bounded)
+  muir.copy.test.ts      # CHANGE: sweep every `approach` line too (authored copy)
+
+web/src/trail/
+  Arrival.tsx            # NEW: the Arrival ceremony overlay (the signature surface)
+  Arrival.test.tsx       # NEW: multi-voice, withhold guard, facing-line save/re-open, focus/escape
+  ReachedList.tsx        # CHANGE: compact tappable rows that open Arrival; no inline verbatim text
+  NextMilepost.tsx       # CHANGE: current position line + the approach line
+  NextMilepost.test.tsx  # NEW: position + distance + approach, and no-spoiler assertion
+  Trail.tsx              # CHANGE: own the arrival queue; render Arrival; remove the inline framing card (moves into Arrival)
+  Trail.test.tsx         # CHANGE: SEED_DEMO/withhold assertions move to the Arrival flow
+  Trail.muir.test.tsx    # CHANGE: same, against the real pack
+  facingLine.ts          # NEW: parseFacingLine boundary validator (cap length, collapse whitespace)
+  facingLine.test.ts     # NEW: validator tests
 
 web/src/
-  App.tsx                # CHANGE: mount the Trail against muirPack (replaces fixturePack)
-  trail/ReachedList.tsx  # CHANGE: render voices[] (author + text) and the dateline
-  state/seed.ts          # CHANGE: make the SEED_DEMO seed pack-aware (cross a real milepost)
-  copy.test.ts           # CHANGE: keep scanning fixturePack.ts; do NOT add muir.json's voices
+  copy.test.ts           # CHANGE: add Arrival.tsx and facingLine.ts to the swept FILES list
 
-web/                     # docs
-README.md                # CHANGE: add a short "The journeys" / provenance section
+web/src/styles/app.css   # CHANGE: Arrival overlay + reading typography, position/approach lines, tappable rows
+
+web/e2e/
+  persistence.e2e.ts     # CHANGE: reveal + re-read via the Arrival flow, still survives reload
+  arrival.e2e.ts         # NEW: cross a milepost, read the entry, write a line, return, re-open it
+
+README.md                # CHANGE (light): keep the "Where the code lives" map accurate if new files warrant it
 ```
 
-The existing `web/src/trail/validate.ts` (mile-input validation) is a different
-concern. Name the pack validator `packs/validatePack.ts` to avoid confusion.
+The pack loading model is unchanged: `muir.json` is a bundled typed import, no
+runtime fetch. The source file (`sources/gutenberg-60749.txt`) stays test-only.
 
-### 2.2 Data model (forward-only; the schema defined once)
+### 2.2 Data model (forward-only migration to schemaVersion 2)
 
-Evolve the placeholder `Milepost` from EPIC 1 (a single `text` field) into the
-real schema from the product plan's data-model sketch:
+Add the walker's facing lines. This is the only schema change.
 
 ```ts
-// packs/types.ts
-export interface Voice {
-  author: string;   // e.g. "John Muir"
-  text: string;     // verbatim public-domain source. Framed, never edited.
-                    // EXEMPT from the copy sweep (see 2.7).
+// state/types.ts
+export interface DailyLogEntry {
+  date: string;   // YYYY-MM-DD
+  miles: number;
 }
 
+export interface PersonalEntry {
+  date: string;        // YYYY-MM-DD the line was written (local time)
+  milepostId: string;  // the reached milepost this line faces
+  text: string;        // the walker's one facing line, plain text, trimmed and whitespace-collapsed
+}
+
+export interface WalkerStateV1 {   // kept for the migration only
+  schemaVersion: 1;
+  activePackId: string;
+  createdAt: string;
+  dailyLog: DailyLogEntry[];
+  cumulativeMiles: number;
+  reachedMilepostIds: string[];
+}
+
+export interface WalkerStateV2 {
+  schemaVersion: 2;
+  activePackId: string;
+  createdAt: string;
+  dailyLog: DailyLogEntry[];
+  cumulativeMiles: number;
+  reachedMilepostIds: string[];
+  personalLog: PersonalEntry[];   // NEW
+}
+
+export type WalkerState = WalkerStateV2;
+export const CURRENT_SCHEMA_VERSION = 2 as const;
+```
+
+**Migration (`state/store.ts::migrate`).** Forward-only and non-destructive. A
+returning walker keeps every mile they walked (north star: "you keep the miles
+you walked and the words you earned"), so a v1 record is UPGRADED, never nulled:
+
+```ts
+switch (version) {
+  case 1: {
+    const v1 = raw as WalkerStateV1;
+    return { ...v1, schemaVersion: 2, personalLog: [] };
+  }
+  case 2:
+    return raw as WalkerState;
+  default:
+    return null;   // unknown/absent version stays "fresh", never throws
+}
+```
+
+`DB_NAME`/`DB_VERSION`/the object store are unchanged: the whole walker record
+lives under one key, so there is no IndexedDB structural upgrade. Only the stored
+value's shape grows. `recompute` and `addMiles` already spread `...state`, so
+`personalLog` is preserved across every odometer recompute. `freshState` now
+returns a v2 record with `personalLog: []`.
+
+### 2.3 Pack schema change: the `approach` field
+
+```ts
+// packs/types.ts  (add to Milepost)
 export interface Milepost {
-  id: string;         // unique within the pack, a stable slug (e.g. "muir-03-munfordville")
-  mileMark: number;   // cumulative miles reached; strictly increasing across mileposts
-  date: string;       // YYYY-MM-DD of the entry; non-decreasing across mileposts
-  place: string;      // a real place on the route (drawn from Muir's text/geography)
-  approxNote: string; // approximate-location framing; contains "near this ground"; never coordinates
-  voices: Voice[];    // >= 1 entry. For Muir, exactly one (a single traveler).
-}
-
-export interface PackSource {
-  name: string;        // "A Thousand-Mile Walk to the Gulf"
-  author: string;      // "John Muir"
-  gutenbergId: number; // 60749
-  url: string;         // canonical source URL used to fetch the committed text
-  license: string;     // "Public domain (Project Gutenberg)"
-}
-
-export interface JourneyPack {
-  id: string;                    // e.g. "muir-thousand-mile-walk"
-  title: string;                 // "A Thousand-Mile Walk to the Gulf"
-  traveler: string;              // "John Muir"
-  years: string;                 // "1867"
-  totalMiles: number;            // ~1000
-  source: PackSource;            // provenance for verification and the README
-  framingNote: string;           // authored, plain period-content note (swept)
-  route?: [number, number][];    // optional coarse polyline; NOT populated this EPIC
-  mileposts: Milepost[];         // ordered ascending by mileMark
+  id: string;
+  mileMark: number;
+  date: string;
+  place: string;
+  approxNote: string;
+  approach: string;   // NEW: one short authored line about the ground AHEAD toward this milepost.
+                      // Present-day plain English, our words (not the traveler's), never spoils the
+                      // entry, swept for LLM tells. Shown on the Trail before arrival, never at arrival.
+  voices: Voice[];
 }
 ```
 
-**Migration note (no WalkerState change).** `WalkerState` is unchanged;
-`schemaVersion` stays `1`. The pack a walker is on is data (`activePackId`), not
-schema, so no IndexedDB migration is needed. The odometer already recomputes
-`cumulativeMiles` and `reachedMilepostIds` from the daily log against whatever
-pack is active (`state/odometer.ts::recompute`), so any stale fixture-era state
-in a developer's browser self-heals against the Muir pack on load. This is safe
-because the product is pre-launch and EPIC 1 shipped only a throwaway fixture.
+`SCHEMA.md` documents `approach` with its four binding rules: (a) authored by us
+in present-day English, never a quote or paraphrase of the diary; (b) one short
+sentence, roughly 15 to 120 characters; (c) describes terrain/direction/geography
+ahead, never what happens in the coming entry; (d) subject to the copy sweep.
 
-### 2.3 Where the pack lives and how it "loads"
+### 2.4 Authoring the Muir approach lines
 
-Ship `muir.json` as a committed JSON file, imported at build through a typed
-re-export (`muir.ts`: `import data from "./muir.json"; export const muirPack =
-data as JourneyPack`). Vite bundles JSON imports, so the pack "loads and drives
-the loop" with no runtime fetch and no new loading/error surface. This is the
-smallest change that satisfies the criterion.
+Every one of the 38 Muir mileposts gets an `approach` line, authored to the rules
+above. It is the pre-arrival teaser the walker reads while still on the road to
+that milepost. Guidance for the author:
+- Name the ground the walker is heading into (river, ridge, town, forest,
+  swamp, coast), drawn from the route's real geography, in the present tense of
+  "the road ahead".
+- Never reveal an event, encounter, or line from the milepost's diary entry.
+  The reward is the entry; the approach only points at the ground.
+- Keep it one short sentence. Two clean examples (already swept, safe to ship):
+  > The road climbs south into the Kentucky oak woods.
+  > Ahead the trail follows the river toward the salt country.
+- It must pass the copy sweep and the "authored, not verbatim source" check
+  (V8): the line must not be a slice of Muir's Gutenberg text.
 
-Do NOT build a `/packs/<id>.json` runtime fetch layer this EPIC. The plan's
-static-endpoint serving model becomes useful once there is a journey picker with
-more than one pack (EPIC 5/6); building it now is speculative generality against
-SCOPE DISCIPLINE §2. Keep the source-of-truth as data (JSON) validated by the
-verifier; keep loading as a build-time import.
+The fixture pack also gets short `approach` lines so its unit tests compile and
+the sweep covers them.
 
-`muir.json` (bundled) is expected to be a few tens of KB, which is fine for first
-render. `sources/gutenberg-60749.txt` (~hundreds of KB) MUST NOT be imported by
-any app module. It is read only via `fs` in the verifier test, so it never enters
-the client bundle.
+### 2.5 The Arrival ceremony (`trail/Arrival.tsx`)
 
-### 2.4 Obtaining and committing the source
+A full-viewport overlay dialog. Component contract:
 
-- Download the Project Gutenberg #60749 plain-text ebook from
-  `https://www.gutenberg.org/files/60749/60749-0.txt` (record this exact URL in
-  `source.url`).
-- Commit it verbatim at `web/src/packs/sources/gutenberg-60749.txt`. Normalize
-  line endings to `\n` on commit for a deterministic repo; content is otherwise
-  untouched. (The verifier's whitespace normalization makes line endings
-  irrelevant to the comparison, but a consistent file keeps diffs clean.)
-- If the source cannot be obtained in the build environment, do NOT fabricate or
-  paraphrase text. Set `outcome: "blocked"` and say so: the pack cannot be
-  verified without its ground truth.
-
-The file is public domain (US, 1916 edition, copyright expired) and is safe to
-commit and publish.
-
-### 2.5 The source verifier (the heart of this EPIC)
-
-Implement pure helpers in `verifySource.ts` and drive them from
-`muir.verify.test.ts`. The verifier reads the committed source with `fs` and
-proves every claim below. Any failure fails the test, which fails the build.
-
-**Normalization / cleaning algorithm (define exactly, use on both sides):**
-
-```
-cleanSource(raw):
-  1. Take the narrative window: the substring from the first occurrence of
-     NARRATIVE_START to the first occurrence of GUTENBERG_END_MARKER.
-       NARRATIVE_START     = "I had long been looking from the wildwoods and gardens of the Northern States"
-       GUTENBERG_END_MARKER = "*** END OF THE PROJECT GUTENBERG EBOOK"
-     Starting at the narrative excludes the editor's (Badè's) introduction, so a
-     paraphrase living only in the introduction can never match.
-  2. Remove all "_" characters (Gutenberg italic markers).
-  3. Remove every "[...]" span (editor insertions, footnote markers like "[1]",
-     and "[Illustration]" tags). Use a non-greedy bracket match.
-  4. Collapse every run of whitespace (spaces, tabs, CR, LF) to a single space.
-  5. Trim.
-
-normalizeExcerpt(text):
-  Collapse every run of whitespace to a single space; trim. (No "_" or "[...]"
-  stripping here: the pack text must already be clean; see the guards below.)
+```ts
+interface ArrivalProps {
+  pack: JourneyPack;
+  state: WalkerState;              // read reachedMilepostIds and personalLog
+  queue: string[];                 // milepost ids to present, ascending mileMark (>= 1)
+  onSaveFacingLine: (milepostId: string, text: string) => void;
+  onClose: () => void;             // back to the Trail; clears the queue
+}
 ```
 
-**Checks (all machine-verified in `muir.verify.test.ts`):**
+Behavior:
+- **Withhold guard (load-bearing).** On render, filter `queue` to ids that are in
+  `state.reachedMilepostIds`. If nothing remains, render nothing and call
+  `onClose`. An id that is not reached MUST never render its milepost's voices.
+  This is the second line of defense behind the caller only ever queueing reached
+  ids.
+- **Sequence.** Present `queue[index]` starting at 0. The primary action advances:
+  "Next entry" while more remain, "Back to the trail" on the last, which calls
+  `onClose`. Advancing or closing first saves the current facing line.
+- **Reading surface.** For the active milepost render, in this order:
+  1. A dateline (reuse the `dateline(iso)` formatter currently in
+     `ReachedList.tsx`; extract it to a shared helper, e.g.
+     `trail/dateline.ts`, so both surfaces use one implementation) and the
+     `place`, as the dialog's labelled heading.
+  2. Each entry in `voices[]` as an attributed passage. For a single voice this
+     is one passage; for multiple voices each renders with its own author label
+     and clear visual separation. Do not collapse or merge voices.
+  3. The milepost's `approxNote` ("near this ground …") as a quiet caption.
+  4. The pack `framingNote`, so period content is never read unframed. This is
+     where the framing note now lives (removed from the Trail body, see §2.6).
+  5. The facing-line field (see below).
+- **Facing line.** A labelled single-line-oriented input, prefilled with
+  `facingLineFor(state, milepostId)`. Placeholder models a real one-liner, for
+  example: `Rain most of the way. Legs tired, mind clear.` The line is validated
+  by `parseFacingLine` (trim, collapse internal whitespace to single spaces, cap
+  length, empty allowed). It saves on blur and when the primary action advances
+  or closes. Saving is optimistic (mirrors `logMiles`): update UI immediately,
+  persist in the background, `reportError` on failure without a scary surface.
+- **One primary action.** The advance/return button is the single primary action
+  (QUALITY BAR §7). A close control (labelled "Close", >= 44px) is visibly
+  subordinate. The facing-line field is secondary.
+- **Accessibility.** `role="dialog"`, `aria-modal="true"`, labelled by the
+  place/dateline heading. Move focus into the dialog on open, return focus to the
+  triggering control on close, close on `Escape`, keep focus within the dialog.
+  Long entries scroll inside the dialog with no horizontal scroll at 390px.
+- **States.** No loading or error surface: the data is already in memory and
+  saves are optimistic, matching the established pattern. There is no empty state
+  because the dialog only opens with a non-empty reached queue.
 
-- **V1 Verbatim.** For every milepost, for every voice,
-  `cleanSource(raw).includes(normalizeExcerpt(voice.text))` is true. A single
-  miss fails the build and names the offending milepost id.
-- **V2 No apparatus in the pack.** No `voice.text` contains `[` or `]` or `_`.
-  This guarantees the pack itself carries none of the editor's brackets, footnote
-  markers, or italic markup. (V1 removes them from the source; V2 forbids them in
-  the pack.)
-- **V3 Non-trivial excerpts.** Every `voice.text` is at least ~40 characters and
-  contains at least one sentence-ending period, so a milepost cannot "pass" on a
-  meaningless three-word fragment. (The reward must be a real diary passage.)
-- **V4 Dates ordered.** `mileposts[i].date >= mileposts[i-1].date` for all i
-  (string compare on `YYYY-MM-DD` is chronological). Each `date` matches
-  `^\d{4}-\d{2}-\d{2}$`, is a real calendar date, and its year equals the
-  documented journey year (1867).
-- **V5 Miles strictly monotonic.** `mileposts[i].mileMark > mileposts[i-1].mileMark`
-  for all i. Every `mileMark` is a finite number in `(0, totalMiles]`.
-- **V6 Count.** `mileposts.length >= 30`.
-- **V7 Spread across the route.** The first milepost's `mileMark <= 50`; the last
-  milepost's `mileMark >= 0.9 * totalMiles`; and no gap between consecutive
-  `mileMark` values exceeds 50 miles. This makes "spread across the route so the
-  ritual pays off at casual pace" (~one reward every ≤2 to 3 weeks at a casual
-  ~3 mi/day) a testable property, not a vibe.
+Copy in this component (labels, buttons, placeholder) is swept. The `voices[]`
+text, `place`, `approxNote`, and `dateline` are pack data and are NOT swept.
 
-`NARRATIVE_START` and `GUTENBERG_END_MARKER` are stored as named constants in
-`verifySource.ts` with a comment tying them to the committed source. If the
-committed file's exact wording differs, the implementer sets these constants to
-match the actual bytes (the report used to write this spec confirms the opening
-sentence and the standard Gutenberg end marker).
+### 2.6 Trail wiring (`trail/Trail.tsx`) and the reached list
 
-### 2.6 The structural validator (applies to every pack)
+- `useWalker` (see §2.8) exposes `pendingArrival: string[]` (ids newly reached by
+  the most recent `logMiles`) and `clearPendingArrival()`, plus `saveFacingLine`.
+- Trail holds a local `manualOpen: string[] | null` for re-reads. The Arrival
+  queue is `pendingArrival` when non-empty, else `manualOpen`. Render `<Arrival>`
+  when the queue is non-empty. `onClose` clears both.
+- **Auto-open on crossing.** After a check-in that crosses one or more mileposts,
+  `pendingArrival` becomes those ids and the Arrival opens automatically. This is
+  the signature moment: log the miles, the diary opens. The open is a synchronous
+  state update (< 100ms).
+- **Remove the inline framing card** from the Trail body. The framing note now
+  renders inside the Arrival surface where the period text is actually read. The
+  Trail no longer shows verbatim text, so it no longer needs the framing card.
+- **`ReachedList.tsx` becomes compact tappable rows.** For each reached milepost
+  (newest first), render a button row showing `place`, the dateline, and
+  `mile {mileMark}`. Tapping sets `manualOpen = [id]` (via an `onOpen(id)` prop),
+  which opens the Arrival to re-read that entry. No `voices[].text` renders here.
+  The withhold boundary is unchanged: only ids in `reachedMilepostIds` produce a
+  row, so unreached entries have no row and no text anywhere in the DOM. Rows are
+  >= 44px tall, keyboard-focusable buttons with visible focus.
+- The empty, loading, and error states of the Trail are unchanged.
 
-`validatePack(pack): string[]` in `validatePack.ts` returns a list of human
--readable violations (empty = valid). Pure, no `fs`, no source access, so it runs
-on the fixture and the Muir pack alike. `validatePack.test.ts` asserts it returns
-`[]` for both packs. Rules:
+### 2.7 Validators and verifier changes
 
-- **S1** `id`, `title`, `traveler`, `years` are non-empty strings; `totalMiles`
-  is a finite number > 0.
-- **S2** `source` is present: `name`, `author`, `license` non-empty strings;
-  `gutenbergId` a number; `url` a string.
-- **S3** `framingNote` is a non-empty string.
-- **S4** `mileposts` is a non-empty array; every milepost `id` is a non-empty
-  string and unique within the pack.
-- **S5** Every milepost: `mileMark` finite number > 0; `date` matches
-  `^\d{4}-\d{2}-\d{2}$`; `place` non-empty string; `voices` an array with >= 1
-  entry, each with non-empty `author` and non-empty `text`.
-- **S6** `mileMark` strictly increasing across mileposts (structural echo of V5,
-  so any pack is caught even without a source file).
-- **S7** `date` non-decreasing across mileposts (structural echo of V4).
-- **S8 approxNote framing.** Every `approxNote` is a non-empty string that
-  contains the phrase `near this ground` (case-insensitive) and contains NO
-  false GPS precision: it must not match a decimal-degrees coordinate pattern
-  (e.g. `\d+\.\d+\s*[,°]`), and must not contain the tokens `lat`, `lng`, `lon`,
-  or `gps` (case-insensitive). This enforces "a real place, framed as near this
-  ground, never false GPS precision."
+- **`validatePack.ts` S9 (structural, all packs).** Every milepost `approach` is
+  a non-empty trimmed string. Add to the existing rule list; `validatePack`
+  returns a naming violation when it is missing or blank.
+- **`verifySource.ts` / `muir.verify.test.ts` V8 (Muir source-backed).** For
+  every milepost: `!cleanSource.includes(normalizeExcerpt(approach))` (the
+  approach is OUR words, never a verbatim slice of Muir's source, which both
+  proves it is authored and guarantees it cannot leak the entry verbatim), and
+  the approach length is within roughly 15 to 120 characters. This is the
+  machine-checkable half of "without spoiling the entry"; the editorial half
+  (it names ground, not events) is enforced by the authoring rules and review.
+  V1 through V7 from EPIC 2 remain and must still pass unchanged.
+- **`muir.copy.test.ts`.** Extend the swept authored fields to include every
+  milepost `approach`, alongside `title`, `framingNote`, and `approxNote`. The
+  primary-source exemption is unchanged: `voices[].text`, `place`, and `date` are
+  never swept, and the comment explaining why stays.
+- **`copy.test.ts`.** Add `src/trail/Arrival.tsx` and `src/trail/facingLine.ts`
+  to `FILES`. Do NOT add `muir.json`. `NextMilepost.tsx` and `ReachedList.tsx`
+  are already in the list and stay.
 
-The Muir-only properties (V1, V3, V6, V7, and the year check) live in the source
-verifier (§2.5), not in `validatePack`, because the fixture legitimately has 3
-mileposts and invented text.
+### 2.8 State helpers and `useWalker`
 
-### 2.7 Copy sweep and the primary-source exemption
+- **`state/personalLog.ts` (pure).**
+  ```ts
+  export function upsertFacingLine(state, milepostId, text, date): WalkerState;
+  // text is already validated/collapsed by the caller. Empty text removes any
+  // existing entry for that milepost; non-empty replaces or appends one.
+  export function facingLineFor(state, milepostId): string; // "" when none
+  ```
+- **`trail/facingLine.ts`.** `parseFacingLine(input): { ok: true; text: string }`
+  where `text` is trimmed, internal whitespace collapsed to single spaces, and
+  truncated to `MAX_FACING_LINE_CHARS` (280). Empty input yields `{ ok: true,
+  text: "" }` (allowed, means "no line"). Newlines collapse to spaces so it stays
+  one line. No `ok: false` path is required; the field never blocks the walker.
+- **`state/useWalker.ts`.**
+  - `logMiles(miles)` computes `next` as today, sets state, and sets
+    `pendingArrival` to `newlyReached(base, next)` (already implemented in
+    `odometer.ts`, and already returned in ascending `mileMark` order because
+    `computeReached` iterates `pack.mileposts`). CheckIn keeps calling
+    `onLog(miles)` and does not need the return value.
+  - `saveFacingLine(milepostId, text)` runs `parseFacingLine`, then
+    `setState(prev => upsertFacingLine(prev, milepostId, parsed.text, todayISO()))`
+    and persists optimistically (`void saveState(next).catch(reportError)`).
+    Guarded: only callable when `state` is non-null (the walker has reached a
+    milepost, so state exists).
+  - Expose `{ status, state, logMiles, saveFacingLine, pendingArrival,
+    clearPendingArrival }`.
 
-- The existing `web/src/copy.test.ts` keeps scanning `fixturePack.ts` (our sample
-  copy). Do NOT add `muir.json` to that file's whole-file scan: it would read
-  Muir's verbatim text and fail on his em-dashes and period phrasing, which we
-  are forbidden to edit.
-- Add `muir.copy.test.ts` that loads `muir.json` and sweeps ONLY the authored
-  fields: `pack.title`, `pack.framingNote`, and every `milepost.approxNote`. It
-  applies the same three sweeps as `copy.test.ts` (no `—`/`–`/`" - "`; no banned
-  vocabulary; no negative empty-state phrasing) and asserts zero hits.
-- `voices[].text`, `place`, and `date` are the primary source / factual data and
-  are explicitly NOT swept. Add a one-line comment in `muir.copy.test.ts` stating
-  this exemption and why, so a later reviewer does not "fix" Muir's punctuation.
+### 2.9 Styling (`styles/app.css`)
 
-### 2.8 Wiring the pack into the loop
-
-- **App.tsx**: `import { muirPack } from "./packs/muir"` and render
-  `<Trail pack={muirPack} />`. The fixture stays in the repo for the EPIC 1 unit
-  tests only; nothing user-facing imports it.
-- **ReachedList.tsx**: the new schema replaces `milepost.text` with
-  `milepost.voices[]`. Render each reached milepost's `voices` (author label plus
-  the verbatim text) and add a dateline from `milepost.date`. For Muir this is a
-  single voice. Keep it minimal: this is not the Arrival ceremony (EPIC 3). The
-  withhold-then-reveal boundary is unchanged: text renders only for ids in
-  `reachedMilepostIds`.
-- **NextMilepost.tsx / odometer.ts / store.ts**: no logic change. They already
-  read `mileMark`, `place`, and `id` generically.
-- **state/seed.ts (`buildSeededState`)**: make the `SEED_DEMO` seed pack-aware so
-  the demo crosses real Muir mileposts. Seed two dated entries whose cumulative
-  total lands just past the pack's SECOND milepost, so a stranger sees two earned
-  real entries and one still withheld (the same shape EPIC 1 demoed). Concretely:
-  `entry1 = pack.mileposts[0].mileMark + 1`, then
-  `entry2 = (pack.mileposts[1].mileMark + 2) - entry1`, logged on two fixed dates.
-  For the fixture (first mark 5, second 12) this yields 6 then 8 (total 14), so
-  EPIC 1's existing `SEED_DEMO` test is unaffected. For Muir it crosses Muir's
-  first two real mileposts. Guard for packs with fewer than two mileposts by
-  falling back to crossing the first milepost only (not reachable for Muir or the
-  fixture, but keep the function total).
-- **Framing display**: surface `pack.framingNote` on the Trail so real 1867
-  period content is never shown unframed. Minimal: a short `<section>` near the
-  top of the Trail (or immediately above the reached list) that renders the
-  framing note under a short heading. No new screen. This is authored copy and is
-  swept (§2.7).
-
-### 2.9 CI / build gate
-
-The validator and verifier are Vitest tests under `web/src/packs/`, so
-`npm test` (the suite the factory already runs as the gate, per EPIC 1's DoD)
-fails the build on any violation. Add a focused script for humans and CI clarity:
-`"validate:packs": "vitest run src/packs/"` in `web/package.json`. Note that
-`npm run build` (`tsc --noEmit && vite build`) does not run tests, so the gate
-that enforces "fails the build on any violation" is `npm test` / `validate:packs`;
-state this in the README's contributing/test section.
+- Arrival overlay: fixed, full viewport, above the Trail, `--paper` background,
+  a constrained reading column (comfortable measure, generous line-height,
+  larger body size than the Trail) for the verbatim text. Mobile-first at 390px,
+  no horizontal scroll, content scrolls within the dialog.
+- Multi-voice: each voice visually separated (spacing or a rule) with its author
+  label subordinate.
+- Position line and approach line on the Trail: quiet, subordinate to the
+  distance figure and the check-in.
+- Tappable reached rows: full-width buttons, >= 44px, `place` prominent, dateline
+  and mile mark subordinate, pressed state on `:active`, visible `:focus-visible`
+  (the global focus ring already applies).
+- Honor `prefers-reduced-motion` for any transition added (matching the existing
+  pattern).
 
 ### 2.10 API contracts
 
-Unchanged from EPIC 1. No application API; static assets plus `GET /healthz`.
-The pack is bundled data, not an endpoint, this EPIC.
+Unchanged. No application API. Static assets plus `GET /healthz`. All new state
+is local (IndexedDB). No new endpoint, no network call, no LLM, no secrets.
 
 ---
 
 ## 3. Ordered task list (each with acceptance criteria)
 
-### T1 — Define the schema once (types + docs) and update the fixture
-Evolve `packs/types.ts` to the schema in §2.2; write `packs/SCHEMA.md` documenting
-every field, its rules, and the verbatim/framing promises; update
-`packs/fixturePack.ts` to the new schema so existing tests still compile.
-- **AC1.1** `packs/types.ts` exports `Voice`, `Milepost`, `PackSource`, and
-  `JourneyPack` exactly as in §2.2; `npm run typecheck` passes with `strict`.
-- **AC1.2** `SCHEMA.md` documents every field and states the three binding rules
-  in plain language: dates non-decreasing, `mileMark` strictly increasing, and
-  `voices[].text` verbatim and never edited.
-- **AC1.3** The updated `fixturePack.ts` satisfies the new types (each milepost
-  has a `date` and a `voices` array; the pack has `source`, `years`, and a
-  `framingNote`) and keeps the substrings the EPIC 1 Trail tests assert on
-  ("We crossed the river at dawn", "We rested on the ridge", "We reached the
-  meadow by evening") inside its voice text. All EPIC 1 unit tests still pass.
+### T1 — Pack schema: add the `approach` field
+Evolve `Milepost` in `packs/types.ts`; document it in `SCHEMA.md`; add `approach`
+to every `fixturePack` milepost; add S9 to `validatePack.ts` and prove it.
+- **AC1.1** `Milepost` has `approach: string`; `npm run typecheck` passes with
+  `strict`.
+- **AC1.2** `SCHEMA.md` documents `approach` and its four rules (authored, short,
+  ground-not-events, swept).
+- **AC1.3** `validatePack` S9 returns a naming violation for a milepost whose
+  `approach` is missing or blank, and returns `[]` for the (updated) fixture and
+  Muir packs. `validatePack.test.ts` proves both.
 
-### T2 — Structural validator + test
-Implement `validatePack.ts` (§2.6) and `validatePack.test.ts`.
-- **AC2.1** `validatePack(muirPack)` and `validatePack(fixturePack)` both return
-  `[]`.
-- **AC2.2** The test proves each rule bites: for representative broken inputs
-  (a repeated `mileMark`, a backward `date`, an `approxNote` missing "near this
-  ground", an `approxNote` carrying a `lat`/coordinate token, a milepost with an
-  empty `voices` array, a duplicate milepost id) `validatePack` returns a
-  non-empty list naming the violation.
-- **AC2.3** `npm run validate:packs` exists and runs the pack tests; a violation
-  makes it exit non-zero.
+### T2 — Author the Muir approach lines and verify them
+Add an authored `approach` to all 38 Muir mileposts; add V8 to the source
+verifier; sweep the approach lines.
+- **AC2.1** Every Muir milepost has an `approach` line following §2.4.
+- **AC2.2** V8 passes: for every milepost, the `approach` is not found in the
+  cleaned Gutenberg source and is roughly 15 to 120 characters. The test names
+  the offending milepost id on any miss.
+- **AC2.3** V1 through V7 (EPIC 2) still pass unchanged: voices verbatim, no
+  apparatus, dates ordered, miles monotonic, count and spread intact.
+- **AC2.4** `muir.copy.test.ts` sweeps every `approach` (plus `title`,
+  `framingNote`, `approxNote`) and finds zero hits. `voices[].text`, `place`, and
+  `date` remain unswept, with the exemption comment intact.
 
-### T3 — Commit the source and build the source verifier
-Commit `sources/gutenberg-60749.txt` (§2.4); implement `verifySource.ts` and
-`muir.verify.test.ts` (§2.5).
-- **AC3.1** The committed source contains `NARRATIVE_START` and
-  `GUTENBERG_END_MARKER`; `cleanSource` returns a non-empty narrative body.
-- **AC3.2** V1 passes: every `voices[].text` in the Muir pack is found verbatim in
-  the cleaned source. The test reports the offending milepost id on any miss.
-- **AC3.3** V2 and V3 pass: no voice text contains `[`, `]`, or `_`; every voice
-  text is a substantial passage (≥ ~40 chars, at least one sentence).
-- **AC3.4** V4 and V5 pass: dates non-decreasing, all `YYYY-MM-DD`, year 1867;
-  `mileMark` strictly increasing within `(0, totalMiles]`.
-- **AC3.5** V6 and V7 pass: at least 30 mileposts; first `mileMark <= 50`; last
-  `>= 0.9 * totalMiles`; no consecutive gap > 50 miles.
-- **AC3.6** The source file is read only via `fs` in the test and is not imported
-  by any app module (grep the bundle: `dist/**` after build contains none of a
-  sentinel sentence unique to the source outside of the packed mileposts' own
-  text).
+### T3 — Walker state v2: the facing line, stored
+Add `PersonalEntry`/`personalLog` and the v2 schema; upgrade the migration;
+add the pure helpers and `parseFacingLine`; wire `useWalker`.
+- **AC3.1** `state/types.ts` matches §2.2; `CURRENT_SCHEMA_VERSION` is `2`;
+  `freshState` returns a v2 record with `personalLog: []`; typecheck passes.
+- **AC3.2** `migrate` upgrades a literal v1 record (`schemaVersion: 1`, no
+  `personalLog`) to a v2 record with `personalLog: []`, preserving `dailyLog`,
+  `cumulativeMiles`, and `reachedMilepostIds`. An unknown/absent version still
+  returns `null`. `store.test.ts` proves the v1 -> v2 upgrade and the round-trip
+  with `personalLog`.
+- **AC3.3** `upsertFacingLine` and `facingLineFor` behave per §2.8 (upsert by
+  milepostId, empty text removes the entry), proven by `personalLog.test.ts`.
+- **AC3.4** `parseFacingLine` trims, collapses whitespace to single spaces,
+  caps at 280 chars, and allows empty, proven by `facingLine.test.ts`.
+- **AC3.5** `useWalker` exposes `saveFacingLine`, `pendingArrival`, and
+  `clearPendingArrival`; `logMiles` sets `pendingArrival` to the newly reached
+  ids in ascending mile order.
 
-### T4 — Author the Muir pack
-Produce `muir.json` (and the typed `muir.ts` re-export): ≥30 mileposts along the
-~1000-mile 1867 walk, each with a real place, a real 1867 date, an `approxNote`
-using "near this ground", and Muir's verbatim words selected to pass T2 and T3.
-- **AC4.1** `muir.json` passes `validatePack` (T2) and the full source verifier
-  (T3) with zero violations.
-- **AC4.2** `source` records `name`, `author`, `gutenbergId: 60749`, the exact
-  download `url`, and `license: "Public domain (Project Gutenberg)"`.
-- **AC4.3** Places and dates are real: each milepost names a place Muir actually
-  passed and a date consistent with the source's dated entries; mile marks
-  approximate the cumulative distance along his route (no false precision).
-- **AC4.4** `muir.ts` exports `muirPack: JourneyPack` and `App.tsx` imports it.
+### T4 — The Arrival ceremony
+Build `trail/Arrival.tsx` and its styles per §2.5 and §2.9; extract the shared
+`dateline` helper.
+- **AC4.1** Given a reached milepost, the Arrival renders the dateline, the
+  place, every voice's verbatim text with its author, the `approxNote`, and the
+  pack `framingNote`, in a readable typographic setting, usable at 390px with no
+  horizontal scroll.
+- **AC4.2** Multi-voice: given a milepost with two voices, both render, each
+  attributed and visually separated, neither dropped nor merged. Proven with a
+  small inline two-voice test pack in `Arrival.test.tsx` (do not alter the Muir
+  pack, which is single-voice).
+- **AC4.3** The facing-line field is prefilled from `personalLog`, saves the
+  walker's line (optimistic), and shows the saved line when the same milepost is
+  re-opened. Empty input clears the stored line.
+- **AC4.4** Accessibility: `role="dialog"`, `aria-modal`, labelled heading, focus
+  moves in on open and returns on close, `Escape` closes, focus stays within the
+  dialog, one clear primary action, the close control is >= 44px.
+- **AC4.5** For a multi-milepost queue, "Next entry" advances in ascending mile
+  order and saves the current line first; the last step reads "Back to the trail"
+  and closes.
 
-### T5 — Drive the EPIC 1 loop with the Muir pack
-Wire `App.tsx` to `muirPack`; update `ReachedList.tsx` to render `voices` + the
-dateline; make `state/seed.ts` pack-aware (§2.8).
-- **AC5.1** The running app renders the Trail against the Muir pack: the odometer,
-  next-milepost distance, and reached list all read from `muirPack`.
-- **AC5.2** Withhold-then-reveal still holds: a Muir milepost's verbatim text is
-  absent from the DOM until the odometer reaches its `mileMark`, and present after
-  crossing. Proven by a component test using the real pack (log miles past the
-  first milepost; assert its first line appears and the second milepost's text
-  does not).
-- **AC5.3** With `SEED_DEMO` on and a fresh database, first load shows the
-  odometer past Muir's second milepost with the first two real entries revealed
-  and the third withheld. With `SEED_DEMO` off, the empty Trail shows (unchanged).
-- **AC5.4** The EPIC 1 `SEED_DEMO` fixture test (14 miles, fx-1 and fx-2 reached,
-  fx-3 withheld) still passes unchanged, confirming the pack-aware seed is
-  backward-compatible with the fixture.
+### T5 — Strict withholding and no skipping ahead
+Guard the reveal at the render boundary and wire auto-open on crossing.
+- **AC5.1** The Arrival filters its queue to ids in `reachedMilepostIds` and
+  renders nothing (and closes) for an unreached id: a component test that passes
+  an unreached id asserts that milepost's voice text is absent from the DOM.
+- **AC5.2** Crossing a milepost auto-opens the Arrival for exactly the newly
+  reached id(s): a Trail test logs miles past the first Muir milepost and asserts
+  its verbatim first line appears in the opened Arrival, while the next
+  milepost's text stays absent from the DOM.
+- **AC5.3** There is no affordance to open an unreached milepost: the Trail shows
+  no row, no button, and no text for any milepost whose id is not in
+  `reachedMilepostIds`. Proven against the real Muir pack below a given mileMark.
 
-### T6 — Framing note: author it, surface it, protect the primary text
-Author `framingNote`; render it on the Trail; add `muir.copy.test.ts`; keep the
-primary-source exemption (§2.7).
-- **AC6.1** `pack.framingNote` is a short, plain note that names the period
-  (Muir walked the Reconstruction South in 1867), says the words are his exact,
-  unedited words, and reads as a present-day human wrote it. Suggested copy (sweep
-  before shipping; adjust freely as long as it stays swept and honest):
-  > John Muir wrote these pages in 1867, walking through the American South just
-  > after the Civil War. He carries the views and language of his time, including
-  > remarks about the people he met that many readers today will find wrong and
-  > hurtful. You are reading his exact words, kept as he wrote them. We do not
-  > soften or edit them. This is a primary source from history, not a voice from
-  > now.
-- **AC6.2** The framing note is visible on the Trail where real entries can be
-  read (a short framed section, not a separate screen).
-- **AC6.3** `muir.copy.test.ts` sweeps `title`, `framingNote`, and every
-  `approxNote` and finds zero hits (no dashes, no banned vocabulary, no negative
-  empty-state phrasing). `voices[].text` and `place` are not swept, and a comment
-  in the test records why.
-- **AC6.4** The existing `copy.test.ts` still passes and still does not scan
-  `muir.json`'s verbatim text.
+### T6 — The Trail's non-unlock-day payoff
+Enhance `NextMilepost.tsx` with current position and the approach line.
+- **AC6.1** On a non-unlock day the Trail shows: the odometer (current miles), a
+  current-position line naming the last milepost passed (or a start line before
+  any milepost), the exact distance to the next milepost in miles, and the next
+  milepost's authored `approach` line.
+- **AC6.2** The approach line does not spoil the entry: `NextMilepost.test.tsx`
+  asserts the next milepost's `voices[].text` is absent from the Trail while its
+  `approach` line is present, for a pack state short of that milepost.
+- **AC6.3** When every milepost is reached, the existing completion note shows and
+  no next-distance or approach line is rendered.
 
-### T7 — README provenance + definition of done
-Add a short "The journeys" / provenance section to `README.md` and confirm the
-whole gate.
-- **AC7.1** `README.md` names the Muir journey, its Project Gutenberg source
-  (#60749) and public-domain status, and states plainly that the diary text is
-  the traveler's own words, verbatim, framed but never edited.
-- **AC7.2** `README.md` documents how to run the pack validation
-  (`npm run validate:packs` / `npm test`) in its test/contributing section, and
-  where packs and their sources live.
-- **AC7.3** README additions clear the copy sweep (no dashes, no banned vocab, no
-  negative phrasing) and contain no factory internals.
+### T7 — Re-readable reached list and the Trail rewire
+Turn `ReachedList.tsx` into tappable rows; rewire `Trail.tsx`; move framing into
+Arrival; update the Trail tests to the new flow.
+- **AC7.1** Each reached milepost is a compact, tappable, keyboard-focusable row
+  (place, dateline, mile mark, >= 44px). Tapping re-opens that entry's Arrival
+  with its verbatim text and the walker's saved line. No `voices[].text` renders
+  in the row list.
+- **AC7.2** Re-readability survives a reload: `persistence.e2e.ts` crosses the
+  first Muir milepost, sees the entry in the Arrival, returns to the Trail,
+  reloads, and re-opens the reached row to read the same verbatim entry again,
+  with the odometer restored.
+- **AC7.3** The framing note renders in the Arrival surface (not in the Trail
+  body); the Trail no longer renders any milepost verbatim text.
+- **AC7.4** `Trail.test.tsx` and `Trail.muir.test.tsx` are updated so their
+  withhold and SEED_DEMO assertions exercise the Arrival flow (reached rows
+  present on load; verbatim text present only after the row is opened or after a
+  fresh crossing). The SEED_DEMO odometer totals (14 for the fixture, 32 for
+  Muir) are unchanged.
+
+### T8 — Sweep, e2e, and definition of done
+Wire the copy sweep, add the Arrival e2e, and confirm the whole gate.
+- **AC8.1** `copy.test.ts` includes `Arrival.tsx` and `facingLine.ts` and passes;
+  a manual sweep of every string this EPIC adds (labels, buttons, placeholder,
+  position line, approach lines, fixture approach copy) finds no em/en dashes, no
+  " - " breaks, no banned vocabulary, and no negative empty-state phrasing.
+- **AC8.2** `arrival.e2e.ts` passes: from a fresh app, log enough miles to cross
+  the first Muir milepost, read the verbatim entry in the Arrival, write a facing
+  line, return to the Trail, confirm the reached row is present, re-open it and
+  see the same entry with the saved line.
+- **AC8.3** `npm run typecheck`, `npm run lint`, `npm test`,
+  `npm run validate:packs`, and `npm run test:e2e` all pass.
+- **AC8.4** The Non-Goals held: no badge, medal, point, level, streak counter,
+  social/share affordance, journal screen, export, picker, walkthrough, second
+  pack, map, unit toggle, or runtime generation was added. `README.md`'s code map
+  stays accurate and carries no factory internals.
 
 ---
 
 ## 4. Test plan (which automated test proves each criterion)
 
-Every criterion is proven by an automated test under `web/src/packs/` (run by
-`npm test` and `npm run validate:packs`), plus the existing EPIC 1 suites which
-must stay green.
+Every criterion is proven by an automated test under `web/`, run by `npm test`,
+`npm run validate:packs` (pack tests), and `npm run test:e2e` (Playwright).
 
-### Pack schema and validator
-- **validatePack.test.ts** → AC2.1, AC2.2, AC1.3. Asserts `validatePack` returns
-  `[]` for both the Muir pack and the fixture, and returns a naming violation for
-  each seeded broken input (duplicate/repeated `mileMark`, backward `date`,
-  `approxNote` without "near this ground", `approxNote` with a coordinate/`lat`
-  token, empty `voices`, duplicate id).
-- **typecheck** → AC1.1. `npm run typecheck` passes with the new types.
+### Planner acceptance criterion → tests
+- **Crossing opens Arrival with entry, dateline, place, near-this-ground note,
+  and a facing-line field** → `Arrival.test.tsx` (AC4.1, AC4.3),
+  `Trail.muir.test.tsx` auto-open (AC5.2), `arrival.e2e.ts` (AC8.2).
+- **Entries strictly withheld; no reading ahead; no skipping** →
+  `Arrival.test.tsx` unreached-id guard (AC5.1), `Trail.muir.test.tsx` withhold
+  (AC5.2), Trail no-affordance test (AC5.3), `NextMilepost.test.tsx` no-spoiler
+  (AC6.2).
+- **Multi-voice renders cleanly** → `Arrival.test.tsx` with the inline two-voice
+  test pack (AC4.2).
+- **Trail non-unlock day: position, exact distance in units, approach line
+  without spoiling** → `NextMilepost.test.tsx` (AC6.1, AC6.2), `muir.verify.test.ts`
+  V8 authored-not-verbatim (AC2.2).
+- **Reached entry re-readable from the Trail** → `ReachedList`/`Trail` re-open
+  test (AC7.1), `persistence.e2e.ts` (AC7.2), `arrival.e2e.ts` (AC8.2).
+- **All states designed; feedback < 100ms; mobile-first** → existing Trail state
+  tests stay green; `Arrival.test.tsx` accessibility and 390px assertions
+  (AC4.4); optimistic save mirrors the established `logMiles` pattern;
+  `mobile.e2e.ts` continues to prove no horizontal scroll at 390px (extend it to
+  open the Arrival if practical).
 
-### Source verification (the differentiator's proof)
-- **muir.verify.test.ts** → AC3.1–AC3.6, AC4.1, AC4.3. Reads
-  `sources/gutenberg-60749.txt` via `fs`, builds `cleanSource`, and runs V1–V7.
-  Reports the offending milepost id on any verbatim miss. Also asserts the source
-  file is not importable app code (a build-output grep for a sentinel source
-  sentence that is not one of the packed excerpts).
+### Schema, validator, verifier
+- **validatePack.test.ts** → AC1.3 (S9 bites; both packs valid).
+- **muir.verify.test.ts** → AC2.2 (V8), AC2.3 (V1 through V7 unchanged).
+- **muir.copy.test.ts** → AC2.4 (approach swept; primary text exempt).
+- **typecheck** → AC1.1, AC3.1.
 
-### Loop integration
-- **ReachedList / Trail component test (real pack)** → AC5.1, AC5.2. Renders the
-  Trail against `muirPack`, logs miles across the first two mileposts, asserts the
-  first milepost's verbatim line appears only after its `mileMark` is crossed and
-  the next milepost's text stays absent (withhold-then-reveal with real text).
-- **SEED_DEMO test (real pack)** → AC5.3. Mocks `SEED_DEMO=true` and a fresh DB;
-  asserts the odometer is past Muir's second milepost and the first two real
-  entries are revealed, the third withheld.
-- **Existing EPIC 1 suites** → AC5.4, AC1.3. `odometer.test.ts`, `store.test.ts`,
-  `Trail.test.tsx` (including its `SEED_DEMO` 14-mile fixture case) and the
-  Playwright e2e suite all still pass against the updated fixture and pack-aware
-  seed.
+### State and helpers
+- **store.test.ts** → AC3.2 (v1 -> v2 upgrade; round-trip with personalLog).
+- **personalLog.test.ts** → AC3.3 (upsert/read; empty removes).
+- **facingLine.test.ts** → AC3.4 (trim, collapse, cap, empty allowed).
 
-### Copy and framing
-- **muir.copy.test.ts** → AC6.1, AC6.3. Sweeps only `title`, `framingNote`, and
-  `approxNote`s for dashes, banned vocabulary, and negative phrasing.
-- **copy.test.ts** → AC6.4. Still green; still limited to authored EPIC 1 copy
-  and the fixture (never Muir's verbatim text).
-- **Framing render assertion** (in the Trail component test) → AC6.2. Asserts the
-  framing note text is present on the Trail.
-
-### README
-- **Manual/scripted check** → AC7.1–AC7.3. README names the journey, its source
-  and license, the verbatim-but-framed promise, and the validation commands, with
-  no factory internals. The copy sweep over README is already enforced by
-  `copy.test.ts` (README is in its file list).
+### Copy and e2e
+- **copy.test.ts** → AC8.1 (new files swept).
+- **arrival.e2e.ts / persistence.e2e.ts / mobile.e2e.ts** → AC7.2, AC8.2, and the
+  mobile pass.
 
 ---
 
 ## 5. Definition of done
-- The schema is defined once in `packs/types.ts` and documented in
-  `packs/SCHEMA.md`; the fixture conforms and every EPIC 1 test still passes.
-- `validatePack` and the source verifier run under `npm test` /
-  `npm run validate:packs` and fail the build on any violation.
-- `muir.json` has at least 30 mileposts, spread across the route, and passes both
-  the structural validator and the full source verifier: dates ordered, `mileMark`
-  strictly increasing, every `voices[].text` verbatim against the committed
-  Gutenberg #60749 source, no editorial apparatus, each milepost carrying a real
-  place, a real 1867 date, and an "near this ground" `approxNote`.
-- The Muir pack drives the running EPIC 1 loop in place of the fixture; withhold
-  -then-reveal holds with real text; `SEED_DEMO` crosses real Muir mileposts.
-- The framing note is authored, surfaced on the Trail, and clears the copy sweep;
-  Muir's verbatim text is exempt from the sweep and unedited.
-- `npm run typecheck`, `npm run lint`, `npm test`, and the Playwright e2e suite
-  all pass. `README.md` records the journey's provenance and the validation
-  commands with no factory internals.
-- No second pack, no upload surface, no map polyline, no runtime generation was
-  built (non-goals held).
+- Crossing a milepost opens the Arrival ceremony: the verbatim entry in a
+  readable setting, with dateline, place, the "near this ground" note, the
+  framing note, and a facing-line field. Multi-voice mileposts render every voice
+  cleanly.
+- Withholding is airtight: an unreached milepost's verbatim text is absent from
+  the DOM, there is no affordance to open it or skip to it, and the render
+  boundary is guarded in both the Trail and the Arrival.
+- The facing line is written, validated at the boundary, stored via a
+  non-destructive v1 -> v2 migration, and shown again when the entry is re-opened.
+- The Trail's non-unlock day shows current position, the exact distance to the
+  next milepost in miles, and one authored, non-spoiling approach line proven
+  authored (not verbatim source) by the verifier.
+- Every reached entry is re-readable from the Trail and survives a reload.
+- All designed states hold; interaction feedback is synchronous (< 100ms);
+  every new surface is usable at 390px with visible focus and full keyboard reach.
+- `npm run typecheck`, `npm run lint`, `npm test`, `npm run validate:packs`, and
+  `npm run test:e2e` all pass. The copy sweep is clean across every authored
+  string, and Muir's verbatim text stays exempt and unedited.
+- No non-goal was built (no gamification, streaks, sharing, journal/export,
+  picker, walkthrough, second pack, map, unit toggle, or runtime generation).
+```

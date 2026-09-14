@@ -24,6 +24,7 @@ export const fixturePack: JourneyPack = {
       date: "2026-01-01",
       place: "The first ford",
       approxNote: "near this ground",
+      approach: "The road runs down to the first river ford.",
       voices: [{ author: "Sample traveler", text: "We crossed the river at dawn. The water ran cold and clear." }],
     },
     {
@@ -32,6 +33,7 @@ export const fixturePack: JourneyPack = {
       date: "2026-01-02",
       place: "The ridge camp",
       approxNote: "near this ground",
+      approach: "Ahead the trail climbs to the ridge camp.",
       voices: [{ author: "Sample traveler", text: "We rested on the ridge and watched the valley fill with light." }],
     },
     {
@@ -40,6 +42,7 @@ export const fixturePack: JourneyPack = {
       date: "2026-01-03",
       place: "The far meadow",
       approxNote: "near this ground",
+      approach: "The way carries on to the far meadow.",
       voices: [{ author: "Sample traveler", text: "We reached the meadow by evening and made our fire." }],
     },
   ],

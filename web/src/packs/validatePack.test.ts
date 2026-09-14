@@ -81,4 +81,18 @@ describe("validatePack catches each rule (AC2.2)", () => {
     const errs = validatePack(p);
     expect(errs.some((e) => e.startsWith("S1"))).toBe(true);
   });
+
+  it("flags a missing approach line (AC1.3)", () => {
+    const p = clone(fixturePack);
+    p.mileposts[0].approach = "";
+    const errs = validatePack(p);
+    expect(errs.some((e) => e.startsWith("S9"))).toBe(true);
+  });
+
+  it("flags a blank approach line (AC1.3)", () => {
+    const p = clone(fixturePack);
+    p.mileposts[1].approach = "   ";
+    const errs = validatePack(p);
+    expect(errs.some((e) => e.startsWith("S9"))).toBe(true);
+  });
 });

@@ -43,7 +43,22 @@ contract every pack must satisfy.
 | `date`       | string    | `YYYY-MM-DD`. A real calendar date. Non-decreasing across mileposts. |
 | `place`      | string    | Non-empty. A real place on the route. Factual data: NOT swept. |
 | `approxNote` | string    | Non-empty. Contains the phrase `near this ground` (case-insensitive). Carries no coordinate precision (no decimal degrees, no `lat`/`lng`/`lon`/`gps`). Authored copy: swept. |
+| `approach`   | string    | Non-empty. A pre-arrival line read while walking toward this milepost. See the four rules below. Authored copy: swept. |
 | `voices`     | `Voice[]` | At least one entry. For a single traveler, exactly one. |
+
+### The `approach` field (four binding rules)
+
+`approach` is the one line the walker reads on the Trail while still on the road
+to a milepost, before its entry is earned. It points at the ground ahead, never
+at the reward.
+
+1. **Authored by us in present-day English.** It is our own words, never a quote
+   or paraphrase of the diary. Proven by the source verifier (V8): the line is
+   not found anywhere in the cleaned Gutenberg source.
+2. **One short sentence, roughly 15 to 120 characters.**
+3. **Describes terrain, direction, or geography ahead, never what happens in the
+   coming entry.** The reward is the entry. The approach only names the ground.
+4. **Subject to the copy sweep** (`muir.copy.test.ts`), like every authored field.
 
 ### `Voice`
 

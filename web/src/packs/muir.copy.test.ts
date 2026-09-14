@@ -2,8 +2,8 @@ import { describe, it, expect } from "vitest";
 import { muirPack } from "./muir";
 
 // Copy sweep over the AUTHORED fields of the Muir pack only: pack.title,
-// pack.framingNote, and every milepost.approxNote. These are our own words and
-// must read like a thoughtful human wrote them.
+// pack.framingNote, and every milepost.approxNote and milepost.approach. These
+// are our own words and must read like a thoughtful human wrote them.
 //
 // PRIMARY-SOURCE EXEMPTION: voices[].text, place, and date are John Muir's
 // verbatim 1867 words and factual data. They are NOT swept. His prose is full
@@ -14,6 +14,7 @@ const authored: string[] = [
   muirPack.title,
   muirPack.framingNote,
   ...muirPack.mileposts.map((m) => m.approxNote),
+  ...muirPack.mileposts.map((m) => m.approach),
 ];
 
 const combined = authored.join("\n");

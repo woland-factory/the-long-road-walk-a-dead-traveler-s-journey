@@ -91,6 +91,9 @@ export function validatePack(pack: JourneyPack): string[] {
       if (GPS_TOKEN_RE.test(m.approxNote))
         errors.push(`S8: milepost "${label}" approxNote must not contain lat/lng/lon/gps tokens`);
     }
+    // S9: approach line present (a non-empty authored string).
+    if (!isNonEmptyString(m.approach))
+      errors.push(`S9: milepost "${label}" approach must be a non-empty string`);
   }
 
   // S6: mileMark strictly increasing.

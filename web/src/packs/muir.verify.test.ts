@@ -115,6 +115,17 @@ describe("V7 spread across the route (AC3.5)", () => {
   });
 });
 
+describe("V8 approach lines are authored, not verbatim source (AC2.2)", () => {
+  it("no approach line is found in the cleaned source, and each is 15 to 120 chars", () => {
+    for (const m of muirPack.mileposts) {
+      const excerpt = normalizeExcerpt(m.approach);
+      expect(clean.includes(excerpt), `milepost "${m.id}" approach is a verbatim source slice`).toBe(false);
+      expect(m.approach.length, `milepost "${m.id}" approach too short`).toBeGreaterThanOrEqual(15);
+      expect(m.approach.length, `milepost "${m.id}" approach too long`).toBeLessThanOrEqual(120);
+    }
+  });
+});
+
 describe("AC3.6 source is not importable app code", () => {
   it("no built bundle sentinel: the source file itself is read only via fs here", () => {
     // A sentence from the editor's introduction, outside every packed excerpt.
