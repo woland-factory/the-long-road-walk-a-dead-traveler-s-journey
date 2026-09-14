@@ -118,7 +118,8 @@ describe("V7 spread across the route (AC3.5)", () => {
 describe("AC3.6 source is not importable app code", () => {
   it("no built bundle sentinel: the source file itself is read only via fs here", () => {
     // A sentence from the editor's introduction, outside every packed excerpt.
-    // The build-output grep in bundle.e2e.ts proves it stays out of dist.
+    // bundle.e2e.ts greps this same sentinel against the built dist to prove
+    // the source stays out of the client bundle.
     const introSentinel = "These words are written on the";
     expect(raw.includes(introSentinel)).toBe(true);
     for (const m of muirPack.mileposts) {
