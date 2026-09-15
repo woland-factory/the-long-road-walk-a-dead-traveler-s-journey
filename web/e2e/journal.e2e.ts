@@ -32,8 +32,10 @@ test("the double journal shows an earned spread beside the walker's line", async
   await expect(page.getByText(/You reached this on/)).toBeVisible();
   await expect(page.getByText(line)).toBeVisible();
 
-  // The primary print action is present.
+  // The primary print action is present; the close control is a real tap target.
   await expect(page.getByRole("button", { name: "Print your journal" })).toBeVisible();
+  const backBox = await page.getByRole("button", { name: "Back to the trail" }).boundingBox();
+  expect(backBox!.height).toBeGreaterThanOrEqual(44);
 
   // Mobile-first: no horizontal scroll at 390px.
   const overflow = await page.evaluate(() => {
