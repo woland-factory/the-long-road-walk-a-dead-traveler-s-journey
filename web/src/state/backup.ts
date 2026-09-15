@@ -31,10 +31,15 @@ export type ImportResult =
   | { ok: true; state: WalkerState }
   | { ok: false; message: string };
 
-const NOT_A_BACKUP =
-  "Choose the .json backup this app saved. Use Save a backup to make one.";
-const TOO_LARGE =
-  "That file is too big to be a backup. Choose the .json file this app saved.";
+// Shared with the restore UI so the up-front file-size check and the parser
+// speak with one voice.
+export const BACKUP_MESSAGES = {
+  notABackup: "Choose the .json backup this app saved. Use Save a backup to make one.",
+  tooLarge: "That file is too big to be a backup. Choose the .json file this app saved.",
+} as const;
+
+const NOT_A_BACKUP = BACKUP_MESSAGES.notABackup;
+const TOO_LARGE = BACKUP_MESSAGES.tooLarge;
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);

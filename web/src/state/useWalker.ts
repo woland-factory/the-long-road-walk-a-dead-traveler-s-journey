@@ -17,6 +17,7 @@ export interface UseWalker {
   state: WalkerState | null; // null means no miles logged yet (empty trail)
   logMiles: (miles: number) => void;
   saveFacingLine: (milepostId: string, text: string) => void;
+  restoreState: (incoming: WalkerState) => void; // replace state from a validated backup
   pendingArrival: string[]; // ids newly reached by the most recent logMiles
   clearPendingArrival: () => void;
 }
@@ -88,7 +89,21 @@ export function useWalker(pack: JourneyPack): UseWalker {
     });
   }, []);
 
+  // Replace the walker record from a validated backup. Derived fields are
+  // recomputed against the active pack, so a backup's stale derivations can
+  // never poison the restored state. A restore is not a fresh crossing: the
+  // Arrival never auto-opens from it.
+  const restoreState = useCallback(
+    (incoming: WalkerState) => {
+      const next = recompute(incoming, pack);
+      setState(next);
+      setPendingArrival([]);
+      void saveState(next).catch((err) => reportError(err));
+    },
+    [pack],
+  );
+
   const clearPendingArrival = useCallback(() => setPendingArrival([]), []);
 
-  return { status, state, logMiles, saveFacingLine, pendingArrival, clearPendingArrival };
+  return { status, state, logMiles, saveFacingLine, restoreState, pendingArrival, clearPendingArrival };
 }

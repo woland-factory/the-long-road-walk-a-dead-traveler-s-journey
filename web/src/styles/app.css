@@ -450,3 +450,362 @@ form.checkin label {
   outline: 3px solid var(--focus);
   outline-offset: 2px;
 }
+
+/* The keepsake card: read the journal, save a backup, restore one. Visibly
+   subordinate to the check-in (outline buttons, quiet type). */
+.keepsake h2 {
+  font-size: 1.1rem;
+  margin: 0 0 12px;
+}
+
+.keepsake-read,
+.backup-save,
+.backup-restore,
+.backup-keep,
+.backup-confirm-restore,
+.backup-dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.keepsake-read {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.keepsake-read:active,
+.backup-save:active,
+.backup-save.is-pressed,
+.backup-restore:active,
+.backup-keep:active,
+.backup-confirm-restore:active,
+.backup-dismiss:active {
+  transform: translateY(1px);
+}
+
+.backup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* The restore control is a real file input inside its label, kept focusable
+   for the keyboard while the label carries the button look. */
+.backup-restore {
+  position: relative;
+}
+
+.backup-file {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.backup-restore:focus-within {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.backup-reminder {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.backup-reminder p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.backup-dismiss {
+  font-weight: 400;
+  color: var(--ink-soft);
+  flex-shrink: 0;
+}
+
+.backup-confirm {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+}
+
+.backup-confirm p {
+  margin: 0 0 10px;
+}
+
+.backup-confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.backup-confirm-restore {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.backup-notice {
+  margin: 10px 0 0;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.backup-notice-error {
+  color: var(--danger);
+}
+
+/* The Journal: a full-viewport reading view in place of the Trail body. */
+.journal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.journal-back {
+  min-height: 44px;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.journal-print {
+  min-height: 48px;
+  padding: 0 18px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent-ink);
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.journal-back:active,
+.journal-print:active {
+  transform: translateY(1px);
+}
+
+.journal-front {
+  margin-bottom: 28px;
+}
+
+.journal-title {
+  font-size: 1.5rem;
+  margin: 0 0 6px;
+}
+
+.journal-title:focus {
+  outline: none;
+}
+
+.journal-traveler {
+  margin: 0 0 10px;
+  color: var(--ink-soft);
+}
+
+.journal-scale {
+  margin: 0 0 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.journal-framing {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.journal-empty {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.journal-empty p {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.journal-spreads {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.journal-spread {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: var(--gap);
+}
+
+.spread-place {
+  font-size: 1.2rem;
+  margin: 0 0 4px;
+}
+
+.spread-dateline {
+  margin: 0 0 14px;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.spread-voice {
+  margin: 0 0 18px;
+  padding-left: 14px;
+  border-left: 3px solid var(--accent);
+  max-width: 36em;
+}
+
+.spread-voice .voice-text {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.spread-voice .voice-author {
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.spread-approx {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.spread-walker {
+  border-top: 1px solid var(--line);
+  margin-top: 16px;
+  padding-top: 16px;
+}
+
+.spread-walker-line {
+  margin: 0;
+  font-style: italic;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 36em;
+}
+
+.spread-walker-prompt {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+/* Wider viewports read as true facing pages. */
+@media (min-width: 720px) {
+  .journal-page {
+    max-width: 880px;
+  }
+
+  .journal-spread {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .spread-walker {
+    border-top: none;
+    border-left: 1px solid var(--line);
+    margin-top: 0;
+    padding-top: 0;
+    padding-left: 24px;
+  }
+}
+
+/* Print: the journal as a clean, page-broken facing-page artifact.
+   Dark ink on white, one spread per page, interactive chrome hidden. */
+@media print {
+  @page {
+    margin: 18mm;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  .page {
+    max-width: none;
+    padding: 0;
+  }
+
+  .journal-front,
+  .journal-traveler,
+  .journal-framing,
+  .journal-scale,
+  .spread-dateline,
+  .spread-approx,
+  .spread-voice .voice-author,
+  .journal-empty p {
+    color: #000;
+  }
+
+  .journal-spreads > li {
+    break-after: page;
+  }
+
+  .journal-spreads > li:last-child {
+    break-after: auto;
+  }
+
+  .journal-spread {
+    break-inside: avoid;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    border: none;
+    background: #fff;
+    padding: 0;
+    margin: 0;
+  }
+
+  .spread-voice {
+    border-left-color: #000;
+  }
+
+  .spread-walker {
+    border-top: none;
+    border-left: 1px solid #000;
+    margin-top: 0;
+    padding-top: 0;
+    padding-left: 24px;
+  }
+}

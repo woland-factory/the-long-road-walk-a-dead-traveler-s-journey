@@ -7,6 +7,7 @@ import { Trail } from "./Trail";
 import { fixturePack } from "../packs/fixturePack";
 import { saveState, __resetDbForTests } from "../state/store";
 import { freshState, addMiles } from "../state/odometer";
+import { serializeBackup } from "../state/backup";
 
 const FX1_TEXT = "We crossed the river at dawn";
 const FX2_TEXT = "We rested on the ridge";
@@ -20,6 +21,7 @@ beforeEach(() => {
   globalThis.indexedDB = new IDBFactory();
   __resetDbForTests();
   setSeedDemo(false);
+  window.localStorage.clear();
 });
 
 afterEach(() => {
@@ -107,6 +109,61 @@ describe("SEED_DEMO seeding (AC7.4)", () => {
 
     await user.click(screen.getByTestId("reached-row-fx-2"));
     expect(await screen.findByRole("dialog")).toHaveTextContent(FX2_TEXT);
+  });
+});
+
+describe("the journal view toggle (EPIC 4 AC7.1)", () => {
+  it("Read your journal opens the double journal and Back to the trail returns", async () => {
+    const user = userEvent.setup();
+    const real = addMiles(freshState(fixturePack.id, "2026-09-01T00:00:00.000Z"), 6, "2026-09-01", fixturePack);
+    await saveState(real);
+
+    render(<Trail pack={fixturePack} />);
+    const read = await screen.findByRole("button", { name: "Read your journal" });
+    await user.click(read);
+
+    // The journal view replaces the Trail body.
+    expect(screen.getByRole("heading", { name: "Fixture trail" })).toBeInTheDocument();
+    expect(screen.getByText(new RegExp(FX1_TEXT))).toBeInTheDocument();
+    expect(screen.queryByLabelText("Miles walked today")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Back to the trail" }));
+    expect(screen.getByLabelText("Miles walked today")).toBeInTheDocument();
+    expect(screen.queryByText(new RegExp(FX1_TEXT))).not.toBeInTheDocument();
+  });
+
+  it("does not offer the journal before the first earned entry", async () => {
+    render(<Trail pack={fixturePack} />);
+    await screen.findByText("Your road starts here");
+    expect(screen.queryByRole("button", { name: "Read your journal" })).not.toBeInTheDocument();
+  });
+});
+
+describe("backup controls on the Trail (EPIC 4 AC7.2, AC7.3)", () => {
+  it("restore is reachable from the empty state; save and read appear later", async () => {
+    render(<Trail pack={fixturePack} />);
+    await screen.findByText("Your road starts here");
+    expect(screen.getByLabelText("Restore from a backup")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Save a backup" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Read your journal" })).not.toBeInTheDocument();
+  });
+
+  it("restoring a backup re-renders the odometer and reached rows from it", async () => {
+    const user = userEvent.setup();
+    render(<Trail pack={fixturePack} />);
+    await screen.findByText("Your road starts here");
+
+    const incoming = addMiles(freshState(fixturePack.id, "2026-09-01T00:00:00.000Z"), 6, "2026-09-01", fixturePack);
+    const file = new File([serializeBackup(incoming, "2026-09-10T12:00:00.000Z")], "backup.json", {
+      type: "application/json",
+    });
+    await user.upload(screen.getByLabelText("Restore from a backup"), file);
+
+    expect(await screen.findByText("Your journal is restored.")).toBeInTheDocument();
+    expect(screen.getByTestId("odometer-value")).toHaveTextContent("6");
+    expect(screen.getByTestId("reached-row-fx-1")).toBeInTheDocument();
+    // A restore is not a fresh crossing: no Arrival auto-opens.
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });
 
