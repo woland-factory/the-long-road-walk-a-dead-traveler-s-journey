@@ -8,8 +8,10 @@ check-in, not background step tracking, so you enter your miles by hand.
 
 This repository ships the check-in loop and the first real journey: John Muir's
 1867 walk to the Gulf. A single Trail screen, local persistence, and the
-verified Muir diary keyed to the miles you reach. The keepsake journal arrives
-in later work.
+verified Muir diary keyed to the miles you reach. The double journal lays each
+earned entry beside your own line for that milepost, prints as a facing-page
+keepsake through the browser's print dialog, and travels with you as a single
+JSON backup file you can save and restore on any device.
 
 ## The journeys
 
@@ -73,8 +75,9 @@ baked into the built bundle. See `.env.example` for the four variables:
 web/src/
   env.ts             runtime config reader
   packs/             journey pack schema, the Muir pack, validators, sources
-  state/             IndexedDB storage, migrations, odometer logic
+  state/             IndexedDB storage, migrations, odometer logic, backup file
   trail/             the Trail screen and its parts
+  journal/           the double journal, print styles hook-in, backup controls
   observability/     Sentry and Umami wiring
 web/e2e/             Playwright end-to-end tests
 Dockerfile           multi-stage build, nginx serve
@@ -106,8 +109,9 @@ never share state between runs.
 The app keeps all state locally in the browser (IndexedDB). It has no accounts,
 no server-side data, and no application API beyond serving static files and the
 `/healthz` check. There are no login or mutation endpoints, so server-side
-authorization and rate limiting do not apply here. Input from the one mile
-field is validated in the browser before it changes any stored state.
+authorization and rate limiting do not apply here. Input from the mile field
+and from a chosen backup file is validated in the browser before it changes
+any stored state.
 
 ## License
 
