@@ -640,6 +640,192 @@ form.checkin label {
   font-size: 0.9rem;
 }
 
+/* The guided first-run callout: distinct, quiet, sits beside its anchor card.
+   Never overlays the control it points at. */
+.walkthrough-callout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+  margin: -6px 0 var(--gap);
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-left-width: 4px;
+  border-radius: 10px;
+}
+
+.walkthrough-message {
+  flex: 1 1 12em;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.walkthrough-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.walkthrough-primary,
+.walkthrough-skip {
+  min-height: 44px;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.walkthrough-primary {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border: none;
+}
+
+.walkthrough-skip {
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--line);
+  font-weight: 400;
+}
+
+.walkthrough-primary:active,
+.walkthrough-skip:active {
+  transform: translateY(1px);
+}
+
+/* The subordinate import trigger on the check-in card. */
+.import-open {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.import-open:active {
+  transform: translateY(1px);
+}
+
+/* The Importer view, in place of the Trail body. */
+.importer-top {
+  margin-bottom: 20px;
+}
+
+.importer-back,
+.importer-back-preview,
+.importer-cancel {
+  min-height: 44px;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.importer-heading {
+  font-size: 1.5rem;
+  margin: 0 0 12px;
+}
+
+.importer-heading:focus {
+  outline: none;
+}
+
+.importer-formats {
+  margin: 0 0 16px;
+  color: var(--ink-soft);
+}
+
+.importer-file {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.importer-file:focus-within {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.importer-error {
+  margin: 16px 0 0;
+  color: var(--danger);
+}
+
+.importer-scanning {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.importer-scanning p {
+  margin: 0;
+}
+
+.importer-adds {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+}
+
+.importer-skips {
+  margin: 0 0 20px;
+  padding-left: 20px;
+  color: var(--ink-soft);
+}
+
+.importer-skips li {
+  margin-bottom: 6px;
+}
+
+.importer-preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.importer-confirm {
+  min-height: 48px;
+  padding: 0 18px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent-ink);
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.importer-confirm:active,
+.importer-back:active,
+.importer-back-preview:active,
+.importer-cancel:active {
+  transform: translateY(1px);
+}
+
 /* The Journal: a full-viewport reading view in place of the Trail body. */
 .journal-top {
   display: flex;
