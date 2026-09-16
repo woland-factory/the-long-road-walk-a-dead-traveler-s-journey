@@ -81,6 +81,20 @@ export function Importer({ dailyLog, onImport, onClose, scan = scanHealthExport 
     headingRef.current?.focus();
   }, []);
 
+  // Escape closes the view from anywhere and aborts any running scan. A global
+  // listener catches it even when a phase change has moved focus.
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        abortRef.current.aborted = true;
+        onClose();
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
   function showError(message: string) {
     setPhase({ kind: "choose", error: message });
   }
@@ -147,16 +161,8 @@ export function Importer({ dailyLog, onImport, onClose, scan = scanHealthExport 
     setPhase({ kind: "choose", error: null });
   }
 
-  function onKeyDown(e: React.KeyboardEvent) {
-    if (e.key === "Escape") {
-      e.preventDefault();
-      abortRef.current.aborted = true;
-      onClose();
-    }
-  }
-
   return (
-    <section className="importer" aria-labelledby="importer-heading" onKeyDown={onKeyDown}>
+    <section className="importer" aria-labelledby="importer-heading">
       <div className="importer-top no-print">
         <button type="button" className="importer-back" onClick={onClose}>
           Back to the trail
@@ -205,7 +211,6 @@ export function Importer({ dailyLog, onImport, onClose, scan = scanHealthExport 
           plan={phase.plan}
           skippedRecords={phase.skippedRecords}
           onConfirm={() => onImport(phase.plan.adds)}
-          onClose={onClose}
         />
       )}
     </section>
@@ -216,12 +221,10 @@ function Preview({
   plan,
   skippedRecords,
   onConfirm,
-  onClose,
 }: {
   plan: MergePlan;
   skippedRecords: number;
   onConfirm: () => void;
-  onClose: () => void;
 }) {
   const { adds, addedMiles } = plan;
   const skipLines: string[] = [];
@@ -257,16 +260,13 @@ function Preview({
         </ul>
       )}
 
-      <div className="importer-preview-actions">
-        {adds.length > 0 && (
+      {adds.length > 0 && (
+        <div className="importer-preview-actions">
           <button type="button" className="importer-confirm" onClick={onConfirm}>
             Add these miles
           </button>
-        )}
-        <button type="button" className="importer-back-preview" onClick={onClose}>
-          Back to the trail
-        </button>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

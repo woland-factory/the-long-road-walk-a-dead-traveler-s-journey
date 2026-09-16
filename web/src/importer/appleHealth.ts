@@ -88,7 +88,7 @@ export function createRecordScanner(): RecordScanner {
   }
 
   function push(chunk: string): void {
-    let buf = carry + chunk;
+    const buf = carry + chunk;
     let from = 0;
     for (;;) {
       const start = buf.indexOf(START_TOKEN, from);
