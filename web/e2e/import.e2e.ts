@@ -46,8 +46,11 @@ test("imports CSV and Apple XML, rejects bad files, and never touches the networ
   await expect(page.getByText("These miles are already on your trail.")).toBeVisible();
   await expect(page.getByText("3 days you already logged stay as you logged them.")).toBeVisible();
   await expect(page.getByRole("button", { name: "Add these miles" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Back to the trail" }).click();
 
-  // Each bad file shows its designed error and changes nothing.
+  // Each bad file shows its designed error and changes nothing. Rejections keep
+  // the chooser up, so one open importer handles them all.
+  await openImporter();
   await page.getByLabel("Choose a file").setInputFiles(fixture("walks-malformed.csv"));
   await expect(page.getByRole("alert")).toContainText("Line 3 needs the form 2026-06-01,3.5.");
   await page.getByLabel("Choose a file").setInputFiles(fixture("export-empty.xml"));
