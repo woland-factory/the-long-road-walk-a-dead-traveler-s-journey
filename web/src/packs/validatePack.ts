@@ -47,6 +47,9 @@ export function validatePack(pack: JourneyPack): string[] {
   // S3: framing note.
   if (!isNonEmptyString(pack.framingNote)) errors.push("S3: pack.framingNote must be a non-empty string");
 
+  // S10: companion line, the picker's "who you walk with".
+  if (!isNonEmptyString(pack.companion)) errors.push("S10: pack.companion must be a non-empty string");
+
   // S4: mileposts array and unique ids.
   const mileposts = pack.mileposts;
   if (!Array.isArray(mileposts) || mileposts.length === 0) {

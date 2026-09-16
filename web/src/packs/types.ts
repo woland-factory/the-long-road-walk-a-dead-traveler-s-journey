@@ -35,6 +35,8 @@ export interface JourneyPack {
   totalMiles: number; // ~1000
   source: PackSource; // provenance for verification and the README
   framingNote: string; // authored, plain period-content note (swept)
+  companion: string; // one authored line on who you walk with, shown in the
+  // picker. Our words, present-day plain English, swept for tone.
   route?: [number, number][]; // optional coarse polyline; NOT populated this EPIC
   mileposts: Milepost[]; // ordered ascending by mileMark
 }

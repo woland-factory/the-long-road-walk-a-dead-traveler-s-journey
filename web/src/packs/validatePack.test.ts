@@ -95,4 +95,18 @@ describe("validatePack catches each rule (AC2.2)", () => {
     const errs = validatePack(p);
     expect(errs.some((e) => e.startsWith("S9"))).toBe(true);
   });
+
+  it("flags a missing companion line (AC1.2)", () => {
+    const p = clone(fixturePack);
+    (p as { companion?: string }).companion = undefined;
+    const errs = validatePack(p);
+    expect(errs.some((e) => e.startsWith("S10"))).toBe(true);
+  });
+
+  it("flags a blank companion line (AC1.2)", () => {
+    const p = clone(fixturePack);
+    p.companion = "   ";
+    const errs = validatePack(p);
+    expect(errs.some((e) => e.startsWith("S10"))).toBe(true);
+  });
 });

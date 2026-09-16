@@ -13,6 +13,7 @@ import { muirPack } from "./muir";
 const authored: string[] = [
   muirPack.title,
   muirPack.framingNote,
+  muirPack.companion,
   ...muirPack.mileposts.map((m) => m.approxNote),
   ...muirPack.mileposts.map((m) => m.approach),
 ];

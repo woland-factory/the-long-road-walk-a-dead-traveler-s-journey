@@ -31,6 +31,7 @@ contract every pack must satisfy.
 | `totalMiles`  | number                | Finite, greater than 0. Approximate route length. |
 | `source`      | `PackSource`          | Provenance for verification and the README (see below). |
 | `framingNote` | string                | Non-empty. Authored, present-day note that frames the period content. Swept for tone. |
+| `companion`   | string                | Non-empty. One authored line on who you walk with, shown in the picker. Our words, present-day plain English. Swept for tone. |
 | `route`       | `[number, number][]?` | Optional coarse polyline. Not populated yet. No map is rendered. |
 | `mileposts`   | `Milepost[]`          | Non-empty, ordered ascending by `mileMark`. |
 
@@ -87,7 +88,8 @@ at the reward.
   mileposts spread across the route) are checked by `verifySource.ts` and
   `muir.verify.test.ts`, which read the committed public-domain source under
   `sources/` with `fs`. The source file is never imported by app code.
-- **Copy tone**: the authored fields (`title`, `framingNote`, `approxNote`) are
+- **Copy tone**: the authored fields (`title`, `framingNote`, `companion`,
+  `approxNote`, `approach`) are
   swept in `muir.copy.test.ts`. The primary source (`voices[].text`, `place`,
   `date`) is exempt: it is factual and verbatim, and editing it would break the
   verbatim promise.

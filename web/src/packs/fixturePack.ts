@@ -17,6 +17,7 @@ export const fixturePack: JourneyPack = {
     license: "Sample data (not a real source)",
   },
   framingNote: "A sample trail used to check the loop. It carries no real diary.",
+  companion: "A sample companion line for the fixture trail.",
   mileposts: [
     {
       id: "fx-1",

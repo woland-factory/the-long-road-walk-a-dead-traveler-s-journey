@@ -1,4 +1,4 @@
-# EPIC SPEC — The double journal and export / import (the durable artifact)
+# EPIC SPEC — First run: picker, guided walkthrough, and health-export import
 
 *The Long Road: walk a dead traveler's journey, mile for mile, diary for diary.*
 
@@ -11,150 +11,235 @@ ground you reached, and it withholds tomorrow's entry until your feet earn it.
 We compete on the meaning of the reward, not on gamification, breadth, or
 automation.
 
-**What that demands of THIS epic.** Earlier EPICs built the loop, poured in
-Muir's verified words, and built the Arrival ceremony that hands over each
-earned entry one at a time. This EPIC turns that stream of earned moments into
-the thing the product exists to leave behind: the double journal, a facing-page
-keepsake of the traveler's words beside the walker's own, and the export/import
-that lets it survive a browser that clears its storage or a phone the walker
-replaces. Two promises carry the differentiator here and both are provable.
-First, the keepsake must be **earned-only and honest**: the journal, its print
-output, and its data export contain the words the walker actually earned and
-nothing they have not. An unreached milepost's verbatim text must never appear
-in the journal, the print, or the exported file. Second, the keepsake must be
-**genuinely ownable**: export writes the complete walker state to a single file
-and import restores it losslessly on a fresh device, so a walker who stops for a
-week or for good keeps every mile they walked and every word they earned (the
-north star's exact promise). A keepsake you can lose to a cleared cache is not a
-keepsake. This EPIC makes it durable.
+**What that demands of THIS epic.** This EPIC is the front door, and the front
+door must sell the differentiator honestly. Three obligations follow. First,
+the Start screen and picker frame the product as what it is: a deliberate
+daily check-in ritual whose reward is a real traveler's own words, stated
+plainly BEFORE the walker commits, with a one-line "who you walk with" that
+makes the companion a person, never a route on a map. Second, the guided first
+run walks a brand-new user to the differentiator itself, logging real miles
+once and reaching or previewing the first verbatim entry, in 2 to 4 short
+imperative steps anchored to the real controls, so the first minute delivers
+the product and never a lecture about it. Third, the second input path
+(health-export import) must keep the earning honest: files are parsed entirely
+on device, validated hard at the boundary, and merged under rules that can
+never double count a day or fabricate miles, because an entry unlocked by
+inflated miles is a broken promise. Imported miles that legitimately cross
+mileposts pay off exactly like typed miles: the Arrival ceremony opens and the
+words are earned.
 
 ---
 
 ## 1. Scope
 
 ### In scope
-- **The Journal surface**: a dedicated full-viewport reading view, reachable
-  from the Trail, that renders the walker's earned entries as a **double
-  journal**. It reads in journey order, one facing-page spread per reached
-  milepost: the traveler's verbatim entry (its dateline, place, and voices) set
-  beside the walker's own facing line for that milepost and the real date they
-  reached it. Correct from the first earned milepost onward, so a walker who
-  stops at mile 120 owns exactly the spreads for every milepost at or below mile
-  120.
-- **A pure interleave** (`journal/buildJournal.ts`) that turns walker state plus
-  the pack into an ordered list of spreads. This is the load-bearing correctness
-  seam and is tested exhaustively without React.
-- **Printable facing-page export via a browser print path**: a "Print your
-  journal" action that calls `window.print()`, backed by a print stylesheet
-  (`@media print` / `@page`) that lays the double journal out as a clean,
-  legible, page-broken facing-page artifact. No external PDF service and no PDF
-  library (see non-goals and interpretation 4).
-- **Data export**: a "Save a backup" action that writes the complete walker
-  state to a single downloaded JSON file (a small versioned envelope around the
-  `WalkerState` record).
-- **Data import**: a "Restore from a backup" action that reads a chosen JSON
-  file, validates it at the boundary, migrates an older-schema backup forward,
-  restores it as the walker's state, and re-renders the trail and journal from
-  it. Round-trips losslessly on a fresh browser or device.
-- **A gentle, positive backup reminder**: one quiet, dismissible line that
-  appears once the walker has earned at least one entry, points at "Save a
-  backup", and never nags (it goes away for good once dismissed or once a backup
-  is saved).
-- **All designed states, sub-100ms interaction feedback, mobile-first, legible
-  print** on every surface this EPIC adds, per the QUALITY BAR.
+- **The Start screen** (`firstrun/Start.tsx`): shown only when no walker
+  record exists. States plainly what the product does and that it needs a
+  daily check-in, in short positive copy, before the walker commits. Hosts the
+  journey picker and a subordinate restore-a-backup path for a returning
+  walker on a fresh device.
+- **The journey picker**: one card per registered journey pack, each showing
+  the journey title, years, scale, and a one-line authored "who you walk
+  with" (a new required `companion` field on the pack schema). Choosing a
+  journey creates and persists the walker record and lands on the Trail.
+  Today the registry holds one pack (Muir); the picker renders from the
+  registry so EPIC 6's second pack drops in with no picker change.
+- **A pack registry** (`packs/index.ts`): the list of shipped packs and a
+  `packById` lookup, so `App.tsx` resolves the active pack from
+  `state.activePackId` instead of hardcoding Muir.
+- **The boot gate** (`App.tsx`): loading state -> existing record -> Trail
+  with the record's pack; fresh database with `SEED_DEMO` -> Trail (the
+  existing seed path, Start never shows); fresh database otherwise -> Start.
+- **The guided first run** (`firstrun/walkthrough.ts` + `Walkthrough.tsx`):
+  2 to 4 steps anchored to the real Trail controls, each one short imperative
+  sentence, walking a brand-new user through logging miles once and reaching
+  (Arrival opens) or previewing (the next-milepost card) their first entry.
+  Skippable at every step. Appears only until first success. Never again for
+  a returning walker, a seeded demo, or a restored backup.
+- **Health-export import** (`importer/`): a second input path reachable from
+  the Trail. Two supported formats, both parsed entirely on device:
+  a `date,miles` CSV and an Apple Health `export.xml` (walking + running
+  distance records). Validated at the boundary for type, size, and shape
+  before parsing; a clear list of supported formats; designed errors for
+  unsupported or malformed files; a preview-and-confirm step before any
+  state changes; merge rules that never double count; crossings unlocked by
+  an import open the Arrival exactly like typed miles.
+- **All designed states, sub-100ms feedback, mobile-first at 390px, no PII
+  leaving the device** on every surface this EPIC adds, per the QUALITY BAR.
+- **E2E migration**: existing e2e specs boot at `/` and today land on the
+  Trail; with the Start gate in front they need a shared helper that begins
+  the Muir journey (and pre-marks the walkthrough done for flows that are not
+  about the walkthrough). This is maintenance of existing passing criteria,
+  in scope.
 
 ### Out of scope (Non-goals — binding, do not build)
-- **No cloud sync.** No server persistence, no background upload, no remote
-  store. Everything stays local; the file the walker downloads is the only copy
-  that leaves the device, and only because the walker chose to save it.
-- **No accounts, no login, no identity.** Import restores a device's state from
-  a file the walker holds; it is not a sign-in.
-- **No sharing links, feeds, social export, or "share my journal" surface.** The
-  keepsake is for the walker. A downloaded file and a printed artifact are the
-  only outputs.
-- **No external PDF service dependency, and no PDF/print library**, because the
-  browser print path suffices (interpretation 4). Do not add `jspdf`,
-  `pdfmake`, `puppeteer`, `react-to-print`, or any print/PDF package.
-- **No new journey, no journey picker, no onboarding walkthrough, no
-  health-export import.** Those belong to EPIC 5. The app still boots straight
-  into the Muir Trail.
-- **No changes to the Arrival ceremony's reveal or the withholding rules.** This
-  EPIC reads the same earned state; it does not loosen or re-implement the
-  withholding.
-- **No map/polyline, no runtime text generation, no LLM, no analytics of the
-  journal's contents.** Unchanged from earlier EPICs.
-- **No unit switching UI (miles/kilometres).** Distances render in miles, as in
-  every prior EPIC. The unowned Settings/units gap stays a `requested_task`, not
-  work absorbed here.
+- **No account creation.** No sign-up, no login, no identity of any kind. The
+  Start screen creates a local record, nothing else.
+- **No multiple concurrent journeys.** One walker record, one active journey.
+  The picker chooses the single journey; it is not a journey switcher, and no
+  "switch journey" or "start over" control is added to the Trail or anywhere
+  else this EPIC.
+- **No fitness-format zoo.** Exactly two supported inputs: the `date,miles`
+  CSV and Apple Health `export.xml`. No GPX, FIT, TCX, Google Fit, Garmin,
+  Strava, or any third format, no matter how small it seems.
+- **No background sync.** Import is a manual, user-initiated file drop. No
+  polling, no file-system watching, no health-API integration, no service
+  worker sync.
+- **No new journey content.** The Lewis & Clark pack is EPIC 6. The picker
+  shows the packs that exist (today: one). Do not add a placeholder,
+  coming-soon, or disabled second card.
+- **No settings screen.** The plan's Settings surface is not this EPIC. The
+  import entry point lives on the Trail; units stay miles-only as in every
+  prior EPIC.
+- **No changes to the withholding rules, the Arrival ceremony's reveal, the
+  Journal, or the backup envelope.** This EPIC feeds the same state machine
+  through a second input; it does not touch the reward logic.
+- **No new runtime dependency.** No CSV library, no XML/SAX library, no
+  coach-mark or tour library, no zip library. The parsers and the walkthrough
+  are small hand-rolled modules.
 
 ### Interpretations resolved (so the implementer never has to guess)
-These are decisions the planner's criteria imply but do not spell out. They are
-resolved here. Do not re-litigate them, and do not treat them as license to
-expand scope.
+Decisions the planner's criteria imply but do not spell out. Resolved here.
+Do not re-litigate them, and do not treat them as license to expand scope.
 
-1. **"Interleaved date-by-date" resolves to journey-order facing spreads, not a
-   literal calendar merge.** The product carries two date systems that cannot be
-   sorted into one axis: the traveler's diary dates (1867) and the walker's real
-   check-in dates (2026 and later). A literal date sort across them is
-   meaningless. The faithful reading of "interleaved date-by-date with the
-   walker's one-line log" is the **double journal**: one facing-page spread per
-   reached milepost, ordered by the walk's own progression (ascending
-   `mileMark`, which equals traveler-date order because pack dates are
-   non-decreasing). Each spread shows BOTH datelines: the traveler's diary date
-   on their side, and the real date the walker reached that ground on the
-   walker's side. This is exactly the north star's "verbatim words beside their
-   own daily lines, page after page." "The walker's one-line log" is the facing
-   line the walker wrote for that milepost (`personalLog`), which is the only
-   prose the walker authors in this product.
+1. **Choosing a journey creates the walker record.** `beginJourney(packId)`
+   persists `freshState(packId, now)` (the existing helper) and enters the
+   Trail. This is why a returning walker never sees Start or the picker
+   again: the gate checks for a record, and the record exists from the moment
+   of choice. The record with an empty `dailyLog` renders the Trail's
+   existing designed empty state, which the walkthrough's first step sits
+   beside. No schema change: `firstSuccessDone` from the plan sketch is
+   realized as a device-local `localStorage` flag (interpretation 4), exactly
+   like the EPIC 4 backup-reminder flags, so the keepsake stays clean and no
+   migration is added.
 
-2. **No data-model change.** The journal is fully derived from existing v2 state
-   (`dailyLog`, `personalLog`, `reachedMilepostIds`, `cumulativeMiles`) and the
-   pack. Export serializes the existing `WalkerState`; import restores it. The
-   backup-reminder's dismiss/exported flags live in `localStorage`, not in the
-   walker record, so they never bloat the keepsake, never need a migration, and
-   correctly stay device-local (they describe THIS device's backup habit, not
-   the journey). Therefore `schemaVersion` stays 2 and no new migration branch is
-   added. This is the smallest change that satisfies the criteria (SCOPE
-   DISCIPLINE §2).
+2. **The picker renders the registry, and the registry has one pack.** The
+   planner's criterion says "for each" journey; with one shipped pack the
+   picker shows one card. The card's button is the Start screen's single
+   primary action. The `companion` line is a new REQUIRED pack-schema field
+   (authored, swept for tone), because "who you walk with" is the product's
+   promise and deserves an authored sentence, not a string concatenated from
+   title and years. The validator, SCHEMA.md, `muir.json`, and the fixture
+   pack gain the field; EPIC 6's pack will be held to it automatically.
 
-3. **No router. The Journal is an in-app view toggled by Trail state**, exactly
-   as the Arrival is an overlay driven by component state (the app is a
-   single-screen SPA with no router; adding routing is speculative generality).
-   The Trail owns a `view: "trail" | "journal"` state. A subordinate "Read your
-   journal" control opens the Journal view; a "Back to the trail" control
-   returns. The Trail's one primary action stays the check-in.
+3. **`SEED_DEMO` bypasses Start.** On a fresh database with the flag set, the
+   boot gate renders the Trail and the existing `useWalker` seeding runs
+   unchanged. The staging promise (the differentiator within a minute) does
+   not gain a picker step. The seeded walker has miles, so the walkthrough
+   never shows (interpretation 4).
 
-4. **Print is a browser print stylesheet plus `window.print()`, with no
-   library.** The planner's non-goal is explicit: "No external PDF service
-   dependency if the browser print path suffices." It suffices. A "Print your
-   journal" button calls `window.print()`; an `@media print` / `@page`
-   stylesheet lays the mounted journal out as a page-broken facing-page artifact
-   and hides interactive chrome (`.no-print`). Print fidelity beyond structure
-   (exact pagination in a given browser) is inherently environment-dependent and
-   is verified by structure and the `window.print()` call, not by pixel
-   assertions.
+4. **Walkthrough state is a device-local flag plus a tiny in-session
+   machine.** A `localStorage` flag (same naming pattern as the reminder
+   flags in `journal/reminder.ts`) records that the walkthrough is done. The
+   pure decision lives in `firstrun/walkthrough.ts`. At Trail mount, when the
+   flag is unset but the record already has miles (a returning walker from
+   before this EPIC, a seeded demo, or a restored backup), the flag is set
+   silently and nothing shows: a returning user never sees it. The flag is
+   set by finishing the last step, by Skip at any step, or by a first success
+   arriving through the import path. A reload mid-walkthrough after the first
+   log lands in the has-miles rule and shows nothing further; that is
+   accepted and honest (the walker has logged and seen the trail).
 
-5. **Import replaces the single walker record, and confirms first when it would
-   overwrite real progress.** There is one walker record and one journey.
-   Importing a backup restores it wholesale. If the device already has logged
-   miles, import first asks the walker to confirm the replacement (a
-   hard-to-reverse action), with positive copy and a way to keep the current
-   state. On a fresh device (no logged miles) import proceeds without a confirm
-   prompt. An older-schema backup is run through `migrate()` and upgraded; an
-   unknown-version, malformed, oversized, or wrong-shape file is rejected at the
-   boundary with a designed, plain-voice error and changes no state.
+5. **Walkthrough anchoring is by placement, not by a positioning engine.**
+   Each step renders as a small callout inside or directly beside the card it
+   points at (the check-in card, the next-milepost card), so there is no
+   floating-position math and no library. One step is visible at a time; each
+   shows its one imperative sentence and a Skip control (>= 44px); the final
+   step shows Done. The callout never traps focus, never blocks the control
+   it points at, and never overlays the Arrival dialog (steps advance only
+   after the Arrival closes).
 
-6. **The reached date for a spread is the real date the crossing happened.** A
-   milepost's walker-side dateline is the date of the first `dailyLog` entry
-   whose running cumulative total reaches that milepost's `mileMark`. This is
-   computed by a single pass over `dailyLog` and is deterministic. It is the
-   honest answer to "when did I reach this ground."
+6. **The two walkthrough paths.** Step 1 (fresh record, zero miles): anchored
+   to the check-in. The first log decides the branch. If it crossed the first
+   milepost, the Arrival opens and IS the first success; when it closes, a
+   final step anchored to the reached list says one sentence and finishes
+   (2 steps total). If it did not cross, a step anchored to the next-milepost
+   card frames the preview, then a final step closes the loop (3 steps
+   total). Both branches sit inside the planner's 2-to-4 window.
 
-7. **An empty facing line is allowed and is not an error.** A walker may reach a
-   milepost and write no line. The spread still renders the earned traveler
-   entry; the walker's side shows the reached dateline and a quiet prompt to add
-   a line on screen, and simply omits the line in print. Blank walker sides are
-   normal in a real double journal.
+7. **The import entry point is a subordinate control on the Trail's check-in
+   card**, opening an in-app `import` view exactly as the Journal replaces
+   the Trail body (`view: "trail" | "journal" | "import"`). The check-in
+   stays the Trail's single primary action; the plan's Settings home for this
+   feature does not exist yet and building Settings for it would be drift.
+
+8. **Merge rules keep the earning honest and idempotent.** Parsed files
+   reduce to per-day totals. A day is added only when `dailyLog` has no entry
+   for that date (the walker's own log always wins; re-importing the same
+   file adds nothing). Days with totals above `MAX_MILES_PER_CHECKIN` (200,
+   the existing manual bound), days dated after today, and days totaling zero
+   or less are left out and counted in the preview. The merged `dailyLog` is
+   sorted ascending by date (stable), so the Journal's reached-date
+   attribution stays chronological when past days arrive after manual
+   entries. After confirm, derived fields are recomputed with the existing
+   `recompute`, and newly crossed mileposts feed `pendingArrival` so the
+   Arrival queue opens exactly as for typed miles.
+
+9. **Apple Health double counting is resolved per day by source.** A raw
+   `export.xml` carries walking/running distance records from every source
+   (watch AND phone), which overlap; summing them would inflate miles and
+   unlock unearned entries. Rule: group each day's records by `sourceName`,
+   sum each source, and take the largest single source's total as the day's
+   miles. Deterministic, one sentence, and it can only under-count, never
+   over-count. The day key is the date part (first 10 characters) of the
+   record's `startDate`, which carries the exporting device's local offset.
+   Units `mi`, `km` (x 0.621371), and `m` (/ 1609.344) are converted;
+   records with any other unit or an unparseable value are skipped and
+   counted. Day totals round to hundredths, matching the odometer.
+
+10. **The Apple export is read in bounded chunks, because real exports are
+    huge.** A typical `export.xml` runs hundreds of megabytes; reading it
+    whole would crash the tab and a small size cap would reject most real
+    users. The parser reads the `File` via `Blob.slice` in 8 MiB chunks
+    decoded with a streaming `TextDecoder`, scans each chunk for
+    `<Record ... />` elements of type
+    `HKQuantityTypeIdentifierDistanceWalkingRunning` (attributes parsed by
+    name, never by position), carries a bounded tail (64 KiB) across chunk
+    boundaries for split tags, yields to the event loop between chunks, and
+    reports progress by bytes. Hard cap `MAX_HEALTH_XML_BYTES` = 1 GiB,
+    rejected before reading. The CSV cap is 1 MiB (years of daily rows fit
+    in a few KiB).
+
+11. **Boundary validation happens before parsing, in this order.** File name
+    extension decides the format (`.csv` or `.xml`); a `.zip` gets its own
+    designed error telling the walker to unzip and choose `export.xml`; any
+    other extension gets the supported-formats error. Size caps are checked
+    on `file.size` before any read. Shape is sniffed cheaply: the CSV's first
+    non-empty line must be the `date,miles` header (case-insensitive,
+    whitespace tolerant) or a valid data row; the XML's first chunk must
+    contain `<?xml` or `<HealthData`. Only then does full parsing run. Any
+    failure shows a designed inline error and changes no state.
+
+12. **A malformed CSV is rejected whole; a valid XML with no walking records
+    is an error, not an empty success.** A hand-made CSV with a bad row is
+    rejected with the first bad line's number and the expected form, because
+    silently dropping rows from a file the walker typed hides their mistake.
+    The Apple scan ignores the millions of non-distance elements by design,
+    but zero matching records means the wrong file, and says so. An import
+    whose every day is skipped (all already logged, all out of range) shows
+    the preview with its counts and a disabled-free path back, never a
+    confirm that adds nothing silently: the confirm control only renders
+    when at least one day would be added.
+
+13. **Start offers restore, preserving EPIC 4's fresh-device promise.**
+    EPIC 4 made "Restore from a backup" reachable on a fresh device's empty
+    Trail. With Start now gating a fresh device, a returning walker with a
+    backup file would have to re-pick a journey to reach it. Start therefore
+    carries a subordinate restore control reusing `parseBackup` and its
+    designed messages; success persists the restored state and enters the
+    Trail with the pack resolved from `activePackId`. No confirm is needed
+    (a fresh device has nothing to lose, matching EPIC 4's rule). This is
+    maintenance of an existing shipped criterion across the new gate, not
+    new scope.
+
+14. **No PII leaves the device, provably.** All parsing is local; the app
+    makes no network calls of its own beyond loading its static assets (and
+    optional Sentry/Umami, which are disabled when env is absent, as in e2e).
+    File contents, file names, row values, and parse errors are NEVER sent to
+    Sentry or Umami and never logged; designed error strings are constants,
+    not interpolations of file content (the CSV error carries a line NUMBER
+    only). The import e2e asserts zero non-static network requests during
+    the whole import flow.
 
 ---
 
@@ -163,484 +248,669 @@ expand scope.
 ### 2.1 Files and modules to touch
 
 ```
-web/src/journal/
-  buildJournal.ts        # NEW: pure interleave -> ordered JournalSpread[] (reached-only)
-  buildJournal.test.ts   # NEW: correctness from mile one, ordering, reached-date, withhold
-  Journal.tsx            # NEW: the double-journal reading + print surface
-  Journal.test.tsx       # NEW: renders spreads, empty state, withhold guard, a11y, header
-  Backup.tsx             # NEW: Save a backup / Restore from a backup / reminder controls
-  Backup.test.tsx        # NEW: export download, import validate + confirm + restore, reminder
-  reminder.ts            # NEW: pure shouldShowBackupReminder + thin localStorage flag helpers
-  reminder.test.ts       # NEW: show/suppress logic; dismiss and exported suppress permanently
+web/src/packs/
+  index.ts                NEW: journeyPacks registry + packById(id)
+  types.ts                CHANGE: required `companion: string` on JourneyPack
+  validatePack.ts         CHANGE: S10 companion non-empty
+  validatePack.test.ts    CHANGE: companion rule cases
+  SCHEMA.md               CHANGE: document `companion`
+  muir.json               CHANGE: add the authored companion line
+  fixturePack.ts          CHANGE: add a sample companion line
+  muir.copy.test.ts       CHANGE: sweep `companion` with the other authored fields
 
-web/src/state/
-  backup.ts              # NEW: serializeBackup / parseBackup (envelope, shape-validate, migrate)
-  backup.test.ts         # NEW: lossless round-trip; rejects malformed/oversized/wrong-shape; migrates v1
-  useWalker.ts           # CHANGE: add restoreState(state) that recomputes, persists, and sets state
-  useWalker.test.ts      # CHANGE (or NEW): restoreState replaces state and clears pendingArrival
+web/src/firstrun/
+  Start.tsx               NEW: Start screen (framing copy, picker, restore)
+  Start.test.tsx          NEW
+  walkthrough.ts          NEW: pure step decision + localStorage flag helpers
+  walkthrough.test.ts     NEW
+  Walkthrough.tsx         NEW: the one-step callout (sentence + Skip/Done)
 
-web/src/trail/
-  Trail.tsx              # CHANGE: view state trail|journal; render Journal; render Backup card; wire restore
+web/src/importer/
+  csv.ts                  NEW: pure date,miles CSV parser -> DayTotal[] | error
+  csv.test.ts             NEW
+  appleHealth.ts          NEW: chunked export.xml scanner -> DayTotal[] | error
+  appleHealth.test.ts     NEW
+  mergeDays.ts            NEW: pure merge plan (adds, skips by reason) + apply
+  mergeDays.test.ts       NEW
+  Importer.tsx            NEW: the import view (formats, input, progress,
+                          preview, confirm, errors)
+  Importer.test.tsx       NEW
 
 web/src/
-  copy.test.ts           # CHANGE: add Journal.tsx, Backup.tsx, reminder.ts, backup.ts to FILES
+  App.tsx                 CHANGE: boot gate (loading | start | trail), pack
+                          resolution via packById, begin/restore wiring
+  App.test.tsx            NEW: gate decisions incl. SEED_DEMO bypass
+  copy.test.ts            CHANGE: add Start.tsx, Walkthrough.tsx, walkthrough.ts,
+                          Importer.tsx, csv.ts, appleHealth.ts, mergeDays.ts
 
-web/src/styles/app.css   # CHANGE: journal reading layout, facing-page spreads, print stylesheet,
-                         #         backup card + reminder, all mobile-first
+web/src/state/
+  useWalker.ts            CHANGE: add importDays(entries) (append, sort,
+                          recompute, pendingArrival, persist)
+  useWalker.test.ts       CHANGE: importDays behavior
+
+web/src/trail/
+  Trail.tsx               CHANGE: view union gains "import"; the check-in card
+                          gains the subordinate import control; walkthrough
+                          callouts render beside their anchor cards
+  Trail.test.tsx          CHANGE: walkthrough integration, import entry
+
+web/src/styles/app.css    CHANGE: Start layout, picker card, walkthrough
+                          callout, importer view; all mobile-first; walkthrough
+                          and importer chrome carries .no-print
 
 web/e2e/
-  journal.e2e.ts         # NEW: open the journal, read a spread, the print button exists, 390px no h-scroll
-  backup.e2e.ts          # NEW: save a backup, wipe IndexedDB, restore from the file, state comes back
+  helpers.ts              NEW: beginMuirJourney(page), markWalkthroughDone(page)
+  firstrun.e2e.ts         NEW: Start copy, picker, walkthrough both branches,
+                          returning-user suppression
+  import.e2e.ts           NEW: CSV and XML fixture imports, designed errors,
+                          no-network assertion
+  fixtures/               NEW: walks.csv, walks-malformed.csv, export-small.xml,
+                          export-empty.xml, notes.txt
+  arrival.e2e.ts          CHANGE: begin via helper
+  journal.e2e.ts          CHANGE: begin via helper
+  backup.e2e.ts           CHANGE: begin via helper; Start-restore path
+  persistence.e2e.ts      CHANGE: begin via helper
+  mobile.e2e.ts           CHANGE: Start and importer at 390px
 
-README.md                # CHANGE (light): code map + one line on the journal, print, and export/import
+README.md                 CHANGE (light): the first-run flow, the two import
+                          formats, code map additions
 ```
 
-The pack loading model is unchanged (`muir.json` bundled, source test-only). No
-new dependency is added to `package.json`.
+No new dependency is added to `package.json`. No change to the walker schema,
+`migrate()`, the backup envelope, `buildJournal`, or the Arrival.
 
 ### 2.2 Data model
 
-**No schema change.** `schemaVersion` stays `2`. The journal derives entirely
-from the existing record. See interpretation 2. `migrate()` gains no new branch;
-it is reused as-is by import so that a backup written by any schema version the
-app understands is upgraded on the way in.
+**Walker state: unchanged.** `schemaVersion` stays 2; no migration branch is
+added. The walkthrough flag lives in `localStorage` (device-local habit, kept
+out of the keepsake, same reasoning as the EPIC 4 reminder flags).
 
-### 2.3 The interleave (`journal/buildJournal.ts`, pure)
-
-```ts
-import type { JourneyPack, Voice } from "../packs/types";
-import type { WalkerState } from "../state/types";
-
-export interface JournalSpread {
-  milepostId: string;
-  mileMark: number;
-  place: string;
-  travelerDate: string;      // milepost.date, raw ISO (1867-...)
-  travelerDateline: string;  // formatted via dateline()
-  approxNote: string;
-  voices: Voice[];           // verbatim, earned; never mutated
-  walkerLine: string;        // personalLog text for this milepost, "" if none
-  reachedDate: string;       // real YYYY-MM-DD the crossing happened (see interp 6)
-  reachedDateline: string;   // formatted via dateline()
-}
-
-// Ordered ascending by mileMark. Includes ONLY mileposts in
-// state.reachedMilepostIds (the withhold boundary; unearned mileposts never
-// appear). reachedDate is the date of the first dailyLog entry whose running
-// cumulative total reaches the milepost's mileMark.
-export function buildJournal(state: WalkerState, pack: JourneyPack): JournalSpread[];
-```
-
-Rules, all provable:
-- **Reached-only.** A milepost id not in `state.reachedMilepostIds` produces no
-  spread and its `voices` text is never read. This is the journal's half of the
-  withholding boundary.
-- **Correct from the first milepost.** With the fixture pack (mileposts at
-  `mileMark` 5 and 12): a state at cumulative 5 yields exactly one spread
-  (`fx-1`); at cumulative 12, exactly two (`fx-1`, then `fx-2`); the count and
-  order never drift from `reachedMilepostIds`.
-- **Ordering** is ascending `mileMark`.
-- **reachedDate attribution** walks `dailyLog` in stored order accumulating
-  miles; the first entry whose running total is `>= mileMark` supplies the date.
-  Two mileposts crossed by the same check-in share that date and stay ordered by
-  `mileMark`. (Because `cumulativeMiles = sum(dailyLog)` and reached ids are
-  exactly those with `mileMark <= cumulativeMiles`, every reached milepost is
-  attributable; the last entry is the safe fallback.)
-- **walkerLine** is `facingLineFor(state, milepostId)` (reuse the existing pure
-  helper), `""` when the walker wrote none.
-- Pure: no IndexedDB, no React, no `Date`. Cheap to test exhaustively.
-
-### 2.4 The Journal surface (`journal/Journal.tsx`)
-
-A full-viewport reading view (not an overlay; it replaces the Trail body when
-`view === "journal"`). Component contract:
+**Pack schema: one new required field** (build-time data, no runtime
+migration):
 
 ```ts
-interface JournalProps {
-  pack: JourneyPack;
-  state: WalkerState;
-  onClose: () => void;   // back to the Trail
+export interface JourneyPack {
+  // ...existing fields...
+  companion: string; // one authored line on who you walk with, shown in the
+  // picker. Our words, present-day plain English, swept for tone.
 }
 ```
 
-Behavior:
-- Build spreads with `buildJournal(state, pack)`.
-- **Front matter (once, at the top).** A quiet header: the journey title and
-  traveler, one factual line of scale ("{N} miles walked. {M} entries earned."),
-  and the pack `framingNote`, so the period content is never read unframed.
-  Factual scale is not a medal or a streak; it is the size of the keepsake.
-- **Spreads.** For each `JournalSpread`, render one facing-page unit with two
-  clearly distinguished sides:
-  - Traveler side: the `place` and `travelerDateline` as the spread's labelled
-    heading, then each `voices[]` entry as an attributed verbatim passage
-    (single voice for Muir; multiple voices render attributed and separated,
-    never merged), then the `approxNote` as a quiet caption.
-  - Walker side: the `reachedDateline` ("You reached this on ...") and the
-    `walkerLine`. When the line is empty, show a quiet prompt on screen ("Add
-    your line for this milepost from the Trail.") rather than a blank gap. The
-    facing line is authored in the Arrival; the Journal displays it and does not
-    duplicate the editor.
-- **Layout.** Mobile-first at 390px: the two sides stack vertically (traveler
-  above walker) with clear separation and no horizontal scroll. Wider viewports
-  and print place them as true facing columns. A comfortable reading measure and
-  generous line height for the verbatim text, matching the paper aesthetic
-  (`--paper`, serif).
-- **One primary action.** "Print your journal" (calls `window.print()`) is the
-  surface's primary action. "Back to the trail" is a visibly subordinate close
-  control (>= 44px). Both carry `.no-print` so they never appear in the printed
-  artifact.
-- **Designed empty state.** If opened with zero spreads (no milepost reached
-  yet), show a designed empty surface: what the journal is and the first step
-  ("Your journal fills as you walk. Each milepost you reach adds the traveler's
-  words beside your own. Log your first miles to earn the first page."), plus
-  "Back to the trail". Never a blank region.
-- **No loading or error state** on this surface: the data is already in memory.
-- **Accessibility.** A single `<h1>`/labelled top heading for the view, a real
-  heading per spread, `<article>`/`<section>` structure, meaningful order,
-  focus moved to the view heading on open and returned to the trigger on close,
-  `Escape` returns to the Trail, full keyboard reach, visible focus.
+`muir.json` gains, for example:
+`"companion": "John Muir, a young botanist walking a thousand miles from
+Kentucky to the Gulf in 1867, writing in his journal nearly every night."`
+(The implementer may refine the sentence; it must stay one line, factual,
+and pass the copy sweep.)
 
-Copy in this component (headings, labels, buttons, empty state, the empty-line
-prompt) is swept. The `voices[]` text, `place`, `approxNote`, `framingNote`, and
-datelines are pack/derived data and are not swept.
+Validator rule S10: `companion` must be a non-empty string. `SCHEMA.md`
+documents the field. `muir.copy.test.ts` sweeps it with the other authored
+fields. The fixture pack gains an obviously-sample line.
 
-### 2.5 The print stylesheet (`styles/app.css`, `@media print`)
-
-- `@page { margin: 18mm; }` and a legible print type scale.
-- `.no-print { display: none; }` hides the Trail chrome, the buttons, and the
-  backup controls in print.
-- Each spread prints on its own page: `.journal-spread { break-inside: avoid; }`
-  and a page break between spreads (`break-after: page` on all but the last, or
-  `break-before: page` on all but the first).
-- In print, the two sides sit as facing columns with clear rules/spacing; text
-  is dark ink on white regardless of the screen color scheme (print defaults to
-  paper). The front matter (title, scale line, framing note) prints once as a
-  title block on the first page.
-- Honor `prefers-reduced-motion` for any screen transition; print has none.
-
-### 2.6 Export and import (`state/backup.ts`, pure core)
+### 2.3 The pack registry (`packs/index.ts`)
 
 ```ts
-import type { WalkerState } from "./types";
+import { muirPack } from "./muir";
+import type { JourneyPack } from "./types";
 
-export const BACKUP_FORMAT = "the-long-road/walker-state";
-export const MAX_BACKUP_BYTES = 5 * 1024 * 1024; // reject anything larger at the boundary
+export const journeyPacks: JourneyPack[] = [muirPack];
 
-export interface BackupEnvelope {
-  format: string;   // BACKUP_FORMAT
-  version: number;  // state.schemaVersion at export time
-  exportedAt: string; // ISO timestamp (passed in by the caller)
-  state: WalkerState;
+export function packById(id: string): JourneyPack | undefined;
+```
+
+EPIC 6 adds its pack to this array and the picker, the boot gate, and the
+restore path pick it up with no further change.
+
+### 2.4 The boot gate (`App.tsx`)
+
+App owns a small boot status: `"loading" | "start" | "trail"`, plus the
+resolved active pack.
+
+- On mount, call the existing `loadState()` once.
+  - Record found: resolve `packById(state.activePackId) ?? muirPack`, render
+    `<Trail pack={pack} />`. (Trail's `useWalker` re-reads the record; the
+    double read is idempotent and cheap.)
+  - No record and `env.seedDemo`: render `<Trail pack={muirPack} />`; the
+    existing seed path inside `useWalker` runs unchanged. Start never shows.
+  - No record otherwise: render `<Start ... />`.
+- While loading, render a held-layout loading surface (reuse the existing
+  skeleton pattern), never a white screen.
+- `beginJourney(packId)`: `await saveState(freshState(packId, new Date().toISOString()))`,
+  then flip to `trail` with that pack. Feedback within 100ms (pressed state on
+  the card's button; the persist is fast and awaited).
+- `restoreOnStart(state)`: `await saveState(state)`, resolve the pack from
+  `state.activePackId`, flip to `trail`. `useWalker` recomputes derived
+  fields on load as it always does.
+- The `ErrorBoundary` continues to wrap everything; a boot-load failure
+  renders the existing designed error surface with a reload action.
+
+### 2.5 The Start screen (`firstrun/Start.tsx`)
+
+```ts
+interface StartProps {
+  packs: JourneyPack[];
+  onBegin: (packId: string) => void;
+  onRestore: (state: WalkerState) => void;
+}
+```
+
+Layout, top to bottom, mobile-first:
+
+- **Masthead**: the app title and one line of what it is. Example copy (all
+  Start copy is swept): "Walk a real historic journey, mile for mile. Each
+  milepost you reach hands you what the traveler wrote on that ground."
+- **The honest ritual line**, stated before any commitment, positive and
+  plain: "You count your own miles and log them here once a day. It takes
+  about ten seconds." No hedging, no essay: two short sentences.
+- **The picker**: one card per pack in `packs`. Each card shows the journey
+  title, the years and scale in one quiet line ("1867. About 1,000 miles."),
+  and the pack's `companion` line as the human heart of the card. The card's
+  button ("Begin this journey", >= 44px) is the screen's single primary
+  action and calls `onBegin(pack.id)` with a pressed state.
+- **Restore, subordinate**: one quiet line ("Walked before? Restore your
+  backup.") with a labelled file input (`accept="application/json,.json"`),
+  visually subordinate to the picker. Selection: enforce `MAX_BACKUP_BYTES`
+  up front, read, `parseBackup`; on `ok` call `onRestore(result.state)`; on
+  failure show the designed message inline (`role="alert"`) and change
+  nothing. Reuse `BACKUP_MESSAGES` and the file-reading helper pattern from
+  `journal/Backup.tsx` (extract the small `readFileText` helper to a shared
+  module rather than duplicating it).
+- **Accessibility**: real `<h1>`, the picker as a labelled region, every
+  control labelled and keyboard reachable, visible focus, no horizontal
+  scroll at 390px.
+- **No loading or error state of its own** beyond the restore error: the
+  screen renders from bundled data.
+
+### 2.6 The walkthrough (`firstrun/walkthrough.ts` + `Walkthrough.tsx`)
+
+Pure decision plus thin flag helpers, mirroring `journal/reminder.ts`:
+
+```ts
+export type WalkthroughStep = "log" | "preview" | "finish" | null;
+
+// Pure. `done` is the persisted flag; `hasMiles`/`hasEarned` come from state;
+// `arrivalOpen` suppresses callouts under the ceremony; `previewSeen` is the
+// in-session record that the walker acknowledged the preview step.
+export function walkthroughStep(args: {
+  done: boolean;
+  hasMiles: boolean;
+  hasEarned: boolean;
+  arrivalOpen: boolean;
+  previewSeen: boolean;
+}): WalkthroughStep;
+
+export function readWalkthroughDone(): boolean;
+export function markWalkthroughDone(): void;
+```
+
+Decision table (exhaustively tested):
+- `done` -> `null`, always.
+- `arrivalOpen` -> `null` (the ceremony is never overlaid).
+- No miles -> `"log"` (anchored to the check-in card).
+- Miles and earned (the first log crossed) -> `"finish"` (anchored to the
+  reached list; one sentence, Done).
+- Miles, not earned, preview not yet acknowledged -> `"preview"` (anchored to
+  the next-milepost card).
+- Miles, not earned, preview acknowledged -> `"finish"` (anchored to the
+  check-in card).
+
+Step copy (each step is ONE short imperative sentence plus its controls; all
+swept):
+- `log`: "Log the miles you walked today."
+- `preview`: "Walk this distance to earn {traveler}'s first entry." with a
+  Next control (>= 44px) that acknowledges the preview.
+- `finish` (earned branch): "Return each day to earn the next entry." with
+  Done.
+- `finish` (preview branch): "Come back tomorrow and log your walk again."
+  with Done.
+- Every step also shows Skip (>= 44px). Skip and Done both call
+  `markWalkthroughDone()`.
+
+Trail integration:
+- At mount (status ready), when the flag is unset and the record has miles,
+  call `markWalkthroughDone()` and show nothing (returning walker, seeded
+  demo, restored backup).
+- `Walkthrough.tsx` renders the current step's callout inside/beside its
+  anchor card: a visually distinct `role="status"` callout with the sentence
+  and its buttons. It never traps or steals focus, never covers the anchored
+  control, and is fully usable at 390px.
+- A first success via the import path (an import that adds the first miles)
+  also calls `markWalkthroughDone()`.
+
+### 2.7 The CSV parser (`importer/csv.ts`, pure)
+
+```ts
+export interface DayTotal { date: string; miles: number } // YYYY-MM-DD, > 0
+
+export const MAX_CSV_BYTES = 1 * 1024 * 1024;
+
+export type CsvResult =
+  | { ok: true; days: DayTotal[] }
+  | { ok: false; message: string }; // designed, plain-voice; carries a line
+                                    // NUMBER at most, never file content
+
+export function parseWalksCsv(text: string): CsvResult;
+```
+
+Rules:
+- Lines split on `\r?\n`; blank lines (including trailing) are ignored.
+- An optional first header line `date,miles` (case-insensitive, surrounding
+  whitespace tolerated) is skipped.
+- Every other line must be `YYYY-MM-DD,<number>` where the number passes the
+  same shape as the manual check-in (digits, at most two decimals, positive).
+  The first bad line rejects the whole file:
+  "Line {n} needs the form 2026-06-01,3.5."
+- Duplicate dates within the file sum into one `DayTotal`.
+- Totals round to hundredths. Range rules (over 200, future, zero) are NOT
+  applied here; they are merge-plan skips (2.9) so both formats share them.
+
+### 2.8 The Apple Health scanner (`importer/appleHealth.ts`)
+
+```ts
+export const MAX_HEALTH_XML_BYTES = 1024 * 1024 * 1024; // 1 GiB
+export const XML_CHUNK_BYTES = 8 * 1024 * 1024;
+export const XML_CARRY_BYTES = 64 * 1024;
+
+export type XmlResult =
+  | { ok: true; days: DayTotal[]; skippedRecords: number }
+  | { ok: false; message: string };
+
+// Pure core: feed decoded text chunks, accumulate per-day per-source sums.
+export function createRecordScanner(): {
+  push(chunk: string): void;
+  finish(): XmlResult;
+};
+
+// Async driver over the File: slice, decode (streaming TextDecoder), push,
+// yield between chunks, report progress in bytes. Respects an abort flag.
+export function scanHealthExport(
+  file: File,
+  onProgress: (bytesRead: number, totalBytes: number) => void,
+  signal: { aborted: boolean },
+): Promise<XmlResult>;
+```
+
+Rules (all in the pure core, unit-testable with strings):
+- Only `<Record ... />` elements whose `type` attribute is
+  `HKQuantityTypeIdentifierDistanceWalkingRunning` count. Attributes
+  (`type`, `sourceName`, `unit`, `startDate`, `value`) are parsed by name
+  within the tag text; order never matters.
+- Day key: the first 10 characters of `startDate`.
+- Units: `mi` as-is, `km` x 0.621371, `m` / 1609.344; any other unit, an
+  unparseable value, or a malformed date increments `skippedRecords` and
+  moves on.
+- Per day: sum per `sourceName`; the day's total is the LARGEST single
+  source's sum (interpretation 9), rounded to hundredths.
+- Tags split across chunk boundaries are handled by carrying the tail from
+  the last unterminated `<Record` (bounded at `XML_CARRY_BYTES`).
+- `finish()` with zero matching records returns the designed error:
+  "This file holds no walking distance. In the Health app, export your data,
+  unzip export.zip, and choose the export.xml inside."
+
+### 2.9 The merge plan (`importer/mergeDays.ts`, pure)
+
+```ts
+export interface MergePlan {
+  adds: DayTotal[];          // days that will be added, ascending by date
+  addedMiles: number;        // rounded sum of adds
+  skippedExisting: number;   // date already present in dailyLog
+  skippedFuture: number;     // date after `today`
+  skippedOverMax: number;    // total > MAX_MILES_PER_CHECKIN
+  skippedEmpty: number;      // total <= 0
 }
 
-// Pretty (2-space) JSON so the file is human-inspectable: owning your data
-// includes being able to read it.
-export function serializeBackup(state: WalkerState, exportedAt: string): string;
+export function planMerge(
+  days: DayTotal[],
+  dailyLog: DailyLogEntry[],
+  today: string,
+): MergePlan;
 
-export type ImportResult =
-  | { ok: true; state: WalkerState }   // migrated forward; caller recomputes against the pack
-  | { ok: false; message: string };    // designed, plain-voice reason
-
-// Guarded end to end: JSON.parse in a try/catch, envelope shape checked,
-// state shape validated field-by-field, then migrate(). Any failure returns
-// { ok: false } with a friendly message and never throws.
-export function parseBackup(text: string): ImportResult;
+// The merged log: existing entries plus adds, sorted ascending by date
+// (stable, so same-date manual entries keep their order).
+export function applyMerge(dailyLog: DailyLogEntry[], adds: DayTotal[]): DailyLogEntry[];
 ```
 
-`parseBackup` boundary validation (this is the app's one real input boundary,
-so it is the QUALITY BAR §5 "validate input at the boundary" surface):
-- `text.length` within `MAX_BACKUP_BYTES`; parseable JSON; a plain object.
-- `format === BACKUP_FORMAT`; `state` is a plain object.
-- `state` shape: `schemaVersion` a number; `activePackId` a string; `createdAt`
-  a string; `dailyLog` an array of `{ date: string, miles: number }`;
-  `cumulativeMiles` a number; `reachedMilepostIds` an array of strings;
-  `personalLog` an array of `{ date: string, milepostId: string, text: string }`.
-- Run the validated object through `migrate()`. `null` (unknown/absent version)
-  is rejected with the friendly message. A `v1` backup migrates to `v2` and
-  succeeds.
-- On success return the migrated state. The caller (`restoreState`) recomputes
-  derived fields against the active pack and persists, so a backup's stale
-  derived fields can never poison the restored state.
-- Never log file contents (no PII in logs). The error message names the fix, not
-  the internals.
-
-**Export UI** (in `Backup.tsx`): "Save a backup" builds `serializeBackup(state,
-new Date().toISOString())`, wraps it in a `Blob({ type: "application/json" })`,
-and downloads it via an object URL on a temporary `<a download>` element (file
-name e.g. `the-long-road-<activePackId>-backup.json`). Revoke the URL after.
-Show a 100ms pressed state and a brief "Saved." confirmation. Mark the reminder
-as satisfied (see 2.7).
-
-**Import UI** (in `Backup.tsx`): "Restore from a backup" opens a labelled
-`<input type="file" accept="application/json,.json">`. On selection: reject
-`file.size > MAX_BACKUP_BYTES` up front; read with `file.text()`; run
-`parseBackup`. On `ok: false`, show the designed error inline and change no
-state. On `ok: true`: if the current device has logged miles, ask the walker to
-confirm the replacement (positive copy, keep-current option); otherwise proceed.
-On confirm, call `onRestore(result.state)` and show "Your journal is restored."
-Keep the input labelled and keyboard-reachable.
-
-### 2.7 The backup reminder (`journal/reminder.ts`)
+`useWalker` gains:
 
 ```ts
-// Pure decision, tested directly. No localStorage, no Date inside.
-export function shouldShowBackupReminder(args: {
-  hasEarnedEntry: boolean; // state has >= 1 reached milepost
-  dismissed: boolean;      // walker dismissed the reminder before
-  exported: boolean;       // walker has saved a backup before
-}): boolean {
-  return args.hasEarnedEntry && !args.dismissed && !args.exported;
+importDays: (adds: DayTotal[]) => void;
+// Builds the merged log via applyMerge (creating a fresh record first when
+// state is null), recomputes against the pack, sets pendingArrival to
+// newlyReached(before, after), persists optimistically like logMiles.
+```
+
+Crossings from an import open the Arrival queue exactly like typed miles:
+the earned words are the payoff for the walking the file proves, and the
+existing multi-crossing queue (EPIC 3) already handles many at once.
+
+### 2.10 The Importer view (`importer/Importer.tsx`)
+
+Opened from a subordinate control on the Trail's check-in card ("Add miles
+from a file", >= 44px), rendered in place of the Trail body via
+`view === "import"` (the Journal pattern). Component contract:
+
+```ts
+interface ImporterProps {
+  dailyLog: DailyLogEntry[];       // for planMerge
+  onImport: (adds: DayTotal[]) => void;
+  onClose: () => void;             // back to the trail
 }
-
-// Thin device-local flags (localStorage), kept out of the exported keepsake.
-export function readReminderFlags(): { dismissed: boolean; exported: boolean };
-export function markReminderDismissed(): void;
-export function markBackupExported(): void;
 ```
 
-UI: when `shouldShowBackupReminder` is true, render one quiet line above or
-beside the Save-a-backup control: "Keep a backup so your journal travels with
-you." with the "Save a backup" action and a subordinate "Dismiss" (>= 44px,
-labelled). Dismiss sets the flag; saving a backup sets the exported flag. Either
-one hides the reminder permanently (no nagging, ever). It never appears before
-the first earned entry (nothing to back up), and is never a modal or a blocking
-banner.
+Surface, top to bottom:
+- A labelled heading and ONE line listing the supported formats: "Drop a
+  date,miles CSV or an Apple Health export.xml. Everything is read on this
+  device." That second sentence is the privacy promise, stated where the
+  file is chosen.
+- A labelled file input (`accept=".csv,.xml,text/csv,text/xml,application/xml"`),
+  keyboard reachable.
+- **Boundary checks in order** (interpretation 11): `.zip` -> "Unzip
+  export.zip first, then choose the export.xml inside." Other unsupported
+  extension -> "Choose a date,miles CSV or an Apple Health export.xml."
+  Size over the format's cap -> a designed too-large message naming the cap.
+  Shape sniff failure -> the format's malformed message. All inline,
+  `role="alert"`, nothing applied.
+- **Progress** while scanning a large XML: an in-place progress line driven
+  by `onProgress` ("Reading your export. {n} of {m} MB.") with a Cancel
+  control (sets the abort flag; returns to the chooser). Never a spinner
+  with no way out; the chunk loop yields so the UI stays live.
+- **Preview and confirm** from the `MergePlan`, before any state changes:
+  the adds in one factual line ("Add {n} days, {miles} miles, from {first}
+  to {last}."), then one quiet line per non-zero skip reason ("{n} days you
+  already logged stay as you logged them." / "{n} days were after today and
+  were left out." / "{n} days were above 200 miles and were left out."), and
+  for XML any `skippedRecords` ("{n} records were in a form this app does
+  not read."). The confirm button ("Add these miles", the view's primary
+  action) renders only when `adds.length > 0`; otherwise the preview stands
+  with its counts and "Back to the trail". Confirm calls `onImport(adds)`
+  and closes; a crossing opens the Arrival on the Trail.
+- **Designed empty state** is the initial chooser itself: the formats line
+  tells the walker what this screen is for and what to do first.
+- **Accessibility and layout**: labelled view heading, focus moves to it on
+  open and returns to the trigger on close, Escape closes (aborting any
+  scan), full keyboard reach, visible focus, usable at 390px with no
+  horizontal scroll, controls >= 44px.
+- **Privacy**: no fetch, no Sentry breadcrumb, no Umami event carries file
+  names or contents anywhere in this flow (interpretation 14).
 
-### 2.8 `useWalker` change
+### 2.11 API contracts
 
-Add a restore path that mirrors the existing optimistic-persist pattern:
-
-```ts
-// state/useWalker.ts
-const restoreState = useCallback((incoming: WalkerState) => {
-  const next = recompute(incoming, pack); // derived fields consistent with the active pack
-  setState(next);
-  setPendingArrival([]); // a restore is not a fresh crossing; do not auto-open the Arrival
-  void saveState(next).catch((err) => reportError(err));
-}, [pack]);
-```
-
-Expose `restoreState` alongside the existing surface. No other `useWalker`
-behavior changes.
-
-### 2.9 Trail wiring (`trail/Trail.tsx`)
-
-- Add `view: "trail" | "journal"` local state. When `journal`, render
-  `<Journal pack={pack} state={state} onClose={() => setView("trail")} />` in
-  place of the trail body (the Arrival overlay logic is untouched).
-- Render a subordinate **keepsake card** (only when `status === "ready"`) that
-  holds the `<Backup>` controls and, when the walker has at least one earned
-  entry, the "Read your journal" control that sets `view = "journal"`. The card
-  is visibly subordinate to the check-in (QUALITY BAR §7): the check-in stays the
-  one primary action on the Trail.
-- **Import must be reachable when empty.** `<Backup>` renders "Restore from a
-  backup" whenever the Trail is ready, including the empty state, so a walker on
-  a brand-new device can restore before they have any journal. "Save a backup"
-  and "Read your journal" appear only once there is state/earned entries.
-- Wire `onRestore={restoreState}` from `useWalker` into `<Backup>`.
-- The Trail's existing empty, loading, and error states are unchanged.
-
-### 2.10 API contracts
-
-Unchanged. No application API, no server persistence, no network call, no LLM,
-no secrets. All new state is local (IndexedDB for the record; `localStorage`
-for the two reminder flags). The exported file leaves the device only when the
-walker saves it, and carries no traveler verbatim text (it is walker state
-only; the pack's text is never copied into the export). Server-side authorization
-and rate limiting remain not applicable (no endpoints); the one input boundary,
-import-file validation, is specified in 2.6.
+Unchanged. Static SPA assets and `/healthz` only; no server state, no auth
+endpoints, no mutation endpoints, no LLM. Rate limiting and server-side
+authorization remain not applicable. The app's real input boundaries are now
+three local files (backup JSON since EPIC 4; the CSV and the Apple XML from
+this EPIC), each validated for type, size, and shape before parsing, per
+QUALITY BAR §5.
 
 ---
 
-## 3. Ordered task list (each with acceptance criteria)
+## 3. Ordered task list (each with concrete acceptance criteria)
 
-### T1 — The interleave (`journal/buildJournal.ts`, pure)
-Build the pure spread builder and prove it.
-- **AC1.1** `buildJournal(state, pack)` returns `JournalSpread[]` per §2.3;
-  `npm run typecheck` passes with `strict`.
-- **AC1.2** Reached-only: given a state that reached `fx-1` but not `fx-2`, the
-  result contains a spread for `fx-1` and none for `fx-2`, and `fx-2`'s
-  `voices[].text` never appears in any returned spread. Proven in
-  `buildJournal.test.ts`.
-- **AC1.3** Correct from the first milepost and in order: with the fixture pack,
-  cumulative 5 yields one spread (`fx-1`); cumulative 12 yields two, ordered
-  `fx-1` then `fx-2`. The count equals `state.reachedMilepostIds.length`.
-- **AC1.4** `reachedDate` is the date of the first `dailyLog` entry whose running
-  cumulative reaches each milepost's `mileMark`; two mileposts crossed by one
-  check-in share that date and stay `mileMark`-ordered. Proven with a crafted
-  multi-day and a single-large-day log.
-- **AC1.5** `walkerLine` is the walker's saved facing line for the milepost, and
-  `""` when none. Proven with and without a `personalLog` entry.
+### T1 — Pack registry and the companion line
+- **AC1.1** `packs/index.ts` exports `journeyPacks` (containing the Muir
+  pack) and `packById`; `packById("muir-thousand-mile-walk")` returns the
+  pack and an unknown id returns `undefined`. Unit-tested.
+- **AC1.2** `JourneyPack.companion` is a required non-empty string: the
+  validator emits an S10 violation when it is missing or blank (proven in
+  `validatePack.test.ts`), `SCHEMA.md` documents it, and `muir.json` and the
+  fixture pack carry authored lines that validate.
+- **AC1.3** `muir.copy.test.ts` sweeps `companion` alongside the other
+  authored fields, and the Muir line passes (no dashes, no banned words, no
+  negative phrasing).
+- **AC1.4** `npm run validate:packs` passes.
 
-### T2 — The Journal reading surface (`journal/Journal.tsx`)
-Build the double-journal view and its styles per §2.4 and §2.5 (screen half).
-- **AC2.1** Given a reached milepost, the Journal renders a spread with the
-  place, the traveler dateline, every voice's verbatim text attributed, the
-  `approxNote`, the walker's `reachedDateline`, and the walker's facing line,
-  usable at 390px with no horizontal scroll.
-- **AC2.2** The front matter renders once: title, traveler, a factual scale line
-  ("{N} miles walked. {M} entries earned."), and the pack `framingNote`.
-- **AC2.3** Withhold guard: a state short of a milepost renders no spread and no
-  verbatim text for it anywhere in the Journal DOM. Proven against the fixture
-  and confirmed against the real Muir pack below a given `mileMark`.
-- **AC2.4** Designed empty state: opened with zero reached mileposts, the Journal
-  shows the what-and-first-step surface and "Back to the trail", never a blank
-  region.
-- **AC2.5** Accessibility: labelled view heading, a heading per spread, semantic
-  structure, focus moves in on open and returns on close, `Escape` returns to the
-  Trail, full keyboard reach, visible focus, the close control is >= 44px.
-- **AC2.6** An empty facing line shows the quiet on-screen prompt, not a blank
-  gap; a present line shows verbatim.
+### T2 — The boot gate and the Start screen
+- **AC2.1** Fresh database, no `SEED_DEMO`: the app renders Start (what it
+  is, the daily ritual line, the picker) and no Trail. Proven in
+  `App.test.tsx`.
+- **AC2.2** Existing record: the app renders the Trail for
+  `packById(activePackId)` and Start never mounts. An unknown `activePackId`
+  falls back to the Muir pack. Proven in `App.test.tsx`.
+- **AC2.3** Fresh database with `SEED_DEMO`: the app renders the Trail and
+  the existing seed runs; Start never mounts. Proven in `App.test.tsx`.
+- **AC2.4** The Start screen states the product and the daily check-in need
+  before commitment: the ritual copy ("once a day", the ten-second framing)
+  is asserted present in `Start.test.tsx`.
+- **AC2.5** The picker shows one card per registry pack with the title, the
+  years-and-scale line, and the pack's `companion` line; the card's button
+  calls `onBegin` with the pack id and shows a pressed state within 100ms.
+- **AC2.6** Choosing a journey creates and persists the walker record: after
+  `beginJourney`, a reload boots straight to the Trail (no Start). Proven in
+  `App.test.tsx` (record in fake IndexedDB) and `firstrun.e2e.ts`.
+- **AC2.7** Start's restore control accepts a valid backup file, calls
+  `onRestore` with the parsed state, and the app lands on the Trail with the
+  restored miles; an invalid or oversized file shows the designed
+  `BACKUP_MESSAGES` error inline and changes nothing. Proven in
+  `Start.test.tsx` and `backup.e2e.ts`.
+- **AC2.8** Accessibility and layout: a real `<h1>`, labelled controls,
+  keyboard reach, visible focus, no horizontal scroll at 390px, primary
+  button >= 44px. Proven in `Start.test.tsx` plus `mobile.e2e.ts`.
 
-### T3 — The print path (print stylesheet + `window.print()`)
-Wire the primary "Print your journal" action and the print stylesheet per §2.5.
-- **AC3.1** "Print your journal" calls `window.print()`, proven by a spy in
-  `Journal.test.tsx`.
-- **AC3.2** The print stylesheet exists in `app.css`: an `@media print` block
-  with `@page` margins, `.no-print { display: none }`, and per-spread page
-  breaks with `break-inside: avoid`. Proven by asserting the compiled CSS
-  contains these rules (read the stylesheet in a unit test) and/or a structural
-  test that the buttons carry `.no-print`.
-- **AC3.3** The printed artifact contains only earned entries: because print
-  renders the same mounted journal, the withhold guard (AC2.3) covers it; a test
-  asserts an unreached milepost's text is absent from the Journal DOM that print
-  reflows.
+### T3 — The guided walkthrough
+- **AC3.1** `walkthroughStep` implements the decision table in §2.6 exactly,
+  proven exhaustively over all input combinations in `walkthrough.test.ts`.
+- **AC3.2** Brand-new walker (fresh record, flag unset): the `log` step's
+  callout renders beside the check-in with its one imperative sentence and a
+  Skip control. Proven in `Trail.test.tsx`.
+- **AC3.3** Preview branch: a first log that crosses nothing advances to the
+  `preview` step anchored to the next-milepost card, then Next leads to the
+  `finish` step, and Done sets the flag; no callout renders afterwards, and
+  none renders after a remount. Proven in `Trail.test.tsx`.
+- **AC3.4** Reached branch: a first log that crosses the first milepost
+  shows no callout while the Arrival is open; after it closes, the `finish`
+  step renders once, and Done ends the walkthrough. Proven in
+  `Trail.test.tsx`.
+- **AC3.5** Skippable at any step: Skip at the `log`, `preview`, and
+  `finish` steps each sets the flag and removes the callout for good.
+  Proven in `Trail.test.tsx`.
+- **AC3.6** Returning users never see it: flag unset but the record has
+  miles at mount (covers pre-EPIC walkers, `SEED_DEMO`, and a restored
+  backup) marks the flag silently and renders no callout. Proven in
+  `Trail.test.tsx`.
+- **AC3.7** Every step's copy is one short imperative sentence; Skip, Next,
+  and Done are >= 44px, keyboard reachable, with visible focus; the callout
+  never overlays the Arrival dialog or the control it points at. Proven in
+  `Trail.test.tsx` plus the copy sweep.
 
-### T4 — Data export (`state/backup.ts` serialize + Save-a-backup UI)
-- **AC4.1** `serializeBackup(state, iso)` returns pretty JSON of a
-  `BackupEnvelope` with `format === BACKUP_FORMAT`, `version === state.schemaVersion`,
-  the given `exportedAt`, and the full `state`. Proven in `backup.test.ts`.
-- **AC4.2** The export carries no traveler verbatim text: the serialized string
-  for a reached-milepost state does not contain that milepost's `voices[].text`
-  (the export is walker state only). Proven in `backup.test.ts`.
-- **AC4.3** "Save a backup" triggers a download of a JSON blob (proven by
-  stubbing the anchor/URL and asserting a `download` with a `.json` name and the
-  serialized content), shows a pressed state and a "Saved." confirmation, and
-  marks the reminder exported. Proven in `Backup.test.tsx`.
+### T4 — The CSV parser and the merge plan (pure)
+- **AC4.1** `parseWalksCsv` accepts a file with and without the header,
+  tolerates blank and trailing lines, sums duplicate dates, rounds to
+  hundredths, and returns days in the file's date order. Proven in
+  `csv.test.ts`.
+- **AC4.2** `parseWalksCsv` rejects the whole file on the first malformed
+  line with the designed message carrying that line's number, for: a bad
+  date, a non-numeric value, a negative value, more than two decimals, and
+  a wrong column count. The message never contains file content. Proven in
+  `csv.test.ts`.
+- **AC4.3** `planMerge` skips (with correct counts) days already in the
+  dailyLog, days after `today`, days over `MAX_MILES_PER_CHECKIN`, and days
+  totaling zero or less; `adds` is ascending by date and `addedMiles` is the
+  rounded sum. Re-planning the same file against the merged log yields zero
+  adds (idempotence). Proven in `mergeDays.test.ts`.
+- **AC4.4** `applyMerge` returns the union sorted ascending by date, stable
+  for same-date entries. `useWalker.importDays` recomputes, persists, and
+  sets `pendingArrival` to exactly the newly crossed ids (a multi-milepost
+  import queues them ascending). Proven in `mergeDays.test.ts` and
+  `useWalker.test.ts`.
 
-### T5 — Data import (`state/backup.ts` parse + Restore UI + `restoreState`)
-- **AC5.1** Lossless round-trip (unit): for a non-trivial state (multi-day log,
-  a personal line), `parseBackup(serializeBackup(state, iso))` returns
-  `{ ok: true, state }` deep-equal to the original state. Proven in
-  `backup.test.ts`.
-- **AC5.2** `parseBackup` rejects, with `{ ok: false }` and a designed message
-  and no throw: non-JSON text, a wrong `format`, a missing/wrong-typed `state`
-  field, and text larger than `MAX_BACKUP_BYTES`. A `v1`-schema envelope is
-  accepted and migrated to `v2`.
-- **AC5.3** `useWalker.restoreState(state)` recomputes derived fields against the
-  pack, persists, sets state, and clears `pendingArrival` (no Arrival auto-opens
-  on restore). Proven in `useWalker.test.ts`.
-- **AC5.4** Restore UI: choosing a valid file on a device with existing logged
-  miles asks for confirmation before replacing and offers to keep the current
-  state; choosing it on a fresh device restores without a prompt; an invalid file
-  shows the inline designed error and changes no state. Proven in
-  `Backup.test.tsx`.
+### T5 — The Apple Health scanner
+- **AC5.1** The scanner counts only `DistanceWalkingRunning` records,
+  parses attributes regardless of order, keys days by the `startDate` date
+  part, and converts `mi`, `km`, and `m` correctly. Proven in
+  `appleHealth.test.ts` with realistic record snippets.
+- **AC5.2** Per-day source rule: a day with watch and phone records yields
+  the largest single source's sum, never the sum of sources. Proven with a
+  crafted two-source day.
+- **AC5.3** A record split across two pushed chunks is parsed exactly once
+  (the carry works); unknown units and malformed values increment
+  `skippedRecords` without failing the scan. Proven in
+  `appleHealth.test.ts`.
+- **AC5.4** `finish()` with zero matching records returns the designed
+  wrong-file error; `scanHealthExport` reports monotonic byte progress and
+  stops promptly when the abort flag is set. Proven in
+  `appleHealth.test.ts` (driver run against a small in-memory File).
 
-### T6 — The gentle backup reminder (`journal/reminder.ts` + UI)
-- **AC6.1** `shouldShowBackupReminder` returns true only when there is an earned
-  entry and neither dismissed nor exported; false in every other combination.
-  Proven exhaustively in `reminder.test.ts`.
-- **AC6.2** The reminder renders its positive line and "Save a backup" only when
-  the decision is true; dismissing it (sets the flag) and saving a backup (sets
-  exported) each hide it, and it stays hidden on re-render. It never renders
-  before the first earned entry. Proven in `Backup.test.tsx`.
+### T6 — The Importer view and Trail wiring
+- **AC6.1** The Trail's check-in card carries the subordinate "Add miles
+  from a file" control (>= 44px); it opens the Importer view in place of
+  the Trail body and the check-in remains the Trail's single primary
+  action. Closing returns focus to the trigger. Proven in `Trail.test.tsx`.
+- **AC6.2** The Importer states the two supported formats and the on-device
+  promise in its opening line, with a labelled file input. Proven in
+  `Importer.test.tsx`.
+- **AC6.3** Boundary rejections each show their designed inline error and
+  change no state: a `.zip` (the unzip message), an unsupported extension
+  (the formats message), an over-cap CSV and an over-cap XML (the size
+  messages), a CSV failing the shape sniff, and an XML whose first chunk
+  lacks `<?xml`/`<HealthData`. Proven in `Importer.test.tsx`.
+- **AC6.4** A valid CSV produces the preview with the adds line and correct
+  per-reason skip counts; "Add these miles" renders only when at least one
+  day would be added; confirming calls `onImport` with the plan's adds and
+  closes. Proven in `Importer.test.tsx`.
+- **AC6.5** An import that crosses mileposts opens the Arrival queue on the
+  Trail, and the earned entries render exactly as if the miles were typed.
+  Proven in `Trail.test.tsx` (integration) and `import.e2e.ts`.
+- **AC6.6** A large-XML scan shows byte progress with a working Cancel;
+  Escape closes the view and aborts a running scan. Proven in
+  `Importer.test.tsx`.
+- **AC6.7** An import that adds the walker's first miles marks the
+  walkthrough done. Proven in `Trail.test.tsx`.
+- **AC6.8** The view is usable at 390px with no horizontal scroll, labelled
+  heading, focus in on open and back on close, full keyboard reach, visible
+  focus. Proven in `Importer.test.tsx` and `mobile.e2e.ts`.
 
-### T7 — Trail wiring, navigation, and designed states
-Wire the view toggle, the keepsake card, and restore per §2.9.
-- **AC7.1** A subordinate "Read your journal" control on the Trail (shown once at
-  least one entry is earned) opens the Journal view; "Back to the trail" returns.
-  The check-in remains the Trail's single primary action.
-- **AC7.2** "Restore from a backup" is reachable from the Trail's ready state
-  including the empty state (fresh-device restore); "Save a backup" and "Read
-  your journal" appear only once there is state/earned entries.
-- **AC7.3** Restoring from the Trail replaces the walker state and re-renders the
-  odometer, reached rows, and journal from the imported data. Proven by a Trail
-  component test and the e2e in T8.
+### T7 — E2E migration and the new journeys
+- **AC7.1** `e2e/helpers.ts` provides `beginMuirJourney(page)` (navigate,
+  choose Muir on Start) and `markWalkthroughDone(page)` (init-script flag);
+  the existing arrival, journal, backup, and persistence specs use them and
+  pass unchanged in substance.
+- **AC7.2** `firstrun.e2e.ts` passes: a fresh context sees Start (the
+  product line, the ritual line, the Muir card with its companion line);
+  beginning the journey lands on the Trail with the `log` callout; logging
+  6 miles opens the Arrival; closing it shows the `finish` step; Done ends
+  the walkthrough; a reload boots straight to the Trail with no Start and
+  no callout.
+- **AC7.3** `firstrun.e2e.ts` also proves the preview branch and skip: in a
+  fresh context, logging 2 miles shows the `preview` step against the
+  next-milepost card, and Skip removes the walkthrough permanently across a
+  reload.
+- **AC7.4** `import.e2e.ts` passes: from a begun journey, import
+  `fixtures/walks.csv` (a multi-day file whose total crosses the first
+  milepost), see the preview counts, confirm, and the Arrival opens with
+  the verbatim entry; import `fixtures/export-small.xml` and see its days
+  added with correct totals (including a km-unit record and a two-source
+  day proving the conversion and the source rule); `walks-malformed.csv`,
+  `export-empty.xml`, and `notes.txt` each show their designed error and
+  change nothing; a re-import of `walks.csv` yields a zero-add preview with
+  the already-logged count and no confirm control.
+- **AC7.5** `import.e2e.ts` asserts no non-static network request occurs
+  during the whole import flow (the on-device promise, interpretation 14).
+- **AC7.6** `mobile.e2e.ts` extends to Start and the Importer at 390px: no
+  horizontal scroll, and the begin button, Skip control, and file inputs
+  are tappable (>= 44px).
+- **AC7.7** `backup.e2e.ts` gains the Start-restore path: save a backup from
+  a walked state, clear storage, and restore it from the Start screen's
+  restore control, landing on the Trail with the odometer and reached rows
+  intact and no walkthrough.
 
-### T8 — Sweep, e2e, and definition of done
-- **AC8.1** `copy.test.ts` includes `src/journal/Journal.tsx`,
-  `src/journal/Backup.tsx`, `src/journal/reminder.ts`, and `src/state/backup.ts`,
-  and passes. A manual sweep of every string this EPIC adds (journal headings,
-  empty state, empty-line prompt, buttons, reminder line, confirm and error and
-  success copy, file name) finds no em/en dashes, no " - " breaks, no banned
-  vocabulary, and no negative empty-state phrasing.
-- **AC8.2** `journal.e2e.ts` passes: from the seeded (or freshly crossed) app,
-  open the journal, see a spread with the traveler's verbatim entry and the
-  walker's reached line, see the "Print your journal" button, and confirm no
-  horizontal scroll at a 390px viewport.
-- **AC8.3** `backup.e2e.ts` passes: cross the first Muir milepost, "Save a
-  backup" (capture the download), delete the IndexedDB database and reload to the
-  empty state, "Restore from a backup" with the saved file, and confirm the
-  odometer and the reached row come back with the same entry.
-- **AC8.4** `npm run typecheck`, `npm run lint`, `npm test`,
+### T8 — Sweep, README, and the gate
+- **AC8.1** `copy.test.ts` includes `firstrun/Start.tsx`,
+  `firstrun/Walkthrough.tsx`, `firstrun/walkthrough.ts`,
+  `importer/Importer.tsx`, `importer/csv.ts`, `importer/appleHealth.ts`,
+  and `importer/mergeDays.ts`, and passes. A manual sweep of every string
+  this EPIC adds (Start copy, the companion lines, walkthrough steps,
+  importer formats line, progress, preview, skip-reason lines, every error
+  message, e2e fixture prose) finds no em/en dashes, no " - " breaks, no
+  banned vocabulary, and no negative empty-state phrasing.
+- **AC8.2** `README.md` gains the first-run flow (choose a journey, the
+  walkthrough) and the two import formats in stranger-facing words, and the
+  code map covers `firstrun/` and `importer/`. No factory internals.
+- **AC8.3** `npm run typecheck`, `npm run lint`, `npm test`,
   `npm run validate:packs`, and `npm run test:e2e` all pass.
-- **AC8.5** The non-goals held: no cloud sync, account, share link, PDF/print
-  library or external PDF service, journey picker, walkthrough, health-export
-  import, map, unit toggle, runtime generation, or schema migration was added.
-  `README.md`'s code map stays accurate and carries no factory internals.
+- **AC8.4** The non-goals held: no account surface, no journey switcher or
+  second concurrent journey, no third import format, no background sync, no
+  placeholder journey card, no settings screen, no new dependency, no
+  walker-schema migration, and no change to the withholding, Arrival,
+  Journal, or backup-envelope logic beyond the wiring named in §2.1.
 
 ---
 
-## 4. Test plan (which automated test proves each criterion)
+## 4. Test plan (which automated tests prove each planner criterion)
 
-Every criterion is proven by an automated test under `web/`, run by `npm test`
-and `npm run test:e2e`.
+All tests run under `web/` via `npm test` and `npm run test:e2e`.
 
-### Planner acceptance criterion → tests
-- **Journal interleaves earned entries with the walker's line, correct from mile
-  one, 120 miles owns 120 miles of journal** → `buildJournal.test.ts` (AC1.2,
-  AC1.3, AC1.4, AC1.5), `Journal.test.tsx` (AC2.1, AC2.2), `journal.e2e.ts`
-  (AC8.2).
-- **Printable facing-page artifact suitable for keeping** → `Journal.test.tsx`
-  print spy and structure (AC3.1, AC3.3), the stylesheet assertion (AC3.2),
-  `journal.e2e.ts` (print button present, AC8.2).
-- **Data export writes complete state as one JSON file; import validates and
-  restores, round-tripping losslessly on a fresh browser or device** →
-  `backup.test.ts` (AC4.1, AC4.2, AC5.1, AC5.2), `Backup.test.tsx` (AC4.3,
-  AC5.4), `useWalker.test.ts` (AC5.3), `backup.e2e.ts` full wipe-and-restore
-  round trip (AC8.3).
-- **A gentle positive reminder to keep a backup, without nagging** →
-  `reminder.test.ts` (AC6.1), `Backup.test.tsx` (AC6.2).
-- **Print and export legible; all states designed; mobile-first** →
-  `Journal.test.tsx` empty state and a11y and 390px (AC2.4, AC2.5),
-  `journal.e2e.ts` no horizontal scroll at 390px (AC8.2), the print stylesheet
-  (AC3.2), designed import error and restore confirm (AC5.4).
+- **"The Start screen states plainly what the product does and that it
+  needs a daily check-in, before the walker commits, in short positive
+  copy"** -> `Start.test.tsx` (AC2.4), `App.test.tsx` gate (AC2.1),
+  `firstrun.e2e.ts` (AC7.2), the copy sweep (AC8.1).
+- **"The journey picker lets the walker choose a journey and shows a
+  one-line 'who you walk with' for each"** -> `Start.test.tsx` (AC2.5),
+  registry and companion validation (AC1.1 to AC1.3), persistence of the
+  choice (AC2.6), `firstrun.e2e.ts` (AC7.2).
+- **"A guided first run of 2 to 4 steps anchored to the real controls ...
+  skippable at any step, appears only until first success, and never again
+  for a returning user"** -> `walkthrough.test.ts` decision table (AC3.1),
+  `Trail.test.tsx` both branches, skip, and returning suppression (AC3.2 to
+  AC3.7), import-path completion (AC6.7), `firstrun.e2e.ts` both branches
+  plus reload suppression (AC7.2, AC7.3).
+- **"Health-export import: a date,miles CSV and Apple Health export.xml
+  walking/running distance, parsed entirely on device, validated at the
+  boundary for type, size, and shape before parsing, with a clear list of
+  supported formats and a designed error for a malformed or unsupported
+  file"** -> `csv.test.ts` (AC4.1, AC4.2), `appleHealth.test.ts` (AC5.1 to
+  AC5.4), `mergeDays.test.ts` and `useWalker.test.ts` honest-merge rules
+  (AC4.3, AC4.4), `Importer.test.tsx` formats line, boundary rejections,
+  preview/confirm, progress and cancel (AC6.2 to AC6.6), `import.e2e.ts`
+  end to end including designed errors, idempotent re-import, and the
+  no-network assertion (AC7.4, AC7.5).
+- **"All states designed; mobile-first; no PII leaves the device"** ->
+  designed states across `Start.test.tsx`, `Trail.test.tsx`,
+  `Importer.test.tsx` (errors, progress, previews, callouts);
+  `mobile.e2e.ts` at 390px (AC7.6); the no-network assertion (AC7.5); the
+  boot loading surface (§2.4); the copy sweep (AC8.1).
 
-### Withholding integrity (the differentiator)
-- **Earned-only journal / print / export** → `buildJournal.test.ts` reached-only
-  (AC1.2), `Journal.test.tsx` withhold guard (AC2.3), print reflow of the same
-  guarded DOM (AC3.3), export carries no verbatim text (AC4.2).
-
-### Copy and gate
-- **copy.test.ts** → AC8.1 (new files swept).
-- **typecheck / lint / test / validate:packs / test:e2e** → AC8.4.
+### Differentiator integrity (honest earning through the second path)
+- Per-day source rule and unit conversion -> AC5.1, AC5.2, and the
+  two-source day in `export-small.xml` (AC7.4).
+- Never double count: already-logged days skipped, idempotent re-import ->
+  AC4.3, AC7.4.
+- Bounds shared with the manual path (200-mile day cap, no future days) ->
+  AC4.3.
+- Imported crossings pay off through the real Arrival ceremony -> AC6.5,
+  AC7.4.
 
 ---
 
 ## 5. Definition of done
-- The Journal renders the double journal: one facing-page spread per reached
-  milepost in journey order, the traveler's verbatim entry (dateline, place,
-  voices, framing) beside the walker's reached date and facing line, correct
-  from the first earned milepost, so a walker who stops at mile 120 owns exactly
-  those spreads.
-- The keepsake is earned-only: no unreached milepost's verbatim text appears in
-  the journal, the print output, or the exported file, and this is proven at the
-  interleave, the render, and the export.
-- "Print your journal" produces a legible, page-broken facing-page artifact
-  through a browser print stylesheet and `window.print()`, with no PDF library
-  and no external service.
-- Export writes the complete walker state to one JSON file; import validates it
-  at the boundary, migrates an older schema forward, restores it, and round-trips
-  losslessly on a fresh browser or device, proven by a wipe-and-restore e2e.
-- A quiet, positive backup reminder appears once an entry is earned, points at
-  "Save a backup", and disappears for good once dismissed or once a backup is
-  saved. It never nags and never blocks.
-- All new surfaces have designed empty and error states, interaction feedback is
-  synchronous (< 100ms), and every surface is usable and legible at 390px with
-  visible focus and full keyboard reach.
-- `npm run typecheck`, `npm run lint`, `npm test`, `npm run validate:packs`, and
-  `npm run test:e2e` all pass. The copy sweep is clean across every new string.
-- No non-goal was built (no cloud sync, account, share link, PDF library or
-  external PDF service, picker, walkthrough, health-export import, map, unit
-  toggle, runtime generation, or schema migration).
-```
+
+- A fresh visitor lands on a Start screen that says what the product is and
+  that it asks for a once-a-day check-in, in short positive copy, before any
+  commitment; choosing the journey (with its authored companion line)
+  creates the local record, and every later visit boots straight to the
+  Trail.
+- A brand-new walker is walked to the differentiator by 2 to 4 anchored
+  imperative steps: log once, then reach the first verbatim entry through
+  the Arrival or preview it on the next-milepost card. The walkthrough is
+  skippable at every step, ends at first success, and never appears for a
+  returning, seeded, or restored walker.
+- The walker can add miles from a `date,miles` CSV or an Apple Health
+  `export.xml`, parsed entirely on this device in bounded memory, validated
+  for type, size, and shape before parsing, with the supported formats
+  listed where the file is chosen, designed errors for every rejection, a
+  preview with per-reason skip counts before anything changes, and merge
+  rules that never double count a day, never accept an implausible or
+  future day, and re-import idempotently. Crossings earned by an import
+  open the Arrival exactly like typed miles.
+- `SEED_DEMO` still shows the differentiator within a minute with Start
+  bypassed; the existing arrival, journal, backup, and persistence e2e
+  journeys pass through the new front door via the shared helper; restore
+  is reachable from Start on a fresh device.
+- Every new surface has designed states, sub-100ms feedback, full keyboard
+  reach, visible focus, and is usable at 390px with no horizontal scroll
+  and >= 44px touch targets. No file name or content reaches the network,
+  Sentry, or Umami.
+- `npm run typecheck`, `npm run lint`, `npm test`, `npm run validate:packs`,
+  and `npm run test:e2e` all pass, and the copy sweep is clean across every
+  string this EPIC adds.
+- No non-goal was built: no accounts, no second concurrent journey or
+  journey switcher, no third import format, no background sync, no settings
+  screen, no new dependency, no walker-schema change.
