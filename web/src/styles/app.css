@@ -721,7 +721,6 @@ form.checkin label {
 }
 
 .importer-back,
-.importer-back-preview,
 .importer-cancel {
   min-height: 44px;
   padding: 0 16px;
@@ -821,7 +820,6 @@ form.checkin label {
 
 .importer-confirm:active,
 .importer-back:active,
-.importer-back-preview:active,
 .importer-cancel:active {
   transform: translateY(1px);
 }
