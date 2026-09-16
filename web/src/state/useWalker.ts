@@ -9,6 +9,8 @@ import { env } from "../env";
 import { reportError } from "../observability/sentry";
 import { todayISO } from "../trail/validate";
 import { parseFacingLine } from "../trail/facingLine";
+import { applyMerge } from "../importer/mergeDays";
+import type { DayTotal } from "../importer/csv";
 
 export type WalkerStatus = "loading" | "ready" | "error";
 
@@ -16,6 +18,7 @@ export interface UseWalker {
   status: WalkerStatus;
   state: WalkerState | null; // null means no miles logged yet (empty trail)
   logMiles: (miles: number) => void;
+  importDays: (adds: DayTotal[]) => void; // merge parsed import days, crossings open the Arrival
   saveFacingLine: (milepostId: string, text: string) => void;
   restoreState: (incoming: WalkerState) => void; // replace state from a validated backup
   pendingArrival: string[]; // ids newly reached by the most recent logMiles
@@ -79,6 +82,23 @@ export function useWalker(pack: JourneyPack): UseWalker {
     [pack],
   );
 
+  // Merge parsed import days into the log, recompute, and queue any newly
+  // crossed mileposts so an import pays off through the Arrival exactly like
+  // typed miles. Optimistic, like logMiles.
+  const importDays = useCallback(
+    (adds: DayTotal[]) => {
+      setState((prev) => {
+        const base = prev ?? freshState(pack.id, new Date().toISOString());
+        const dailyLog = applyMerge(base.dailyLog, adds);
+        const next = recompute({ ...base, dailyLog }, pack);
+        setPendingArrival(newlyReached(base, next));
+        void saveState(next).catch((err) => reportError(err));
+        return next;
+      });
+    },
+    [pack],
+  );
+
   const saveFacingLine = useCallback((milepostId: string, text: string) => {
     const parsed = parseFacingLine(text);
     setState((prev) => {
@@ -105,5 +125,5 @@ export function useWalker(pack: JourneyPack): UseWalker {
 
   const clearPendingArrival = useCallback(() => setPendingArrival([]), []);
 
-  return { status, state, logMiles, saveFacingLine, restoreState, pendingArrival, clearPendingArrival };
+  return { status, state, logMiles, importDays, saveFacingLine, restoreState, pendingArrival, clearPendingArrival };
 }

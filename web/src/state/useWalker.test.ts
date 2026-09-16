@@ -36,6 +36,45 @@ function staleBackup(): WalkerState {
   };
 }
 
+describe("useWalker.importDays (AC4.4)", () => {
+  it("merges days, recomputes, persists, and queues newly crossed mileposts", async () => {
+    const { result } = renderHook(() => useWalker(fixturePack));
+    await waitFor(() => expect(result.current.status).toBe("ready"));
+
+    // Two days that together cross fx-1 (mile 5) and fx-2 (mile 12): 8 + 5 = 13.
+    act(() =>
+      result.current.importDays([
+        { date: "2026-06-02", miles: 5 },
+        { date: "2026-06-01", miles: 8 },
+      ]),
+    );
+
+    const state = result.current.state!;
+    expect(state.cumulativeMiles).toBe(13);
+    // Log is sorted ascending by date.
+    expect(state.dailyLog.map((e) => e.date)).toEqual(["2026-06-01", "2026-06-02"]);
+    // Both crossings queue ascending by mileMark.
+    expect(result.current.pendingArrival).toEqual(["fx-1", "fx-2"]);
+
+    await waitFor(async () => {
+      expect(await loadState()).toEqual(state);
+    });
+  });
+
+  it("creates a fresh record when importing the first miles", async () => {
+    const { result } = renderHook(() => useWalker(fixturePack));
+    await waitFor(() => expect(result.current.status).toBe("ready"));
+    expect(result.current.state).toBeNull();
+
+    act(() => result.current.importDays([{ date: "2026-06-01", miles: 2 }]));
+
+    expect(result.current.state!.cumulativeMiles).toBe(2);
+    expect(result.current.state!.activePackId).toBe(fixturePack.id);
+    // Below fx-1 (mile 5): nothing crossed.
+    expect(result.current.pendingArrival).toEqual([]);
+  });
+});
+
 describe("useWalker.restoreState", () => {
   it("recomputes, persists, sets state, and clears pendingArrival", async () => {
     const { result } = renderHook(() => useWalker(fixturePack));
