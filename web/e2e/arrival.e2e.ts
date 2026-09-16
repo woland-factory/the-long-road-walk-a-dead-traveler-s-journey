@@ -1,10 +1,12 @@
 import { test, expect } from "@playwright/test";
+import { beginMuirJourney, markWalkthroughDone } from "./helpers";
 
 // AC8.2: from a fresh app, cross the first Muir milepost, read the verbatim
 // entry in the Arrival, write a facing line, return to the Trail, then re-open
 // the reached row and see the same entry with the saved line.
 test("cross a milepost, read the entry, write a line, return, and re-open it", async ({ page }) => {
-  await page.goto("/");
+  await markWalkthroughDone(page);
+  await beginMuirJourney(page);
   await expect(page.getByText("Your road starts here")).toBeVisible();
 
   // Cross the first milepost (mile 6): the Arrival ceremony opens.

@@ -1,10 +1,13 @@
 import { test, expect } from "@playwright/test";
+import { beginMuirJourney, markWalkthroughDone } from "./helpers";
 
-// AC8.3: the full wipe-and-restore round trip. Cross the first Muir milepost,
-// save a backup, delete the IndexedDB database, reload to the empty state,
-// restore from the saved file, and see the same miles and reached row again.
-test("a saved backup survives a full wipe and restores the journal", async ({ page }) => {
-  await page.goto("/");
+// AC8.3 / AC7.7: the full wipe-and-restore round trip through the new front
+// door. Cross the first Muir milepost, save a backup, delete the database and
+// local flags, then restore from the Start screen's restore control and land on
+// the Trail with the odometer and reached row intact and no walkthrough.
+test("a saved backup restores from the Start screen after a full wipe", async ({ page }) => {
+  await markWalkthroughDone(page);
+  await beginMuirJourney(page);
   await expect(page.getByText("Your road starts here")).toBeVisible();
 
   // Cross the first milepost and close the Arrival.
@@ -38,25 +41,22 @@ test("a saved backup survives a full wipe and restores the journal", async ({ pa
   );
   await page.evaluate(() => window.localStorage.clear());
 
-  // A fresh device: the empty trail, with restore reachable.
+  // A fresh device now lands on the Start screen, with restore reachable.
   await page.goto("/");
-  await expect(page.getByText("Your road starts here")).toBeVisible();
-  await expect(page.getByTestId("odometer-value")).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Choose a journey" })).toBeVisible();
 
   // Restore from the saved file: no confirm prompt on a fresh device.
   await page.getByLabel("Restore from a backup").setInputFiles(savedPath!);
-  await expect(page.getByText("Your journal is restored.")).toBeVisible();
 
-  // The odometer and the reached row come back with the same entry.
+  // The Trail comes back with the same miles and reached row, no walkthrough.
   await expect(page.getByTestId("odometer-value")).toHaveText("6");
-  const row = page.getByTestId("reached-row-muir-01-louisville");
-  await expect(row).toBeVisible();
+  await expect(page.getByTestId("reached-row-muir-01-louisville")).toBeVisible();
+  await expect(page.getByText("Return each day to earn the next entry.")).toHaveCount(0);
+  await expect(page.getByText("Log the miles you walked today.")).toHaveCount(0);
 
   // And the restored state survives a reload (it was persisted).
   await page.reload();
   await expect(page.getByTestId("odometer-value")).toHaveText("6");
-
-  // The earned entry reads again from the restored state.
   await page.getByTestId("reached-row-muir-01-louisville").click();
   await expect(page.getByRole("dialog").getByText(/My plan was simply to push on/)).toBeVisible();
 });

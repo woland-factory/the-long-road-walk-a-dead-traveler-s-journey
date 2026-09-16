@@ -1,10 +1,12 @@
 import { test, expect } from "@playwright/test";
+import { beginMuirJourney, markWalkthroughDone } from "./helpers";
 
 // AC7.2: crossing the first Muir milepost opens the Arrival with the verbatim
 // entry. After returning to the Trail and reloading, the odometer and reached
 // row persist, and re-opening the row reads the same entry again.
 test("a reached entry is re-readable from the Trail and survives a reload", async ({ page }) => {
-  await page.goto("/");
+  await markWalkthroughDone(page);
+  await beginMuirJourney(page);
   await expect(page.getByText("Your road starts here")).toBeVisible();
 
   // Cross the first Muir milepost (mile 6): the Arrival opens automatically.

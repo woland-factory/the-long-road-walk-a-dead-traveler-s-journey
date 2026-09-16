@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { beginMuirJourney, markWalkthroughDone } from "./helpers";
 
 test.use({ viewport: { width: 390, height: 780 } });
 
@@ -6,7 +7,8 @@ test.use({ viewport: { width: 390, height: 780 } });
 // and read a full spread: the traveler's verbatim entry beside the walker's
 // reached line, with the print action present and no horizontal scroll at 390px.
 test("the double journal shows an earned spread beside the walker's line", async ({ page }) => {
-  await page.goto("/");
+  await markWalkthroughDone(page);
+  await beginMuirJourney(page);
   await expect(page.getByText("Your road starts here")).toBeVisible();
 
   // Cross the first Muir milepost (mile 6): the Arrival opens.
@@ -52,7 +54,8 @@ test("the double journal shows an earned spread beside the walker's line", async
 // The withhold boundary holds in the journal: an unreached milepost has no
 // spread and none of its verbatim text anywhere in the DOM.
 test("the journal withholds every unreached entry", async ({ page }) => {
-  await page.goto("/");
+  await markWalkthroughDone(page);
+  await beginMuirJourney(page);
   await expect(page.getByText("Your road starts here")).toBeVisible();
 
   await page.getByLabel("Miles walked today").fill("6");

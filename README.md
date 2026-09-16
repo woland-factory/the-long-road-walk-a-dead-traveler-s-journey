@@ -13,6 +13,30 @@ earned entry beside your own line for that milepost, prints as a facing-page
 keepsake through the browser's print dialog, and travels with you as a single
 JSON backup file you can save and restore on any device.
 
+## First run
+
+The first time you open the app, a Start screen tells you what it is and that it
+asks for a short daily check-in, then lets you choose a journey. Choosing one
+creates your local record and drops you on the Trail. A short guided path points
+at the check-in and walks you to your first entry, either by crossing the first
+milepost or previewing it on the next-milepost card. You can skip it at any
+step, and it never shows again once you have logged a walk.
+
+## Adding miles from a file
+
+Besides typing your miles, you can add them from a file. Two formats are read,
+both parsed entirely on your device with nothing sent anywhere:
+
+- A `date,miles` CSV, one row per day, like `2026-06-01,3.5`.
+- An Apple Health `export.xml` (walking and running distance). Unzip the
+  `export.zip` the Health app gives you and choose the `export.xml` inside.
+
+Before anything changes, the app shows a preview: how many days it will add and
+why it left any out. It never counts a day you already logged twice, never
+accepts a day above 200 miles or dated in the future, and re-importing the same
+file adds nothing. Miles that cross a milepost earn the traveler's words exactly
+like typed miles do.
+
 ## The journeys
 
 The first journey is John Muir's *A Thousand-Mile Walk to the Gulf*, his 1867
@@ -74,10 +98,13 @@ baked into the built bundle. See `.env.example` for the four variables:
 ```
 web/src/
   env.ts             runtime config reader
-  packs/             journey pack schema, the Muir pack, validators, sources
+  packs/             journey pack schema, the registry, the Muir pack, validators
   state/             IndexedDB storage, migrations, odometer logic, backup file
+  firstrun/          the Start screen, the journey picker, the guided walkthrough
+  importer/          the CSV and Apple Health parsers, the merge plan, the import view
   trail/             the Trail screen and its parts
   journal/           the double journal, print styles hook-in, backup controls
+  lib/               small shared helpers (reading a chosen file as text)
   observability/     Sentry and Umami wiring
 web/e2e/             Playwright end-to-end tests
 Dockerfile           multi-stage build, nginx serve
