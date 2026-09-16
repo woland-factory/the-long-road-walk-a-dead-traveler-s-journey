@@ -17,6 +17,7 @@ const twoVoicePack: JourneyPack = {
   totalMiles: 100,
   source: { name: "Test", author: "Test", gutenbergId: 0, url: "https://example.com", license: "Test" },
   framingNote: "A framing note that puts the period words in context.",
+  companion: "A sample companion line for the two-voice trail.",
   mileposts: [
     {
       id: "tv-1",

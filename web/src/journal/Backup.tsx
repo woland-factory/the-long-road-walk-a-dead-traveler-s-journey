@@ -12,6 +12,7 @@ import {
   readReminderFlags,
   shouldShowBackupReminder,
 } from "./reminder";
+import { readFileText } from "../lib/readFileText";
 
 // Save a backup, restore from one, and the gentle one-line reminder.
 // Everything here is local: the file the walker downloads is the only copy
@@ -23,17 +24,6 @@ interface BackupProps {
 }
 
 type Notice = { kind: "saved" | "restored" | "error"; message: string };
-
-// File.text() is missing from some engines; FileReader covers them all.
-function readFileText(file: File): Promise<string> {
-  if (typeof file.text === "function") return file.text();
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result ?? ""));
-    reader.onerror = () => reject(reader.error);
-    reader.readAsText(file);
-  });
-}
 
 export function Backup({ state, onRestore }: BackupProps) {
   const [flags, setFlags] = useState(readReminderFlags);
