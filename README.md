@@ -6,9 +6,10 @@ reaches a milepost on the route, the app hands you what the traveler wrote at
 that spot, keyed to the ground you reached. This is a deliberate daily
 check-in, not background step tracking, so you enter your miles by hand.
 
-This repository ships the check-in loop and the first real journey: John Muir's
-1867 walk to the Gulf. A single Trail screen, local persistence, and the
-verified Muir diary keyed to the miles you reach. The double journal lays each
+This repository ships the check-in loop and two real journeys to choose from:
+John Muir's 1867 walk to the Gulf, and the first chapter of the Lewis and Clark
+expedition up the Missouri in 1804. A single Trail screen, local persistence,
+and verified diaries keyed to the miles you reach. The double journal lays each
 earned entry beside your own line for that milepost, prints as a facing-page
 keepsake through the browser's print dialog, and travels with you as a single
 JSON backup file you can save and restore on any device.
@@ -46,6 +47,17 @@ which is in the public domain. The words you earn at each milepost are Muir's
 own, verbatim. We frame them, and we never edit them. Muir wrote in 1867 and
 carries the views and language of his time, so the app shows a short framing
 note beside the diary.
+
+The second journey is the first chapter of the Lewis and Clark expedition:
+*Up the Missouri to Fort Mandan, 1804*, about 1,600 river miles from St. Louis
+to the Mandan villages where the Corps wintered. This is one chapter, not the
+whole 3,700-mile expedition, and it ends at Fort Mandan. The diary text comes
+from [Project Gutenberg ebook #8419](https://www.gutenberg.org/cache/epub/8419/pg8419.txt),
+in the public domain. Many days on this stretch were written up by more than one
+keeper, so several mileposts hand you two voices at once, Clark beside Lewis or
+Ordway on the same ground. The 1804 entries carry the views and language of
+their time, including the expedition's encounters with Native nations, so the
+app shows a framing note beside them. The words are verbatim and unedited.
 
 Packs live in `web/src/packs/`. Each pack is a JSON file plus a typed re-export,
 validated against its committed public-domain source. The schema and its rules
@@ -98,7 +110,7 @@ baked into the built bundle. See `.env.example` for the four variables:
 ```
 web/src/
   env.ts             runtime config reader
-  packs/             journey pack schema, the registry, the Muir pack, validators
+  packs/             journey pack schema, the registry, the Muir and Lewis & Clark packs, validators
   state/             IndexedDB storage, migrations, odometer logic, backup file
   firstrun/          the Start screen, the journey picker, the guided walkthrough
   importer/          the CSV and Apple Health parsers, the merge plan, the import view
