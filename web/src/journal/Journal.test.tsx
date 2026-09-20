@@ -1,11 +1,12 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Journal } from "./Journal";
 import { fixturePack } from "../packs/fixturePack";
 import { muirPack } from "../packs/muir";
+import { lewisClarkPack } from "../packs/lewisclark";
 import { freshState, addMiles } from "../state/odometer";
 import { upsertFacingLine } from "../state/personalLog";
 import type { JourneyPack } from "../packs/types";
@@ -139,5 +140,33 @@ describe("the print path (AC3.1, AC3.2)", () => {
     expect(css).toMatch(/\.no-print\s*\{\s*display:\s*none/);
     expect(css.includes("break-inside: avoid")).toBe(true);
     expect(css.includes("break-after: page")).toBe(true);
+  });
+});
+
+describe("a real multi-voice spread (AC6.2)", () => {
+  const multi = lewisClarkPack.mileposts.find(
+    (m) => new Set(m.voices.map((v) => v.author)).size >= 2,
+  )!;
+
+  it("renders both keepers' entries with their own author labels in one spread", () => {
+    const state = addMiles(
+      freshState(lewisClarkPack.id, "2026-09-01T00:00:00.000Z"),
+      multi.mileMark,
+      "2026-09-01",
+      lewisClarkPack,
+    );
+    render(<Journal pack={lewisClarkPack} state={state} onClose={() => {}} />);
+
+    const spread = screen
+      .getByRole("article", { name: `Mile ${multi.mileMark}: ${multi.place}` });
+    for (const v of multi.voices) {
+      expect(within(spread).getByText(v.text)).toBeInTheDocument();
+    }
+    const authors = [...new Set(multi.voices.map((v) => v.author))];
+    expect(authors.length).toBeGreaterThanOrEqual(2);
+    for (const author of authors) {
+      expect(within(spread).getAllByText(author).length).toBeGreaterThan(0);
+    }
+    expect(spread.querySelectorAll("blockquote").length).toBe(multi.voices.length);
   });
 });

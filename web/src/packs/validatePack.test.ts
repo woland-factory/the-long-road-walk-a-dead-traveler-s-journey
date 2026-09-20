@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { validatePack } from "./validatePack";
 import { fixturePack } from "./fixturePack";
 import { muirPack } from "./muir";
+import { lewisClarkPack } from "./lewisclark";
 import type { JourneyPack } from "./types";
 
 // Deep clone so a broken-input mutation never leaks into another test.
@@ -15,6 +16,9 @@ describe("validatePack accepts valid packs (AC2.1)", () => {
   });
   it("returns [] for the fixture pack", () => {
     expect(validatePack(fixturePack)).toEqual([]);
+  });
+  it("returns [] for the Lewis & Clark pack (AC5.1)", () => {
+    expect(validatePack(lewisClarkPack)).toEqual([]);
   });
 });
 

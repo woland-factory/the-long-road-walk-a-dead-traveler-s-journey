@@ -37,7 +37,7 @@ test("the reached branch: log crosses the first milepost, then finish and reload
   // A reload boots straight to the Trail with no Start and no callout.
   await page.reload();
   await expect(page.getByLabel("Miles walked today")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Begin this journey" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /^Begin / })).toHaveCount(0);
   await expect(page.getByText("Return each day to earn the next entry.")).toHaveCount(0);
 });
 

@@ -1,0 +1,632 @@
+{
+  "id": "lewis-clark-1804-fort-mandan",
+  "title": "Up the Missouri to Fort Mandan, 1804",
+  "traveler": "the Lewis and Clark expedition",
+  "years": "1804",
+  "totalMiles": 1600,
+  "source": {
+    "name": "The Journals of Lewis and Clark, 1804-1806",
+    "author": "Meriwether Lewis and William Clark",
+    "gutenbergId": 8419,
+    "url": "https://www.gutenberg.org/cache/epub/8419/pg8419.txt",
+    "license": "Public domain (Project Gutenberg)"
+  },
+  "framingNote": "These pages were written in 1804 by the men of the expedition as they went up the Missouri. They wrote in the language and views of their time. Their entries describe the Native nations they met, and some passages carry judgments and words that read as wrong today. You are reading the exact words, kept as they were written. We do not soften or change them. This is a primary source from history, read it as one.",
+  "companion": "Meriwether Lewis, William Clark, and the sergeants keeping their own journals as they push up the Missouri in 1804. This first chapter of the expedition ends where they wintered, at Fort Mandan.",
+  "mileposts": [
+    {
+      "id": "lc-01-camp-dubois",
+      "mileMark": 5,
+      "date": "1804-05-14",
+      "place": "Camp River Dubois, the start",
+      "approxNote": "Near this ground the Corps left their winter camp and turned up the Missouri.",
+      "approach": "The keelboat and two pirogues turn out of the Mississippi and start up the Missouri.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "Set out from Camp River a Dubois at 4 oClock P.M. and proceded up the Missouris under Sail to the first Island in the Missouri and Camped on the upper point opposit a Creek on the South Side below a ledge of limestone rock Called Colewater, made 41/2 miles, the Party Consisted of 2, Self one frenchman and 22 Men in the Boat of 20 ores, 1 Serjt. & 7 french in a large Perogue, a Corp and 6 Soldiers in a large Perogue."
+        }
+      ]
+    },
+    {
+      "id": "lc-02-piper-landing",
+      "mileMark": 15,
+      "date": "1804-05-15",
+      "place": "near Mr. Piper's Landing",
+      "approxNote": "Placed near this ground by the day's slow pull upriver, not by any survey.",
+      "approach": "Rain and heavy water slow the boat past low wooded islands.",
+      "voices": [
+        {
+          "author": "Meriwether Lewis",
+          "text": "some wild gees with their young brudes were seen today. the barge run foul three several times--on logs, and in one instance it was with much difficulty they could get her off; happily no injury was sustained, tho the barge was several minutes in eminent danger; this was cased by her being too heavily laden in the stern."
+        },
+        {
+          "author": "William Clark",
+          "text": "at 9 oClock Set out and proceeded on 9 miles passed two Islands & incamped on the Starbd. Side at a Mr. Pipers Landing opposit an Island, the Boat run on Logs three times to day, owing her being too heavyly loaded a Sturn, a fair after noon, I Saw a number of Goslings to day on the Shore, the water excessively rapid, & Banks falling in-."
+        }
+      ]
+    },
+    {
+      "id": "lc-03-st-charles",
+      "mileMark": 21,
+      "date": "1804-05-16",
+      "place": "St. Charles",
+      "approxNote": "Near this ground the party reached the last French village before the wild country.",
+      "approach": "A coal bluff stands on the bank below the little town of St. Charles.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "pass a remarkable Coal Hill on the Larboard Side Called by the French Carbonere, this hill appear to Contain great quantity of Coal & ore of a appearance from this hill the village of St Charles may be Seen at 7 miles distance--we arrived at St. Charles at 12 oClock a number Spectators french & Indians flocked to the bank to See the party."
+        }
+      ]
+    },
+    {
+      "id": "lc-04-st-charles-court",
+      "mileMark": 24,
+      "date": "1804-05-17",
+      "place": "St. Charles",
+      "approxNote": "Near this ground the captains held the party to camp discipline before leaving settlement behind.",
+      "approach": "The men wait at St. Charles while the last matters of the camp are settled.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "a Boat came up this evening, I punished Hall agreeable to his Sentence in part, a fine after noon; Suped with Mr. Ducett an agreeable man more agreeable Lady, this Gentleman has a Delightfull Situation & garden."
+        },
+        {
+          "author": "John Ordway",
+          "text": "a Sergeant and four men of the Party destined for the Missourri Expidition will convene at 11 oClock to day on the quarter Deck of the Boat, and form themselves into a Court martial to hear and determine (in behalf of the Capt.)"
+        }
+      ]
+    },
+    {
+      "id": "lc-05-la-charette",
+      "mileMark": 55,
+      "date": "1804-05-25",
+      "place": "La Charette",
+      "approxNote": "Near this ground stood the last small settlement on the river.",
+      "approach": "A few French cabins mark the final village before the long wild reach.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "Camped at the mouth of a Creek called River a Chauritte, above a Small french Village of 7 houses and as many families, Settled at this place to be convt. to hunt, & trade with the Indians, here we met with Mr. Louisell imedeately down from the Seeeder Isld. Situated in the Countrey of the Suxex 400 Leagues up he gave us a good Deel of information Some letters he informed us that he Saw no Indians on the river below the Poncrars--Some hard rain this evening The people at this Village is pore, houses Small, they Sent us milk & eggs to eat."
+        }
+      ]
+    },
+    {
+      "id": "lc-06-osage-river",
+      "mileMark": 130,
+      "date": "1804-06-01",
+      "place": "The mouth of the Osage River",
+      "approxNote": "Near this ground the Osage River joins the Missouri from the south.",
+      "approach": "The Osage River comes in from the south where the party stops to take the sun.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "passed the Mo. of Bear creek 25 yds wide at 2 ms. & three Small Isd., Some Swift water and banks falling in, Wind a head from the West, S 39° W 3 ms. to the Pt. above the mouth of Osage River Larb Side, Camped fell a number of Trees in the Point to take observation a fair after noon, Sit up untill 1 oClock to take Som observations &c."
+        }
+      ]
+    },
+    {
+      "id": "lc-07-mine-river",
+      "mileMark": 165,
+      "date": "1804-06-08",
+      "place": "near the Mine River",
+      "approxNote": "Near this ground the Mine River enters, said to carry lead ore.",
+      "approach": "The Mine River joins from the side below rich rising ground.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "passed the Mine River at 9 ms. this river is about 70 yards wide at its mouth and is Said to be navagable for Perogues 80 or 90 ms."
+        }
+      ]
+    },
+    {
+      "id": "lc-08-grand-river",
+      "mileMark": 210,
+      "date": "1804-06-13",
+      "place": "An old Missouri village, near the Grand River",
+      "approxNote": "Near this ground the party passed a prairie where the Missouri nation once lived, close to the Grand River.",
+      "approach": "A plain ahead once held a village of the Missouri nation.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "in which the Missouries Indians once lived and the Spot where 300 of them fell a Sacrifise to the fury of the Saukees This nation (Missouries) once the most noumerous nation in this part of the Continent now reduced to about 80 fes."
+        }
+      ]
+    },
+    {
+      "id": "lc-09-chariton-bend",
+      "mileMark": 280,
+      "date": "1804-06-21",
+      "place": "A bend below the Chariton country",
+      "approxNote": "Placed near this ground by the day's hard pull, not by any survey.",
+      "approach": "Swift water over rolling sands makes the day's pull a hard one.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "at Sun Set the atmespier presented every appearance of wind, Blue & white Streeks Centering at the Sun as She disappeared and the Clouds Situated to the S. W, Guilded in the most butifull manner."
+        }
+      ]
+    },
+    {
+      "id": "lc-10-kansas-river",
+      "mileMark": 340,
+      "date": "1804-06-26",
+      "place": "The mouth of the Kansas River",
+      "approxNote": "Near this ground the Kansas River joins the Missouri from the south.",
+      "approach": "The Kansas River comes in from the south below high narrow banks.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "the wind from the S. W. Passed the mouth of a Small river on the L. Side above the upper point of a Small Island, Called Blue water river, this river heads in Praries back with the Mine River about 30 yds. wide Lattitude of a pt. 4 ms. above this river is 38° 32' 15\" North, the high lands which is on the Northe Side does not exceed 80 feet high, at this Place the river appears to be Confd. in a verry narrow Channel, and the Current Still more So by Couenter Current or Whirl on one Side & high bank on the other, passed a Small Isd. in the bend to the L. Side we Killed a large rattle Snake, Sunning himself in the bank passed a bad Sand bar, where our tow rope broke twice, & with great exertions we rowed round it and Came to & Camped in the Point above the Kansas River"
+        }
+      ]
+    },
+    {
+      "id": "lc-11-independence-creek",
+      "mileMark": 420,
+      "date": "1804-07-04",
+      "place": "Independence Creek",
+      "approxNote": "Near this ground the party marked the Fourth of July and named the creek.",
+      "approach": "The party looks for the creek it will name for the Fourth of July.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "as we approached this place the Praree had a most butifull appearance Hills & Valies interspsd with Coops of Timber gave a pleasing deversity to the Senery."
+        }
+      ]
+    },
+    {
+      "id": "lc-12-nadawa-island",
+      "mileMark": 455,
+      "date": "1804-07-08",
+      "place": "Nadawa Island",
+      "approxNote": "Near this ground lies the large island the party called Nadawa.",
+      "approach": "A very large island splits the river where the party will camp.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "This Island is Called Nadawa, & is the largest I have Seen in the river, containing 7 or 8000 acres of Land Seldom overflowed we Camped at the head of this Island on the S. S."
+        }
+      ]
+    },
+    {
+      "id": "lc-13-nemaha-mounds",
+      "mileMark": 490,
+      "date": "1804-07-12",
+      "place": "The Nemaha River",
+      "approxNote": "Near this ground the Nemaha River comes in below old grave mounds on the plain.",
+      "approach": "Old mounds stand on the high prairie above the Nemaha River.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "from the top of this noal I had an emence, extensive & pleaseing prospect, of the Countrey around, I could See the meandering of the Little River for at least 10 miles winding thro a meadow of 15 or 20000 acres of high bottom land covered with Grass about 41/2 feet high, the high lands which rose irregularly, & were toped with Mounds or antent Graves which is to me a Strong evidence of this Countrey haveing been thickly Settled-."
+        }
+      ]
+    },
+    {
+      "id": "lc-14-prairie-streams",
+      "mileMark": 520,
+      "date": "1804-07-15",
+      "place": "the prairie streams below the Platte",
+      "approxNote": "Placed near this ground by the day's walk over the plains, not by any survey.",
+      "approach": "Small streams cross the rich prairie on the way toward the Platte.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "I Saw Great quantities of Grapes, Plums, or 2 Kinds wild Cherries of 2 Kinds, Hazelnuts, and Goosberries."
+        }
+      ]
+    },
+    {
+      "id": "lc-15-platte-mouth",
+      "mileMark": 600,
+      "date": "1804-07-21",
+      "place": "The mouth of the Platte River",
+      "approxNote": "Near this ground the Platte pours into the Missouri, wide, shallow, and swift.",
+      "approach": "The great Platte is near, a river the boatmen speak of with respect.",
+      "voices": [
+        {
+          "author": "Meriwether Lewis",
+          "text": "where it enters the Missouri it's superior force changes and directs the courant of that river against it's northern bank where it is compressed within a channel less than one third of the width it had just before occupyed."
+        },
+        {
+          "author": "William Clark",
+          "text": "arrived at the lower Mouth of the Great River Platt at 10 oClock (about 3 ms. above the Hill of wood land, the Same range of High land Continus within 3/4 of a mile of the mouth below) This Great river being much more rapid than the Missourie forces its current against the opposit Shore, The Current of This river Comes with great Velocity roleing its Sands into the Missouri, filling up its Bend & Compelling it to incroach on the S Shore--"
+        }
+      ]
+    },
+    {
+      "id": "lc-16-white-catfish",
+      "mileMark": 615,
+      "date": "1804-07-22",
+      "place": "White Catfish Camp",
+      "approxNote": "Near this ground the party made a camp to rest and dry their goods.",
+      "approach": "Above the Platte the party looks for a shaded camp to rest a few days.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "Came too and formed a Camp on the S. S. above a Small Willow Island, and opposit the first Hill which aproach the river on the L. S. and covered with timbers of Oake Walnut Elm &c."
+        }
+      ]
+    },
+    {
+      "id": "lc-17-leaving-catfish",
+      "mileMark": 645,
+      "date": "1804-07-27",
+      "place": "above White Catfish Camp",
+      "approxNote": "Near this ground the party broke camp and pushed on up the river.",
+      "approach": "With the boat reloaded the party leaves the catfish camp behind.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "Camped in a Bend to the L. Side in a Coops of Trees, a verry agreeable Breeze from the N W. this evening. I Killed a Deer in the Prarie and found the Misquitors So thick & troublesom that it was disagreeable and painfull to Continue a moment Still."
+        }
+      ]
+    },
+    {
+      "id": "lc-18-council-bluff-camp",
+      "mileMark": 670,
+      "date": "1804-07-30",
+      "place": "the Council Bluff camp",
+      "approxNote": "Near this ground the party camped on a rise above a wide plain.",
+      "approach": "The party makes camp on a bluff to wait for the Oto and Missouri chiefs.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "this Prairie is covered with Grass of 10 or 12 inches in hight. Soil of good quallity &, Still further back at the Distance of about a mile the Countrey rises about 80 or 90 feet higher, and is one Continual Plain as fur as Can be Seen, from the Bluff on the 2d rise imediately above our Camp the most butifull prospect of the River up & Down and the Countrey opsd. prosented it Self which I ever beheld;"
+        }
+      ]
+    },
+    {
+      "id": "lc-19-oto-council-eve",
+      "mileMark": 685,
+      "date": "1804-08-02",
+      "place": "the Oto and Missouri camp",
+      "approxNote": "Near this ground the first council with the Oto and Missouri drew near.",
+      "approach": "The chiefs of the Oto and Missouri are expected in camp by evening.",
+      "voices": [
+        {
+          "author": "Meriwether Lewis",
+          "text": "This day one of our Hunters brought me a white Heron. this bird as an inhabitant of ponds and Marasses, and feeds upon tadpoles, frogs, small fish &c--they are common to the Mississipi and the lower part of the ohio River, (ie) as high as the falls of that river."
+        },
+        {
+          "author": "William Clark",
+          "text": "at Sunset Mr. Fairfong and a pt. of Otteau & Missourie Nation Came to Camp, among those Indians 6 were Chiefs, the principal Chiefs Capt. Lewis & myself met those Indians & informed them we were glad to See them, and would Speak to them tomorrow, Sent them Som rosted meat Pork flour & meal, in return they Sent us Water millions."
+        }
+      ]
+    },
+    {
+      "id": "lc-20-oto-council",
+      "mileMark": 690,
+      "date": "1804-08-03",
+      "place": "Council Bluff",
+      "approxNote": "Near this ground the captains held the first council with a Native nation.",
+      "approach": "The captains prepare medals and a speech for the first council.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "after Brackfast we Collected those Indians under an orning of our Main Sail, in presence of our Party paraded & Delivered a long Speech to them expressive of our journey the wirkes of our Government, Some advice to them and Directions how They were to Conduct themselves, the princapal Chief for the nation being absente we sent him the Speech flag Meadel & Some Cloathes."
+        }
+      ]
+    },
+    {
+      "id": "lc-21-blackbird-hill",
+      "mileMark": 770,
+      "date": "1804-08-11",
+      "place": "Blackbird Hill",
+      "approxNote": "Near this ground rises the hill where the Omaha chief Blackbird was buried.",
+      "approach": "A high burial hill of the Omaha stands ahead above the river.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "Capt. Lewis myself & 10 men assended the Hill on the L. S. under which there was Some fine Springs to the top of a high point where the Mahars King Black Bird was burried 4 years ago."
+        }
+      ]
+    },
+    {
+      "id": "lc-22-omaha-country",
+      "mileMark": 830,
+      "date": "1804-08-18",
+      "place": "a camp in the Omaha country",
+      "approxNote": "Near this ground the party held a last talk with the Oto and Missouri chiefs.",
+      "approach": "The chiefs come once more to camp before the party goes on.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "the evening was Closed with an extra Gill of Whiskey & a Dance untill 11 oClock."
+        }
+      ]
+    },
+    {
+      "id": "lc-23-floyds-bluff",
+      "mileMark": 855,
+      "date": "1804-08-20",
+      "place": "Floyd's Bluff",
+      "approxNote": "Near this ground Sergeant Floyd was buried above the river that bears his name.",
+      "approach": "A bluff rises ahead where the party will stop with a dying man.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "Serj. Floyd Died with a great deel of Composure, before his death he Said to me, \"I am going away. I want you to write me a letter\"--"
+        }
+      ]
+    },
+    {
+      "id": "lc-24-spirit-mound",
+      "mileMark": 890,
+      "date": "1804-08-25",
+      "place": "the Mound of the Spirits",
+      "approxNote": "Near this ground stands the mound the nations spoke of with dread.",
+      "approach": "A lone mound the nations fear stands out on the open plain.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "Some time before we got to the hill we obsevd. great numbers of Birds hovering about the top of this Mound when I got on the top those Birds flw off."
+        },
+        {
+          "author": "Meriwether Lewis",
+          "text": "on our return from the mound of sperits saw the first bats that we had observed since we began to ascend the Missouri also saw on our return on the Creek that passes this mound about 2 M. distant S. a bird of heron kind as large as the Cormorant short tale long leggs of a colour on the back and wings deep copper brown with a shade of red."
+        }
+      ]
+    },
+    {
+      "id": "lc-25-james-river",
+      "mileMark": 915,
+      "date": "1804-08-27",
+      "place": "the mouth of the James River",
+      "approxNote": "Near this ground the James River comes in, and the first Yankton Sioux appeared.",
+      "approach": "White chalk bluffs rise where the first Yankton Sioux will meet the party.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "at 2 oClock passed the mouth of River Jacque, or Yeankton one Indian at the mouth of this river Swam to the Perogue, we landed and two others came to us, those Inds. informed that a large Camp of Soues, were on R. Jacque near the mouth."
+        }
+      ]
+    },
+    {
+      "id": "lc-26-calumet-bluff",
+      "mileMark": 935,
+      "date": "1804-08-30",
+      "place": "Calumet Bluff",
+      "approxNote": "Near this ground the party held council with the Yankton Sioux under an oak.",
+      "approach": "Under a flag on a high staff the party waits to council with the Sioux.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "we Sent Mr. Dorion in a Perogue for the Chiefs & warreirs to a Council under an Oak tree near wher we had a flag flying on a high flag Staff at 12 OClock we met and Cap L. Delivered the Speach & thin made one great Chiff by giving him a meadal & Some Cloathes one 2d. Chief & three third Chiefs in the Same way,"
+        }
+      ]
+    },
+    {
+      "id": "lc-27-ponca-river",
+      "mileMark": 985,
+      "date": "1804-09-05",
+      "place": "the mouth of the Ponca River",
+      "approxNote": "Near this ground the Ponca River comes in, by a village empty for the summer hunt.",
+      "approach": "The Ponca River comes in where a village stands empty for the hunt.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "opsd. this Island near the head the Poncasar River Coms into the Missourie from the West this river is about 30 yards wide."
+        }
+      ]
+    },
+    {
+      "id": "lc-28-prairie-dog",
+      "mileMark": 1000,
+      "date": "1804-09-07",
+      "place": "the prairie dog village",
+      "approxNote": "Near this ground the party dug at the burrows of the little barking animal.",
+      "approach": "A town of small barking animals honeycombs a grassy slope ahead.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "we landed after proceding 51/2 miles, near the foot of a round mounting which I saw yesterday resembling a dome. Capt Lewis & my Self walked up, to the top which forms a Cone and is about 70 feet higher than the high lands around it, the Bass is about 300 foot in decending this Cupola, discovered a Village of Small animals that burrow in the grown (those animals are Called by the french Pitite Chien) Killed one & Cought one a live by poreing a great quantity of water in his hole"
+        }
+      ]
+    },
+    {
+      "id": "lc-29-shannon-rejoins",
+      "mileMark": 1030,
+      "date": "1804-09-11",
+      "place": "a village of barking squirrels",
+      "approxNote": "Near this ground a lost man of the party rejoined it after weeks alone.",
+      "approach": "Wide shallow river and sandbars slow the boat past grassy slopes.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "here the man who left us with the horses 22 days ago and has been a head ever Since joined, us nearly Starved to Death, he had been 12 days without any thing to eate but Grapes & one Rabit, which he Killed by shooting a piece of hard Stick in place of a ball-."
+        }
+      ]
+    },
+    {
+      "id": "lc-30-corvus-creek",
+      "mileMark": 1065,
+      "date": "1804-09-17",
+      "place": "Corvus Creek",
+      "approxNote": "Near this ground the party laid over, and Lewis walked out over the plains.",
+      "approach": "Buffalo, elk, and antelope cover the plains near Corvus Creek.",
+      "voices": [
+        {
+          "author": "Meriwether Lewis",
+          "text": "this senery already rich pleasing and beatiful, was still farther hightened by immence herds of Buffaloe deer Elk and Antelopes which we saw in every direction feeding on the hills and plains. I do not think I exagerate when I estimate the number of Buffaloe which could be compreed at one view to amount to 3000."
+        },
+        {
+          "author": "William Clark",
+          "text": "he killed a Buffalow and a remarkable Bird of the Corvus Species long tail the upper part of the feathers & also the wing is of a purplish variated Green, the black, a part of the wing feather are white edjed with black, white belley, white from the root of the wings to Center of the back is white, the head nake breast & other parts are black the Becke like a Crow. abt. the Size of a large Pigion."
+        }
+      ]
+    },
+    {
+      "id": "lc-31-big-bend",
+      "mileMark": 1100,
+      "date": "1804-09-20",
+      "place": "The Big Bend of the Missouri",
+      "approxNote": "Near this ground the river loops back on itself in the Grand Detour.",
+      "approach": "The river swings into a great loop the men cross on foot in an hour.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "proceeded on passed the lower Island opposit which the Sand bars are verry thick & the water Shoal. I walked on Shore with a view of examining this bend Crossed at the narost part which is a high irregular hills of about 180 or 190 feet, this place the gorge of the Bend is 1 mile & a quarter (from river to river or) across, from this high land which is only in the Gouge, the bend is a Butifull Plain thro which I walked,"
+        }
+      ]
+    },
+    {
+      "id": "lc-32-bad-river",
+      "mileMark": 1140,
+      "date": "1804-09-25",
+      "place": "The Bad River, in the Teton Sioux country",
+      "approxNote": "Near this ground the party met the Teton Sioux, and the meeting nearly broke.",
+      "approach": "The mouth of the Bad River is near, where the Teton Sioux are camped.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "after remaining in this Situation Some time I offered my hand to the 1 & 2 Chief who refusd to recve it. I turned off & went with my men on board the perogue, I had not progd. more the 10 paces before the 1st Cheif 3rd & 2 Brave men waded in after me. I took them in & went on board we proceeded on about 1 mile & anchored out off a willow Island placed a guard on Shore to protect the Cooks & a guard in the boat, fastened the Perogues to the boat, I call this Island bad humered Island as we were in a bad humer."
+        }
+      ]
+    },
+    {
+      "id": "lc-33-cheyenne-river",
+      "mileMark": 1190,
+      "date": "1804-10-01",
+      "place": "The mouth of the Cheyenne River",
+      "approxNote": "Near this ground the Cheyenne River comes in from the west.",
+      "approach": "The Cheyenne River joins from the west below high wide sandbars.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "This Mr. Jon Vallie informs us that he wintered last winter 300 Leagues up the Chien River under the Black mountains, he informs that this river is verry rapid and dificiult even for Canoos to assend and when riseing the Swels is verry high, one hundred Leagues up it forks one fork Comes from the S. the other at 40 Leagues above the forks enters the black Mountain. The Countrey from the Missourie to the black mountain is much like the Countrey on the Missourie, less timber & a greatr perpotion of Ceder."
+        }
+      ]
+    },
+    {
+      "id": "lc-34-arikara-villages",
+      "mileMark": 1250,
+      "date": "1804-10-08",
+      "place": "The Arikara villages",
+      "approxNote": "Near this ground stand the Arikara villages on an island of cornfields.",
+      "approach": "The Arikara villages sit on an island planted with corn and beans.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "this Island is about 3 miles long, Seperated from the L. S. by a Channel of about 60 yards wide verry Deep, The Isld. is covered with fields, where those people raise their Corn Tobacco Beens &c. &c."
+        }
+      ]
+    },
+    {
+      "id": "lc-35-arikara-council",
+      "mileMark": 1275,
+      "date": "1804-10-12",
+      "place": "The Arikara villages",
+      "approxNote": "Near this ground the party councilled with the Arikara and shared their corn.",
+      "approach": "The chiefs gather to council, their houses warm and round with earth.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "Live in worm houses large and built in an oxigon form forming a Cone at top which is left open for the Smoke to pass, those houses are generally 30 or 40 foot Diamiter."
+        }
+      ]
+    },
+    {
+      "id": "lc-36-goat-crossing",
+      "mileMark": 1310,
+      "date": "1804-10-16",
+      "place": "the goat crossing on the river",
+      "approxNote": "Near this ground great herds of goats crossed the river as the party passed.",
+      "approach": "Herds of goats swim the river ahead while people hunt them from the banks.",
+      "voices": [
+        {
+          "author": "Meriwether Lewis",
+          "text": "This day took a small bird alive of the order of the or goat suckers. it appeared to be passing into the dormant state. on the morning of the 18th the murcury was at 30 above 0. the bird could scarcely move."
+        },
+        {
+          "author": "William Clark",
+          "text": "Soon after I discovered Great numbers of Goats in the river, and Indians on the Shore on each Side, as I approached or got nearer I discovered boys in the water Killing the Goats with Sticks and halling them to Shore, Those on the banks Shot them with arrows and as they approachd."
+        }
+      ]
+    },
+    {
+      "id": "lc-37-old-mandan-villages",
+      "mileMark": 1350,
+      "date": "1804-10-20",
+      "place": "the old Mandan villages",
+      "approxNote": "Near this ground stand the emptied villages the Mandan left years before.",
+      "approach": "Ruined village sites and grizzly tracks mark the country near the Mandan.",
+      "voices": [
+        {
+          "author": "Meriwether Lewis",
+          "text": "Peter Crusat this day shot at a white bear he wounded him, but being alarmed at the formidable appearance of the bear he left his tomahalk and gun; but shortly after returned and found that the bear had taken the oposite rout.--"
+        },
+        {
+          "author": "William Clark",
+          "text": "Great numbers of Buffalow Elk & Deer, Goats. our hunters killed 10 Deer & a Goat to day and wounded a white Bear I saw Several fresh track of those animals which is 3 times as large as a mans track-,"
+        }
+      ]
+    },
+    {
+      "id": "lc-38-first-mandan",
+      "mileMark": 1400,
+      "date": "1804-10-24",
+      "place": "the first Mandan camp",
+      "approxNote": "Near this ground the party met a grand chief of the Mandan.",
+      "approach": "A grand chief of the Mandan meets the Arikara chief with the party.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "on this Isld. we Saw one of the Grand Chiefs of the Mandins, with five Lodges hunting, this Cheif met the Chief of the Ricares who accompanied us with great Cordiallity & Sermony Smoked the pipe & Capt. Lewis with the Interpeter went with the Chiefs to his Lodges at 1 mile distant, after his return we admited the Grand Chief & his brother for a few minits on our boat."
+        }
+      ]
+    },
+    {
+      "id": "lc-39-mandan-villages",
+      "mileMark": 1430,
+      "date": "1804-10-26",
+      "place": "The Mandan villages",
+      "approxNote": "Near this ground the party reached the Mandan towns where they would winter.",
+      "approach": "Crowds of Mandan gather on the banks as the boat nears their towns.",
+      "voices": [
+        {
+          "author": "William Clark",
+          "text": "we came too and Camped on the L. S. about 1/2 a mile below the ist. Manddin Town on the L. S. Soon after our arrival many men womin & Children flocked down to See us,"
+        }
+      ]
+    },
+    {
+      "id": "lc-40-winter-decision",
+      "mileMark": 1450,
+      "date": "1804-10-31",
+      "place": "the Mandan country",
+      "approxNote": "Near this ground the party chose to build and winter among the Mandan.",
+      "approach": "With ice near, the captains look for a place to build and winter over.",
+      "voices": [
+        {
+          "author": "Meriwether Lewis",
+          "text": "The river being very low and the season so far advanced that it frequently shuts up with ice in this climate we determined to spend the Winter in this neighbourhood, accordingly Capt. Clark with a party of men reconnoitred the countrey for some miles above our encampment; he returned in the evening without having succeed in finding an eligible situation for our purpose.-"
+        },
+        {
+          "author": "William Clark",
+          "text": "he threw a Robe highly decoraterd over my Sholders, and after Smokeing a pipe with the old men in the Circle, the Chief Spoke he belived all we had told him, and that peace would be genl. which not only gave himself Satisfaction but all his people;"
+        }
+      ]
+    },
+    {
+      "id": "lc-41-fort-mandan",
+      "mileMark": 1510,
+      "date": "1804-11-02",
+      "place": "Fort Mandan",
+      "approxNote": "Near this ground the party built the huts where they wintered, and named them Fort Mandan.",
+      "approach": "The party picks the ground where it will build the winter fort.",
+      "voices": [
+        {
+          "author": "Meriwether Lewis",
+          "text": "This morning early we fixed on the site for our fortification which we immediately set about. This place we have named Fort Mandan in honour of our Neighbours."
+        },
+        {
+          "author": "William Clark",
+          "text": "This morning at Day light I went down the river with 4 men to look for a proper place to winter proceeded down the river three miles & found a place well Supld. with wood, & returned, Capt. Lewis went to the village to here what they had to Say & I fell down, and formed a camp near where a Small Camp of Indian were huntig Cut down the Trees around our Camp, in the evening Capt. Lewis returned with a present of 11 bushels of Corn,"
+        }
+      ]
+    }
+  ]
+}

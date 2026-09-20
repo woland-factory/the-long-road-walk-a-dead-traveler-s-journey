@@ -72,6 +72,7 @@ export function Start({ packs, onBegin, onRestore }: StartProps) {
             <button
               type="button"
               className={pressedId === pack.id ? "picker-begin is-pressed" : "picker-begin"}
+              aria-label={`Begin ${pack.title}`}
               onClick={() => begin(pack.id)}
             >
               Begin this journey

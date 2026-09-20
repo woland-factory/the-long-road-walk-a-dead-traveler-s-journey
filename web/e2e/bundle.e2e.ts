@@ -18,6 +18,7 @@ test("built bundle contains no injected env values or primary source", () => {
     "umami-website-id-sentinel",
     "SEED_DEMO_VALUE_SENTINEL",
     "These words are written on the", // AC3.6: source sentinel, intro of gutenberg-60749.txt
+    "Produced by Bob Webster and David Widger", // #8419 front-matter sentinel, outside every packed excerpt
   ];
 
   const combined = jsFiles.map((f) => readFileSync(resolve(assetsDir, f), "utf8")).join("\n");

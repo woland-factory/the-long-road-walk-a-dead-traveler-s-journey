@@ -6,6 +6,7 @@ import type { JourneyPack } from "../packs/types";
 import type { WalkerState } from "../state/types";
 import { freshState } from "../state/odometer";
 import { upsertFacingLine } from "../state/personalLog";
+import { lewisClarkPack } from "../packs/lewisclark";
 
 // A small multi-voice test pack. Muir is single-voice, so the multi-voice path
 // is proven here without touching the real pack.
@@ -174,6 +175,38 @@ describe("Arrival multi-milepost queue (AC4.5)", () => {
     expect(screen.getByRole("heading", { name: "The bluff camp" })).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Back to the trail" }));
     expect(onClose).toHaveBeenCalled();
+  });
+});
+
+describe("Arrival renders a real multi-voice milepost (AC6.1)", () => {
+  const multi = lewisClarkPack.mileposts.find(
+    (m) => new Set(m.voices.map((v) => v.author)).size >= 2,
+  )!;
+
+  it("shows both keepers' entries, each with its own author label", () => {
+    const state = freshState(lewisClarkPack.id, "2026-09-01T00:00:00.000Z");
+    render(
+      <Arrival
+        pack={lewisClarkPack}
+        state={{ ...state, reachedMilepostIds: [multi.id] }}
+        queue={[multi.id]}
+        onSaveFacingLine={() => {}}
+        onClose={() => {}}
+      />,
+    );
+    const dialog = screen.getByRole("dialog");
+    // Both voice texts are present, neither dropped nor merged.
+    for (const v of multi.voices) {
+      expect(within(dialog).getByText(v.text)).toBeInTheDocument();
+    }
+    // Each voice is attributed to a distinct keeper.
+    const authors = [...new Set(multi.voices.map((v) => v.author))];
+    expect(authors.length).toBeGreaterThanOrEqual(2);
+    for (const author of authors) {
+      expect(within(dialog).getAllByText(author).length).toBeGreaterThan(0);
+    }
+    // One blockquote per voice.
+    expect(dialog.querySelectorAll("blockquote").length).toBe(multi.voices.length);
   });
 });
 

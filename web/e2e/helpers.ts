@@ -16,9 +16,18 @@ export async function markWalkthroughDone(page: Page): Promise<void> {
   });
 }
 
-// Land on Start and begin the Muir journey, ending on the empty Trail.
+// Land on Start and begin the Muir journey, ending on the empty Trail. With two
+// packs in the picker the Begin buttons share a visible label, so we target the
+// Muir card by its journey-specific accessible name.
 export async function beginMuirJourney(page: Page): Promise<void> {
   await page.goto("/");
-  await page.getByRole("button", { name: "Begin this journey" }).click();
+  await page.getByRole("button", { name: "Begin A Thousand-Mile Walk to the Gulf" }).click();
+  await expect(page.getByLabel("Miles walked today")).toBeVisible();
+}
+
+// Land on Start and begin the Lewis & Clark journey, ending on the empty Trail.
+export async function beginLewisClarkJourney(page: Page): Promise<void> {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Begin Up the Missouri to Fort Mandan, 1804" }).click();
   await expect(page.getByLabel("Miles walked today")).toBeVisible();
 }

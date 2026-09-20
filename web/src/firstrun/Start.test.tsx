@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Start } from "./Start";
 import { fixturePack } from "../packs/fixturePack";
+import { muirPack } from "../packs/muir";
 import { freshState, addMiles } from "../state/odometer";
 import { serializeBackup } from "../state/backup";
 import type { WalkerState } from "../state/types";
@@ -34,12 +35,24 @@ describe("the journey picker (AC2.5)", () => {
     expect(screen.getByText(fixturePack.companion)).toBeInTheDocument();
   });
 
+  it("gives each pack's Begin button a distinct accessible name (AC7.1)", () => {
+    render(<Start packs={[fixturePack, muirPack]} onBegin={() => {}} onRestore={() => {}} />);
+    expect(
+      screen.getByRole("button", { name: `Begin ${fixturePack.title}` }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: `Begin ${muirPack.title}` })).toBeInTheDocument();
+    // Two cards, two individually targetable primary actions.
+    expect(screen.getAllByRole("button", { name: /^Begin / })).toHaveLength(2);
+  });
+
   it("begins the chosen journey and shows a pressed state", async () => {
     const user = userEvent.setup();
     const onBegin = vi.fn();
     render(<Start packs={[fixturePack]} onBegin={onBegin} onRestore={() => {}} />);
 
-    const button = screen.getByRole("button", { name: "Begin this journey" });
+    // Each Begin button carries a journey-specific accessible name (AC7.1),
+    // so a screen reader and the e2e selectors can tell two cards apart.
+    const button = screen.getByRole("button", { name: `Begin ${fixturePack.title}` });
     await user.click(button);
     expect(onBegin).toHaveBeenCalledWith(fixturePack.id);
     expect(button).toHaveClass("is-pressed");

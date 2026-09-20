@@ -21,7 +21,7 @@ test("Start fits 390px with a 44px begin button", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Choose a journey" })).toBeVisible();
   expect(await horizontalOverflow(page)).toBeLessThanOrEqual(1);
 
-  const begin = page.getByRole("button", { name: "Begin this journey" });
+  const begin = page.getByRole("button", { name: "Begin A Thousand-Mile Walk to the Gulf" });
   const box = await begin.boundingBox();
   expect(box!.height).toBeGreaterThanOrEqual(44);
 });

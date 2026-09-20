@@ -62,7 +62,10 @@ describe("choosing a journey persists the record (AC2.6)", () => {
   it("begins the journey and a remount boots straight to the Trail", async () => {
     const user = userEvent.setup();
     const { unmount } = render(<App />);
-    await user.click(await screen.findByRole("button", { name: "Begin this journey" }));
+    // Two packs now share a visible label; pick Muir by its accessible name.
+    await user.click(
+      await screen.findByRole("button", { name: "Begin A Thousand-Mile Walk to the Gulf" }),
+    );
 
     // The Trail replaces Start in place.
     expect(await screen.findByLabelText("Miles walked today")).toBeInTheDocument();

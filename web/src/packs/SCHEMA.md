@@ -45,7 +45,7 @@ contract every pack must satisfy.
 | `place`      | string    | Non-empty. A real place on the route. Factual data: NOT swept. |
 | `approxNote` | string    | Non-empty. Contains the phrase `near this ground` (case-insensitive). Carries no coordinate precision (no decimal degrees, no `lat`/`lng`/`lon`/`gps`). Authored copy: swept. |
 | `approach`   | string    | Non-empty. A pre-arrival line read while walking toward this milepost. See the four rules below. Authored copy: swept. |
-| `voices`     | `Voice[]` | At least one entry. For a single traveler, exactly one. |
+| `voices`     | `Voice[]` | At least one entry. A milepost is a place on the ground, so it may carry more than one keeper's voice when more than one traveler wrote about the same ground on the same day (as in the Lewis & Clark pack). A single-traveler pack (Muir) carries exactly one. |
 
 ### The `approach` field (four binding rules)
 
