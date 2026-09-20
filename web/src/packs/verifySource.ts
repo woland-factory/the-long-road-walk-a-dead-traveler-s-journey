@@ -14,7 +14,16 @@
 export const NARRATIVE_START =
   "I had long been looking from the wildwoods and gardens of the Northern";
 
-// The standard Project Gutenberg end-of-text marker in this file.
+// The #8419 (Lewis & Clark) start anchor. It is the first line of the first
+// 1804 entry body (Clark, May 14, 1804, at Camp River Dubois), so the window
+// excludes the Gutenberg boilerplate and the compiler's front matter. Like
+// NARRATIVE_START it stops at the source's hard line break ("...proceded up
+// the\r\nMissouris...") to match the raw bytes, and it occurs exactly once in
+// the committed file.
+export const LC_NARRATIVE_START =
+  "Set out from Camp River a Dubois at 4 oClock P.M. and proceded up the";
+
+// The standard Project Gutenberg end-of-text marker, identical in both files.
 export const GUTENBERG_END_MARKER = "*** END OF THE PROJECT GUTENBERG EBOOK";
 
 // Collapse every run of whitespace (spaces, tabs, CR, LF) to a single space.
@@ -30,10 +39,14 @@ function collapseWhitespace(text: string): string {
 //   4. collapse whitespace and trim.
 // Steps 2 and 3 strip the editor's apparatus so only the traveler's words
 // remain to match against.
-export function cleanSource(raw: string): string {
-  const start = raw.indexOf(NARRATIVE_START);
+//
+// `start` selects the narrative window's opening anchor. It defaults to
+// NARRATIVE_START, so the existing Muir call `cleanSource(raw)` is byte-for-byte
+// unchanged; a second source (Lewis & Clark) passes its own LC_NARRATIVE_START.
+export function cleanSource(raw: string, start: string = NARRATIVE_START): string {
+  const startIdx = raw.indexOf(start);
   const end = raw.indexOf(GUTENBERG_END_MARKER);
-  const window = raw.slice(start === -1 ? 0 : start, end === -1 ? raw.length : end);
+  const window = raw.slice(startIdx === -1 ? 0 : startIdx, end === -1 ? raw.length : end);
   const noItalics = window.replace(/_/g, "");
   const noBrackets = noItalics.replace(/\[[^\]]*\]/g, "");
   return collapseWhitespace(noBrackets);
