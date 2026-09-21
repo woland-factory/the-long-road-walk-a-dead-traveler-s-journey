@@ -1,24 +1,34 @@
-# EPIC_SPEC: The Lewis & Clark pack (the second journey)
+# EPIC_SPEC: Polish (the whole product, held to the bar)
+
+This is a **polish EPIC**: a UX, performance, and copy pass over the entire
+delivered product against the QUALITY BAR and the quality differentiator. It
+**tightens what exists and adds nothing.** No new features, no new packs, no
+re-architecture. Every task below is *verify a real surface, lock the result
+with a test, and fix only where the surface falls short of the bar.* A task
+that would add a capability, a screen, a pack, or an abstraction is out of
+scope by definition and is a defect against this spec.
+
+---
 
 ## Quality differentiator (this app must win here)
 
-The one dimension this product wins on: **the substance of the payoff.**
-Every other virtual-journey product rewards distance with medals, points,
-postcards, or cartoon scenery. This app rewards distance with a real dead
-person's actual words, verbatim, keyed to the exact ground you reached, and
-withholds tomorrow's entry until your feet earn it. We compete on the meaning
-of the reward, not on gamification, breadth, or automation.
+The one dimension this product wins on: **the substance of the payoff.** Every
+other virtual-journey product rewards distance with medals, points, postcards,
+or cartoon scenery. This app rewards distance with a real dead person's actual
+words, verbatim, keyed to the exact ground you reached, and withholds
+tomorrow's entry until your feet earn it. We compete on the meaning of the
+reward, not on gamification, breadth, or automation.
 
-**What it demands of THIS EPIC:** the second pack is not filler for a picker.
-It is where the differentiator gets *deeper*. St. Louis to Fort Mandan is the
-best-documented stretch of the expedition, and on many days more than one man
-of the Corps wrote about the same ground. This pack proves the reward can be a
-*conversation across a campfire* rather than a single voice: at a shared
-milepost the walker earns Clark's terse log beside Ordway's plainer one for the
-same day, on the same bend of the Missouri. Every earned line here must still be
-byte-identical public-domain text. The multi-voice mileposts are the signature
-moment of the pack, so they must be real, plural, and legible, never a token
-second quote bolted on.
+**What it demands of THIS polish pass:** the moment a stranger opens staging,
+the earned verbatim entry and the withheld-until-earned mechanic must be
+unmistakable, and the double journal must read as a keepsake, not a dashboard.
+Polish here means protecting that payoff: the verbatim words render legibly
+(single voice and multi-voice) on a phone and in print, the withholding is
+visibly *a diary entry you have not walked to yet* rather than a score, and the
+double journal shows a real facing pair. Speed and accessibility exist to keep
+the words readable and reachable, never to decorate them. Nothing in this pass
+may soften a `voices[].text`, add a medal/points/streak surface, or bury the
+words under chrome.
 
 ---
 
@@ -26,360 +36,356 @@ second quote bolted on.
 
 ### In scope
 
-A second **verified journey pack** for The Long Road: the first chapter of the
-Lewis and Clark expedition, **St. Louis (Camp River Dubois) up the Missouri to
-Fort Mandan, May to late 1804, about 1,600 miles.** It drops into the existing
-pack machinery (schema in `web/src/packs/SCHEMA.md`, structural validator in
-`validatePack.ts`, source verifier pattern in `verifySource.ts` +
-`muir.verify.test.ts`) and appears as a second card in the first-run picker, so
-a brand-new user has a real choice of journey.
+A refinement pass over the already-shipped product: the Start screen and
+journey picker, the guided first run, the Trail (odometer, check-in, next
+milepost, reached rows), the Arrival ceremony (single and multi-voice), the
+double Journal and its print layout, the Backup save/restore, the file
+Importer, the two shipped packs' authored copy and framing notes, the staging
+`SEED_DEMO` demo, and the README. The work is:
 
-The pack must:
-
-1. Be built from a clean public-domain edition: **Project Gutenberg ebook
-   #8419, "The Journals of Lewis and Clark, 1804-1806."** The UNL/Moulton
-   (Nebraska) edition may be consulted **only** as a route-and-date
-   cross-reference; not one byte of its editorial apparatus may enter the pack.
-2. Pass the **same automated verification** the Muir pack passes: dates ordered
-   (non-decreasing), cumulative miles strictly monotonic, and every earned line
-   byte-identical to the committed public-domain source after the defined
-   whitespace/apparatus normalization.
-3. Carry **at least 40 verified mileposts** across the segment, **several of
-   which carry more than one journalist's voice** (Clark, Lewis, Ordway; more if
-   present in #8419) so the multi-voice rendering earns its place.
-4. Be **clearly presented as a chapter** of the wider expedition with a real end
-   waypoint, **Fort Mandan**, so the user is never misled that this is the whole
-   3,700-mile journey. It is labeled the first chapter and is extensible later.
-5. Carry a **plain framing note** for the period content, specifically the 1804
-   voice on encounters with Native nations. The words are framed, never edited.
+1. **Signature moment** made unmistakable on first load (staging `SEED_DEMO`).
+2. **Performance** verified: fast first render, sub-100ms interaction feedback,
+   and Trail + Journal that stay fast as months of daily entries accumulate.
+3. **Mobile + accessibility** verified at 390px across every surface, with
+   automated contrast/label/landmark/keyboard coverage extended to the surfaces
+   that lack it today.
+4. **Copy sweep** across every user-visible string and both packs' framing and
+   authored notes, mechanized and read aloud.
+5. **Designed states** reviewed on every empty, loading, and error surface.
+6. **README** verified against the actual compose files.
 
 ### Out of scope (non-goals, binding)
 
-- **No geocoding** of the full 3,700-mile route. No coordinates anywhere in the
-  pack (the `approxNote` framing and its coordinate ban still hold). No map.
-- **No later expedition legs** (Fort Mandan to the Pacific, the return). Those
-  are separate future packs, not this one.
-- **No user-submitted extensions** or any editing UI for packs.
-- No new pack *schema* features beyond what already exists, no redesign of the
-  Trail/Arrival/Journal beyond what the multi-voice case legibly needs, and no
-  change to the Muir pack or its verification behavior.
+- **No new features.** No new screen, control, view, setting, or capability.
+  Every user action that exists today still exists, unchanged in kind.
+- **No new packs** and no change to either pack's verbatim `voices[].text`,
+  `place`, `date`, mile marks, dates, or verification behavior. The primary
+  source stays byte-identical and unedited.
+- **No re-architecture.** No new state shape, no migration, no new dependency,
+  no framework, no design system, no refactor of modules the tasks below do not
+  name. `web/src/state/types.ts` and the pack schema are frozen.
+- No animations, theming, or micro-interactions beyond what the bar requires.
+  Meeting the written bar is in scope; exceeding it is drift.
+- No repointing of `SEED_DEMO`'s default pack (Muir stays the boot-gate and
+  demo default).
 
-### Signature moment (ambition check)
-
-The one thing a user would describe to a friend: *"I walked past the mouth of
-the Platte, and the app handed me what Clark wrote there in 1804 and what
-Sergeant Ordway wrote the same day, side by side, and I'd earned both by walking
-the miles."* That is a mechanic (two earned primary voices on one milepost),
-not an adjective. It already has a home in the rendering; this EPIC makes it
-real by shipping the data and confirming it reads well.
+If closing a bar gap appears to require a Non-Goal (a new state field, a schema
+change, editing a voice), do **not** choose between the two: stop and report
+`outcome: "blocked"` with the exact conflict.
 
 ---
 
 ## Technical design
 
-### Data model
+### What this pass touches
 
-Packs are static, bundled JSON validated at build time. **There is no database
-and no migration.** A pack is added purely by committing files and registering
-the pack object. The existing `JourneyPack` / `Milepost` / `Voice` /
-`PackSource` types in `web/src/packs/types.ts` already support everything this
-EPIC needs, including `voices: Voice[]` with more than one entry per milepost.
-**Do not change the types or `SCHEMA.md`'s binding rules.**
+There is **no server, no database, no runtime LLM, and no API.** The app is a
+static React + Vite SPA that keeps all state locally in IndexedDB and bundles
+each pack as JSON at build time. So "performance" and "security" here are
+client-side facts, not endpoint behavior, and this pass changes **no data
+model**: `web/src/state/types.ts`, `web/src/state/store.ts` migrations, and the
+pack schema are all frozen.
 
-The one honest note about `voices`: `SCHEMA.md` currently says "For a single
-traveler, exactly one." That describes Muir, not a hard cap. The `Milepost`
-rule is "at least one entry," and multi-voice mileposts are explicitly in scope
-here. You may update the *prose* in `SCHEMA.md` to record that a milepost may
-carry more than one journalist's voice (a milepost is a place on the ground, and
-more than one keeper of the Corps could write about it). Do not weaken any
-binding numeric rule.
+The edits this pass may make are limited to:
 
-### Files to add
+- **Tests** (new and extended): the primary deliverable of a polish pass is
+  proof. New/extended Vitest and Playwright specs that lock each criterion.
+- **CSS** (`web/src/styles/app.css`): small, surgical fixes only where a real
+  390px overflow, contrast miss, focus gap, or illegible multi-voice stack is
+  found. No redesign, no new visual language.
+- **Copy** (component strings, `web/src/copy.test.ts` sweep list and banned
+  vocabulary, both pack JSON authored fields): fixes only where the sweep or a
+  read-aloud finds a defect.
+- **Demo data** (`web/src/state/seed.ts`): tune the seeded demo so the staging
+  double journal shows a real facing pair. This is demo-content tuning, not a
+  new feature or a schema change.
+- **Small a11y attributes** on existing elements (e.g. an `aria-live` region,
+  an explicit accessible name) where a real screen-reader gap is found.
+- **README.md**: correctness fixes only.
 
-- `web/src/packs/sources/gutenberg-8419.txt` — the exact, unmodified bytes of
-  Project Gutenberg #8419 (`https://www.gutenberg.org/cache/epub/8419/pg8419.txt`
-  or the equivalent `8419-0.txt`). Committed to the repo, **read only via `fs`
-  in the verify test, never `import`ed by app code** (mirrors
-  `gutenberg-60749.txt`).
-- `web/src/packs/lewisclark.json` — the authored pack data.
-- `web/src/packs/lewisclark.ts` — the typed re-export (mirror `muir.ts`:
-  `import data from "./lewisclark.json"; export const lewisClarkPack = data as JourneyPack;`).
-- `web/src/packs/lewisclark.verify.test.ts` — the source-verification test, the
-  heart of this EPIC (mirror `muir.verify.test.ts`).
-- `web/src/packs/lewisclark.copy.test.ts` — the authored-copy sweep (mirror
-  `muir.copy.test.ts`).
+### Files most likely in play
 
-### Files to touch
+- `web/src/styles/app.css` — the single stylesheet (mobile-first base, one
+  `min-width: 720px` layout query, `@media print`, `:focus-visible` ring, dark
+  theme). Fix 390px overflow / contrast / multi-voice separation only if found.
+- `web/src/state/seed.ts` — `buildSeededState`; add one seeded facing line
+  (below) so the demo double journal is a filled pair.
+- `web/src/copy.test.ts` — the mechanized sweep; extend the file list and the
+  banned-vocabulary list to the full bar list if either is short.
+- `web/src/packs/muir.json`, `web/src/packs/lewisclark.json` — authored fields
+  only (`title`, `companion`, `framingNote`, every `approxNote`, every
+  `approach`) if the sweep flags one. **Never** touch `voices[].text`.
+- New e2e specs under `web/e2e/` and new/extended component tests under
+  `web/src/` per the task list.
+- `README.md` — verified against `docker-compose.staging.yml`, `Dockerfile`,
+  `docker-entrypoint.sh`, and `web/package.json` scripts.
 
-- `web/src/packs/index.ts` — add `lewisClarkPack` to the `journeyPacks` array.
-  This is the only wiring the picker, boot gate, and restore path need (they
-  already read the registry). Keep Muir first so it stays the default the boot
-  gate and `SEED_DEMO` fall back to.
-- `web/src/packs/verifySource.ts` — generalize `cleanSource` so it can clean a
-  second source **without changing Muir's behavior.** Give it an optional
-  start-anchor parameter (default = `NARRATIVE_START`, so the Muir call is
-  byte-identical to today); `GUTENBERG_END_MARKER` is already generic and can be
-  reused as-is. Add a `#8419` start anchor constant (see the extraction recipe
-  below). `normalizeExcerpt` is source-agnostic and needs no change.
-- `web/src/packs/validatePack.test.ts` — add a case asserting
-  `validatePack(lewisClarkPack)` returns `[]`.
-- `web/src/packs/index.test.ts` — assert the registry contains the pack and
-  `packById(<its id>)` resolves it.
-- `web/src/firstrun/Start.tsx` — the picker already renders one card per pack.
-  With two cards there are now two "Begin this journey" buttons with **identical
-  accessible names**, which is both an accessibility defect (§6) and breaks the
-  e2e selectors. Give each Begin button a **distinct accessible name that names
-  its journey** (e.g. via `aria-label={`Begin ${pack.title}`}`), keeping the
-  visible label short. One primary action per card is preserved.
-- `web/e2e/helpers.ts` and `web/e2e/mobile.e2e.ts` — `beginMuirJourney` and the
-  mobile spec select `getByRole("button", { name: "Begin this journey" })`,
-  which now matches two buttons (Playwright strict-mode failure). Scope both to
-  the Muir card via the new distinct accessible name. Add a helper to begin the
-  Lewis & Clark journey the same way.
-- `web/e2e/bundle.e2e.ts` — add a **#8419 source sentinel** (a line from #8419's
-  editorial front matter that sits outside every packed excerpt) to the
-  out-of-bundle grep, proving the second source also stays out of `dist`.
-- `README.md` — extend the "The journeys" section (around lines 40-53) to
-  describe the Lewis & Clark chapter, its #8419 source, its multi-voice nature,
-  and its honest chapter framing. Update the `packs/` directory blurb if the
-  wording implies a single pack.
+### Baseline the implementer inherits (do not rebuild these)
 
-### API contracts
+These already meet the bar; the tasks below **verify and lock** them, they do
+not re-implement them:
 
-None. No server, no endpoints, no runtime LLM. This EPIC is content plus a small
-amount of integration glue. The BYOK/gateway and internal-services contracts in
-CLAUDE.md are not touched.
-
-### The withholding boundary is unchanged
-
-`buildJournal.ts` and `Arrival.tsx` only ever read `voices` for mileposts in
-`reachedMilepostIds`. Multiple voices on a milepost ride that same boundary for
-free: an unearned multi-voice milepost's text is never mounted. Do not add any
-code path that reads an unearned milepost's `voices`.
-
----
-
-## Editorial extraction recipe (how to produce byte-identical voices)
-
-This is the delicate part. Follow it exactly or the verify test fails.
-
-1. **Entry structure in #8419.** Each daily entry is headed with a bracketed
-   attribution, e.g. `[Clark, May 14, 1804]`, `[Lewis, May 15, 1804]`,
-   `[Ordway, May 17, 1804]`, followed by the keeper's own words. The same date
-   frequently carries entries from more than one keeper. This is exactly what
-   makes multi-voice mileposts possible.
-
-2. **The bracketed header is apparatus, not the traveler's words.** The source
-   cleaner strips every `[...]` span and every `_` italic marker, then collapses
-   all whitespace to single spaces. So the header disappears during cleaning,
-   which is correct: the header is the compiler's label, not Clark's or Ordway's
-   sentence. Your `voices[].text` is the **entry body only**, with the same
-   apparatus removed and whitespace collapsed to single spaces.
-
-3. **To build one `voices[].text`:**
-   - Pick a contiguous passage **within a single entry body** (never spanning a
-     header into the next entry).
-   - Remove every `_` and every `[...]` span from it.
-   - Collapse all runs of whitespace (including the source's ~70-column hard
-     wraps) to single spaces; trim.
-   - Preserve **exact spelling, punctuation, and characters**, including the
-     keepers' idiosyncratic spelling ("Set out from Camp River a Dubois") and
-     the source's exact quote/apostrophe characters (straight vs. curly must
-     match the file's bytes). Do not modernize, correct, or normalize the prose.
-   - The result must be a substantial passage: at least 40 characters and
-     containing at least one sentence-ending `.`/`!`/`?`.
-   The verify test then asserts `cleanSource(#8419).includes(normalizeExcerpt(text))`.
-
-4. **`voices[].author`** is the keeper named in that entry's header, spelled as a
-   person would expect to read it in the UI footer: "William Clark",
-   "Meriwether Lewis", "John Ordway" (expand the header's short name; the author
-   label is UI copy, not verbatim source, so it is not substring-checked, but it
-   must honestly name the keeper of that entry).
-
-5. **A multi-voice milepost** carries two or more `voices`, each from a
-   *different* keeper, describing the **same ground on the same day** (or the
-   same short stretch of river). Set `milepost.date` to that shared day. Each
-   voice is extracted independently per steps 2-3.
-
-6. **The narrative window / start anchor.** `cleanSource` slices from the start
-   anchor to the Gutenberg end marker so the Gutenberg boilerplate and any
-   editor's preface are excluded. Choose a #8419 start anchor that (a) occurs
-   exactly once in the file, (b) lies inside the first 1804 entry body, and
-   (c) stops at a line break so it matches the raw pre-collapse bytes (as the
-   Muir `NARRATIVE_START` constant does). Verify uniqueness against the actual
-   committed file before finalizing.
-
-7. **`approxNote`, `approach`, `place`, `framingNote`, `companion`, `title`** are
-   **our words**, not the source. `place` is factual (a real place on the route,
-   e.g. "The mouth of the Platte River") and is not swept. The rest are authored
-   copy and MUST pass the copy sweep. `approach` must not be a verbatim slice of
-   the cleaned source (the verify test greps for it) and must be one short
-   sentence about the ground ahead, 15 to 120 characters, that never spoils the
-   coming entry. `approxNote` must contain the phrase "near this ground" and
-   carry no coordinate precision.
-
-8. **The framing note (period content).** Write a plain, present-day note that
-   tells the reader these are 1804 words, that they include the expedition's
-   encounters with and descriptions of Native nations in the language and
-   attitudes of that time, that some of it will read as wrong today, and that we
-   reproduce it exactly and do not edit it. Keep it calm and factual. It must
-   pass the copy sweep (no em-dashes, no banned vocabulary, no negative
-   empty-state phrasing). The offensive or dated *content* lives only in
-   `voices[].text`, which is primary source and exempt from the sweep. Never
-   soften a voice; frame it in the note instead.
-
-> Illustrative only, rewrite and verify before shipping. Companion line:
-> "Meriwether Lewis, William Clark, and the sergeants keeping their own
-> journals as they push up the Missouri in 1804. This first chapter ends where
-> they wintered, at Fort Mandan." Title conveying the chapter:
-> "Up the Missouri to Fort Mandan, 1804". These examples are swept (no dashes,
-> no banned words, no negative phrasing); still re-read your final strings.
+- Designed empty/loading/error surfaces exist: `trail/states.tsx`
+  (`EmptyState`, skeleton `LoadingState`, `ErrorState` with retry),
+  `ErrorBoundary.tsx`, the Journal empty state, the Importer's choose/scanning/
+  preview phases, and Backup notices. Loading is skeleton-based, never a blank
+  screen or a dead spinner.
+- Focus management is already strong: the Arrival is a full focus-trap dialog
+  (`role="dialog"`, `aria-modal`, Escape saves + closes, focus restored to the
+  trigger); the Journal and Importer move focus to their heading on open and
+  close on Escape; the Trail restores focus to the control that opened a view.
+- The check-in is optimistic: `logMiles` updates state synchronously before the
+  async IndexedDB write, so the odometer and any Arrival appear immediately.
+- A mechanized copy sweep already runs (`copy.test.ts` plus `muir.copy.test.ts`
+  / `lewisclark.copy.test.ts`); this pass widens its coverage, it does not
+  invent it.
+- The diary source `.txt` files are read only by tests and are proven absent
+  from `dist` by `bundle.e2e.ts`.
 
 ---
 
 ## Ordered task list
 
-Each task lists concrete, testable acceptance criteria (AC).
+Each task states concrete, testable acceptance criteria (AC). "Verify" means
+inspect the real surface and prove it with an automated test; "fix" means
+correct only a proven shortfall against the bar.
 
-### T1 — Commit the public-domain source
+### T1 — Signature moment on first load (differentiator + bar §4)
 
-Add `web/src/packs/sources/gutenberg-8419.txt` as the exact bytes of Project
-Gutenberg #8419.
+Prove that a stranger landing on staging (`SEED_DEMO=1`, Muir default) meets
+the payoff within the first minute, and that the withholding and the double
+journal read as the product, not as a game.
 
-- **AC1.1** The file exists and contains the standard Gutenberg end marker
-  (`*** END OF THE PROJECT GUTENBERG EBOOK`).
-- **AC1.2** The file contains the 1804 daily entries with bracketed keeper
-  headers (e.g. a `[Clark, May 14, 1804]`-style header near the top) and mentions
-  Fort Mandan later in the text.
-- **AC1.3** No application module `import`s the `.txt` file. It is read only via
-  `fs` in `lewisclark.verify.test.ts`. (Proven end-to-end by T8.)
+- **AC1.1** With `SEED_DEMO` on and an empty database, first load shows a
+  populated Trail: the odometer with real miles, at least one reached-milepost
+  row in "Mileposts reached", the next-milepost card, and a "Read your journal"
+  affordance. Proven by an e2e that boots with `SEED_DEMO` on and asserts these
+  are visible without any user input.
+- **AC1.2 (earned words reachable)** From that first load, the earned verbatim
+  entry is reachable in at most two taps: tapping a reached row opens the
+  Arrival showing a `voices[].text` that is byte-identical to the seeded pack's
+  earned milepost, and "Read your journal" opens the double journal showing that
+  same earned entry. Proven by an e2e asserting the rendered text equals the
+  pack voice for a reached milepost.
+- **AC1.3 (withholding is legible and airtight)** The next (unearned) milepost's
+  diary text is absent from the DOM on first load, while its `place` and its
+  authored `approach` line are shown on the next-milepost card. An e2e asserts
+  the withheld milepost's `voices[].text` string is nowhere in the page, and
+  that its place + approach line are present. This confirms the withholding is
+  *a diary entry not yet walked to*, shown as distance-to-the-next-words.
+- **AC1.4 (not gamification)** No medal, badge, trophy, points, score, streak,
+  or level surface exists anywhere in the product. A grep-style test over the
+  rendered Trail/Journal/Arrival DOM and the component sources finds none of
+  these. The existing next-milepost progress bar is retained and its accessible
+  name states progress toward the next place/entry (it measures miles to the
+  next words, not a score); confirm its `aria-label` names the destination
+  place.
+- **AC1.5 (double journal is a real pair)** `seed.ts` seeds one short walker
+  facing line for the first reached milepost so the staging double journal shows
+  a filled facing pair (traveler's verbatim entry beside the walker's own line),
+  not a half-empty spread. The seeded line is authored copy: it passes the copy
+  sweep (no dashes, no banned vocabulary, no negative phrasing) and reads as a
+  real one-line walking note. An e2e asserts the seeded double journal shows both
+  the traveler voice and the walker line for that milepost. This tunes demo
+  content only; it adds no feature and no schema field (`personalLog` already
+  exists).
 
-### T2 — Generalize the source verifier (no Muir behavior change)
+### T2 — Performance verified (bar §1)
 
-Parameterize `cleanSource` in `verifySource.ts` to accept a start anchor,
-defaulting to the existing Muir `NARRATIVE_START`, and add the #8419 start-anchor
-constant.
+Prove fast first render, sub-100ms interaction feedback, and that the Trail and
+Journal stay fast as daily entries accumulate over months.
 
-- **AC2.1** The existing `muir.verify.test.ts` passes **unchanged** (the Muir
-  `cleanSource(raw)` call must behave byte-identically to today).
-- **AC2.2** `cleanSource(raw8419, LC_NARRATIVE_START)` returns a substantial body
-  (> 10,000 chars) with no `_`, `[`, or `]` remaining.
-- **AC2.3** `LC_NARRATIVE_START` occurs exactly once in the committed #8419 file.
+- **AC2.1 (real content fast, never blank)** First meaningful render shows real
+  content or a designed skeleton, never a blank page. The app fetches no pack or
+  diary data at runtime (packs are bundled JSON; the source `.txt` is never
+  imported by app code), so there is no network round-trip on the hot path. An
+  e2e asserts that on first load the app shell (masthead heading) and either the
+  seeded Trail or the designed empty/loading state are painted, and that no XHR/
+  fetch for pack or diary data occurs.
+- **AC2.2 (bundle stays lean)** The built client JS the browser must parse
+  before first paint stays within a stated budget (assert the main entry
+  chunk's gzipped size is under a fixed ceiling in a test, so a future accidental
+  import of a large source file fails loudly). Keep the ceiling at roughly the
+  current size plus headroom; the intent is a regression guard, not shrinking.
+- **AC2.3 (interaction feedback under 100ms)** Logging miles updates the
+  odometer synchronously in the same tick as submit (optimistic), before any
+  async persistence. Proven by a component/e2e test that submits a mile value
+  and asserts the odometer text updates without awaiting I/O, and that a crossing
+  opens the Arrival immediately. Pressed/active feedback on the primary buttons
+  is present.
+- **AC2.4 (scales with months of walking)** Seed a walker with **several hundred
+  daily log entries** (e.g. 400, one per day) and assert:
+  - `recompute` and `buildJournal` complete quickly (well under a generous
+    budget, e.g. a few milliseconds each) at that size.
+  - The rendered Trail and Journal DOM node counts are bounded by the pack's
+    **milepost count**, not by the number of daily entries: no surface renders
+    one node per logged day. (The daily log is summed/scanned, never listed;
+    `ReachedList` rows and `journal-spreads` are capped by reached mileposts.)
+  This is the "no endpoint gets slower with every row" guarantee expressed for a
+  local-first app: the hot paths are O(days) arithmetic and O(mileposts)
+  rendering, and this test locks it.
+- **AC2.5 (no unbounded or unindexed hot-path work)** Confirm no code path
+  renders or sorts the full daily log per interaction. If `milesToNext` or a
+  similar per-render scan is found to be a measurable cost at 400+ entries,
+  memoize it; otherwise leave it. Do not optimize what the test above proves is
+  already fast (that would be gold-plating).
 
-### T3 — Author the pack data
+### T3 — Mobile pass at 390px (bar §2, §7)
 
-Create `lewisclark.json` and `lewisclark.ts`; register in `index.ts`.
+Every surface fully usable at a 390px viewport: no horizontal scroll, ~44px
+touch targets, readable text. Extend the existing 390px coverage to the
+surfaces that lack it.
 
-- **AC3.1** `id` is stable and chapter-scoped (e.g. `lewis-clark-1804-fort-mandan`)
-  so a later leg can ship as a separate pack without collision. `traveler` names
-  the collective (e.g. "the Lewis and Clark expedition"), `years` is `"1804"`,
-  `totalMiles` is about 1,600.
-- **AC3.2** `source` records #8419: name "The Journals of Lewis and Clark,
-  1804-1806", author "Meriwether Lewis and William Clark", `gutenbergId` 8419,
-  the canonical URL, license "Public domain (Project Gutenberg)".
-- **AC3.3** At least **40 mileposts**, ordered ascending by `mileMark`.
-- **AC3.4** `mileMark` strictly increasing, every value within `(0, totalMiles]`;
-  first milepost near the start of the segment, last milepost at or beyond
-  `0.9 * totalMiles`; no single gap between consecutive mileposts exceeds 90
-  miles (chapter feels continuous, not sparse).
-- **AC3.5** Every `date` is a real 1804 calendar date in the segment window (May
-  through the Fort Mandan arrival, i.e. months 05-11), non-decreasing across
-  mileposts.
-- **AC3.6** At least **8 mileposts** carry two or more `voices` whose `author`
-  values are distinct keepers. Across the whole pack at least **3 distinct
-  journalist authors** appear. At least one multi-voice milepost sits early in
-  the segment (low `mileMark`) so a new Lewis & Clark walker meets the payoff
-  soon after starting.
-- **AC3.7** The **last milepost** is Fort Mandan: its `place` matches
-  `/Fort Mandan/i` and it is the highest `mileMark`.
-- **AC3.8** Chapter honesty: `title` and `companion` together make explicit that
-  this is the first chapter of the expedition and that it ends at Fort Mandan,
-  not the whole journey. `companion` (shown in the picker) names the keepers.
-- **AC3.9** `framingNote` is present, addresses the 1804 period content
-  including encounters with Native nations, and states the words are reproduced
-  exactly and unedited.
-- **AC3.10** Structural validity: `validatePack(lewisClarkPack)` returns `[]`
-  (this enforces the "near this ground" phrase, the coordinate/GPS ban on every
-  `approxNote`, non-empty `approach`, unique ids, and the monotonicity rules).
+- **AC3.1** Existing 390px coverage stays green: Start, Importer, Trail, and
+  single-voice Arrival already assert no horizontal overflow and 44px+ tap
+  targets in `mobile.e2e.ts`. Keep them passing.
+- **AC3.2 (Journal at 390px)** Add a 390px e2e that opens the double Journal
+  from a seeded/reached state and asserts: no horizontal scroll, the reading
+  column wraps within the viewport, the back and "Print your journal" controls
+  are 44px+ tap targets, and a spread's traveler side and walker side are both
+  legible when stacked (below the 720px facing-page breakpoint they stack
+  vertically).
+- **AC3.3 (multi-voice Arrival at 390px)** Add a 390px e2e on the Lewis & Clark
+  journey that reaches an early multi-voice milepost and asserts: no horizontal
+  scroll, both voices render, each voice is visibly separated and attributed to
+  its own keeper, and the reading column does not overflow. Fix `.arrival-voice`
+  / `.spread-voice` separation only if two stacked voices are hard to tell apart;
+  do not redesign.
+- **AC3.4** The one layout breakpoint (`min-width: 720px`) and the print layout
+  are unaffected by any 390px fix (assert the facing-page grid still applies
+  above 720px).
 
-### T4 — Source-verification test
+### T4 — Accessibility pass (bar §6)
 
-Add `lewisclark.verify.test.ts`, mirroring `muir.verify.test.ts` against #8419,
-plus the multi-voice and chapter assertions unique to this pack.
+Contrast, visible focus, labeled inputs, semantic headings and landmarks, alt
+text, and full keyboard reach across every surface. Extend automated coverage
+beyond the Trail.
 
-- **AC4.1 (verbatim)** For every voice of every milepost,
-  `cleanSource(raw8419, LC_NARRATIVE_START).includes(normalizeExcerpt(v.text))`
-  is true.
-- **AC4.2 (no apparatus)** No `v.text` contains `[`, `]`, or `_`.
-- **AC4.3 (substantial)** Every `v.text` is at least 40 chars and contains a
-  sentence-ending `.`/`!`/`?`.
-- **AC4.4 (dates)** Every `date` matches `YYYY-MM-DD`, is a real date, has year
-  1804 and month in 05-11, and dates are non-decreasing.
-- **AC4.5 (miles)** `mileMark` strictly increasing and within `(0, totalMiles]`.
-- **AC4.6 (count)** At least 40 mileposts.
-- **AC4.7 (spread)** First `mileMark` small (e.g. <= 60), last
-  `>= 0.9 * totalMiles`, no consecutive gap > 90.
-- **AC4.8 (multi-voice)** At least 8 mileposts have `voices.length >= 2` with two
-  or more distinct `author` values; the set of distinct authors across the pack
-  has size >= 3.
-- **AC4.9 (Fort Mandan end)** The last milepost's `place` matches `/Fort Mandan/i`.
-- **AC4.10 (approach authored)** No `approach` line is found in the cleaned
-  source; each is 15 to 120 chars.
+- **AC4.1 (automated audit on every surface)** Run the `axe-core` rule set
+  already used on the Trail (`color-contrast`, `label`, `region`,
+  `landmark-one-main`, `page-has-heading-one`) additionally on: the Start
+  screen, the Importer (choose and preview phases), the Arrival dialog
+  (single and multi-voice), and the double Journal. Each must return zero
+  violations. Fix any violation found; do not suppress a rule.
+- **AC4.2 (keyboard reach)** Every action a mouse can do is reachable by
+  keyboard and the focus indicator is visible. The existing check-in keyboard
+  test stays green; add keyboard-reach assertions for opening and closing the
+  Journal (Escape returns to Trail and restores focus to the opener) and for
+  advancing/closing the Arrival (the focus trap and Escape-to-save-and-close
+  already exist; lock them).
+- **AC4.3 (every input has an accessible name)** The mile input, the Arrival
+  facing-line textarea, and every file input (Start restore, Backup restore,
+  Importer) have a programmatic accessible name. Where an input relies only on a
+  wrapping label's visible text, that is acceptable if axe's `label` rule passes;
+  if any input lacks a name, add one. Confirm via the axe `label` rule on each
+  surface (AC4.1).
+- **AC4.4 (semantic structure)** Each screen has exactly one `<h1>` and uses
+  real headings and landmarks (`<main>`, section `aria-label`s). Reached rows,
+  journal spreads, and voices are programmatically attributed (place headings,
+  per-voice author `<footer>`). Alt text: there are no meaningful `<img>`
+  elements in the product (verify none was added); if any decorative glyph or
+  separator conveys meaning, give it a text equivalent.
+- **AC4.5 (milestone announced to screen readers)** Verify a screen-reader user
+  gets feedback when a check-in crosses a milepost (the Arrival dialog opens and
+  takes focus, which announces). For a check-in that does *not* cross a
+  milepost, if review finds the new total changes silently, add a polite
+  `aria-live` announcement of the updated cumulative miles on the odometer
+  region. This is a bounded a11y attribute on an existing element, not a new
+  feature; add it only if the silent-update gap is real.
 
-### T5 — Structural registration tests
+### T5 — Designed states reviewed (bar §3)
 
-- **AC5.1** `validatePack.test.ts` asserts `validatePack(lewisClarkPack)` is `[]`.
-- **AC5.2** `index.test.ts` asserts `journeyPacks` contains the pack and
-  `packById(<id>)` returns it; an unknown id still returns `undefined`.
+Every empty, loading, and error surface is a designed surface with product-voice
+copy and a way forward. Review each and lock it.
 
-### T6 — Multi-voice rendering confirmation
+- **AC5.1 (empty states)** Verify and lock with tests: the Trail empty state
+  ("Your road starts here") tells a first-time user what the screen is for and
+  what to do; the Journal empty state ("Your journal fills as you walk...")
+  does the same; the Importer's zero-adds preview ("These miles are already on
+  your trail.") is positively framed. None is a blank region.
+- **AC5.2 (loading states)** The boot/Trail loading state is a skeleton that
+  holds the layout; the Importer scan shows in-place progress with a Cancel. No
+  white screen, no dead spinner. Lock with tests. Review the Backup restore
+  path: it reads a file synchronously-ish and shows a result notice; if a
+  user-perceptible delay exists with no feedback, add an in-place pending state
+  (only if the delay is real).
+- **AC5.3 (error states)** Verify every error surface speaks in the product's
+  voice with a next step and never shows a raw stack trace or code: the Trail
+  `ErrorState` ("Your trail paused. Reload to pick it up...") with a retry
+  button, the `ErrorBoundary` reusing it, the check-in field errors (concrete
+  guidance like "Enter miles as a positive number."), the Backup restore errors
+  ("Choose the .json backup this app saved..."), and the Importer validation
+  errors. Lock each with a test. Confirm none matches the banned negative
+  phrasing.
 
-The Arrival ceremony and the Journal spread already `.map(voices)` with a
-per-voice author footer, so multiple voices render without new code. Confirm they
-render **legibly and correctly attributed**, and lock it with a test.
+### T6 — Copy sweep across every string and both packs (bar §8, §7)
 
-- **AC6.1** A component test renders `Arrival` for a two-voice milepost and
-  asserts **both** voice texts appear, **each with its own author label**.
-- **AC6.2** A component test renders `Journal` (a reached two-voice milepost) and
-  asserts both voice texts and both author labels appear in that milepost's
-  spread.
-- **AC6.3** Visual check at 390px width: stacked voices are visibly separated and
-  each is clearly attributed to its keeper (the existing `.arrival-voice` /
-  `.spread-voice` treatment). Adjust CSS only if two voices are hard to tell
-  apart; do not redesign.
+Mechanize and read-aloud sweep every user-visible string and both packs'
+authored/framing copy. No em-dashes or dash-asides, no banned LLM vocabulary,
+no negative empty-state phrasing.
 
-### T7 — Picker and first-run integration
+- **AC6.1 (sweep coverage is complete)** `copy.test.ts` sweeps every source file
+  that carries a user-visible string. Audit its `FILES` list against the actual
+  components and confirm nothing with visible copy is missing (e.g. every file
+  under `trail/`, `firstrun/`, `importer/`, `journal/`, plus `index.html`,
+  `README.md`, `.env.example`). Add any missing file. Both packs' authored fields
+  are swept by `muir.copy.test.ts` / `lewisclark.copy.test.ts` (title, companion,
+  framingNote, every approxNote, every approach); confirm those cover every
+  authored field and extend if one is missing.
+- **AC6.2 (banned list matches the bar)** The banned-vocabulary list in the
+  sweeps covers the full bar list: seamlessly, effortlessly, unlock, elevate,
+  empower, leverage, robust, dive in, "in today's fast-paced world", "we've got
+  you covered", and close kin. Widen the list where it is narrower than the bar
+  (e.g. bare "unlock", "elevate", "empower" as whole words), keeping false
+  positives out of primary-source-exempt text.
+- **AC6.3 (dashes and negatives)** The sweeps assert no "—", no "–", and no
+  " - " sentence break in any swept string, and none of the negative empty-state
+  phrasings ("You don't have", "No ... yet", "Nothing ... here", "Unable to",
+  "Something went wrong"). These already pass; keep them green after any copy
+  edit.
+- **AC6.4 (Importer strings read as guidance, not negation)** Review the
+  Importer's validation and skip-line copy by hand: "This does not look like a
+  date,miles CSV..." and "...were left out." are concrete and tell the user what
+  to do, so they clear the bar; confirm each states the next step. Rewrite only a
+  string that reads as a dead end. Do not manufacture churn.
+- **AC6.5 (primary source is exempt and untouched)** `voices[].text`, `place`,
+  and `date` are verbatim/factual and are **never** swept or edited; the keepers'
+  1867/1804 spelling, punctuation, and em-dashes stay exactly as in the source.
+  Confirm the pack copy tests keep this exemption explicit.
+- **AC6.6 (read aloud)** Read every string touched in this pass aloud; if one
+  sounds like marketing filler or a chatbot, rewrite it plainer. This is part of
+  DONE for any copy edit.
 
-- **AC7.1** Each picker "Begin" button has a distinct accessible name that names
-  its journey; the two cards are individually targetable. `Start.test.tsx` still
-  passes (it renders a single-pack picker; keep that green).
-- **AC7.2** `beginMuirJourney` and `mobile.e2e.ts` are scoped to the Muir card
-  and pass with two packs present (no strict-mode ambiguity).
-- **AC7.3** A new e2e begins the **Lewis & Clark** journey from the picker, logs
-  enough miles to reach an early multi-voice milepost, opens the Arrival, and
-  sees **two keepers' entries**. The existing guided walkthrough still fires for
-  this journey (it anchors to controls, not to a pack).
-- **AC7.4** The full unit + e2e suite passes; no test assumes exactly one pack.
+### T7 — README verified against the real compose files (bar §9)
 
-### T8 — Source stays out of the client bundle
+A stranger can understand, run, and contribute, with no factory internals, and
+every command is correct against the actual files.
 
-- **AC8.1** `bundle.e2e.ts` greps `dist` for a #8419 front-matter sentinel (a
-  line outside every packed excerpt) and asserts it is absent, alongside the
-  existing sentinels.
-- **AC8.2** The verify test asserts that same sentinel is present in the raw
-  #8419 file but absent from every packed `voices[].text` (mirrors the Muir
-  `introSentinel` check), proving the packed excerpts are entry bodies, not
-  front matter.
+- **AC7.1 (understand)** The opening explains in plain language what the app is
+  and why it exists: walk a real historic journey, earn the traveler's verbatim
+  diary at each milepost, a deliberate daily check-in. Present and clear.
+- **AC7.2 (run, verified)** Every command in the README matches the real files:
+  local dev (`cd web && npm ci && npm run dev`), build (`npm run build` →
+  `web/dist`), preview, and Docker
+  (`docker compose -f docker-compose.staging.yml up --build`, serving the SPA via
+  nginx and answering `GET /healthz`). Cross-check the four env vars
+  (`SEED_DEMO`, `SENTRY_DSN`, `UMAMI_URL`, `UMAMI_WEBSITE_ID`) against
+  `.env.example` and `docker-entrypoint.sh`. Fix any drift. The `copy.test.ts`
+  sweep already covers `README.md`; keep it green.
+- **AC7.3 (contribute)** The README states where the code lives (the `web/src`
+  module map) and how to run the tests (`typecheck`, `test`, `validate:packs`,
+  `test:e2e`) matching `web/package.json` scripts.
+- **AC7.4 (no factory internals)** No mention of the App Factory, its paths,
+  agents, task types, or internal services. Confirm the README reads as written
+  for the world.
 
-### T9 — README
+### T8 — Full suite green
 
-- **AC9.1** "The journeys" section describes the Lewis & Clark chapter: what it
-  is (St. Louis up the Missouri to Fort Mandan, 1804), that it is the first
-  chapter and not the whole expedition, that the words are verbatim from Project
-  Gutenberg #8419, and that some mileposts carry more than one keeper's voice.
-- **AC9.2** Any wording implying a single pack is updated. Run commands and test
-  commands remain correct.
-- **AC9.3** No factory internals; copy passes the sweep.
+- **AC8.1** `npm run typecheck`, `npm test`, `npm run validate:packs`, and the
+  Playwright e2e suite (`npm run test:e2e` / `scripts/e2e.sh`) all pass,
+  including every new and extended spec above and every pre-existing test
+  unchanged in intent. No test is weakened to pass; a red verbatim/verify test
+  means fix the data or the code, never the test.
 
 ---
 
@@ -387,63 +393,62 @@ render **legibly and correctly attributed**, and lock it with a test.
 
 | Planner acceptance criterion | Proven by |
 | --- | --- |
-| Built from clean PD edition #8419; Moulton only as route/date cross-ref, never a text source | AC4.1 (every voice verbatim in #8419) + AC4.2 (no apparatus) + AC8.2 (packed text is entry bodies, not front matter). Any text not present in #8419, including Moulton apparatus, fails AC4.1. The coordinate/GPS ban (AC3.10 via `validatePack` S8) keeps survey precision out. |
-| Passes the same automated verification as EPIC 2: dates ordered, cumulative miles monotonic, text byte-identical | AC4.4 (dates), AC4.5 (miles), AC4.1 (byte-identical) — the same shape as Muir's V4/V5/V1, now over #8419. AC2.1 guarantees Muir's own verification is unchanged. |
-| >= 40 mileposts, several multi-voice | AC4.6 (count >= 40) + AC4.8 (>= 8 multi-voice mileposts, >= 3 distinct authors) + AC6.1/AC6.2 (both voices actually render, attributed). |
-| Clearly a chapter with a real end waypoint (Fort Mandan), not the whole expedition | AC3.7 + AC4.9 (last milepost is Fort Mandan) + AC3.8 (title and companion frame it as the first chapter) + AC9.1 (README says so). |
-| Plain framing note for 1804 period content (Native nations); framed, never edited | AC3.9 (framingNote content) + `lewisclark.copy.test.ts` sweep of authored fields + the primary-source exemption keeping `voices[].text` unedited (AC4.1/AC4.2). |
+| Signature moment lands: earned verbatim entry reachable within the first minute on staging via `SEED_DEMO`; withholding and double journal are unmistakably the product, not gamification | T1 (AC1.1 populated first load, AC1.2 earned words reachable in ≤2 taps and byte-identical, AC1.3 withheld text absent while place+approach shown, AC1.4 no medal/points/streak surface + progress bar names the next place, AC1.5 double journal shows a filled facing pair) |
+| Performance verified: first meaningful render under ~1s, interaction feedback under 100ms, journal and trail fast at hundreds of entries, no unbounded/unindexed work | T2 (AC2.1 real content, no runtime pack/diary fetch; AC2.2 bundle-size guard; AC2.3 optimistic sub-tick odometer update; AC2.4 400-entry recompute/buildJournal fast and DOM bounded by mileposts; AC2.5 no per-render full-log scan) |
+| Full mobile pass at 390px; accessibility pass (contrast, focus, labeled inputs, semantic headings/landmarks, alt text, full keyboard reach) | T3 (390px on Start/Importer/Trail/Arrival kept green + Journal and multi-voice Arrival added) + T4 (axe on Start/Importer/Arrival/Journal, keyboard reach on Journal+Arrival, accessible names, one-`h1`/landmarks, milestone announcement) |
+| Copy sweep across every user-visible string and every shipped pack framing note: no em-dashes/dash-asides, no banned vocabulary, no negative empty-state phrasing; every string reads as written by a person | T6 (AC6.1 complete sweep coverage incl. both packs' framing/authored fields, AC6.2 banned list matches the bar, AC6.3 dashes+negatives, AC6.4 Importer strings reviewed, AC6.5 primary source exempt, AC6.6 read aloud) |
+| Every empty, loading, and error state reviewed and designed | T5 (AC5.1 empty, AC5.2 loading/skeleton/progress, AC5.3 error states in product voice with a next step) |
+| README complete and verified against the actual compose files: understand, run, contribute, no factory internals | T7 (AC7.1 understand, AC7.2 run commands cross-checked against compose/Dockerfile/entrypoint/package.json + env vars, AC7.3 contribute/tests, AC7.4 no factory internals) |
 
 ### Full command gate
 
-`npm test` (vitest: `validatePack.test.ts`, `index.test.ts`,
-`lewisclark.verify.test.ts`, `lewisclark.copy.test.ts`, the Arrival/Journal
-component tests, and every existing test unchanged) and `npm run validate:packs`
-must pass, plus the Playwright e2e suite (`scripts/e2e.sh`) including the updated
-`firstrun`/`mobile`/`bundle` specs and the new Lewis & Clark journey spec. A red
-verify test means a voice is not verbatim; fix the text, never the test.
+`npm run typecheck`, `npm test`, `npm run validate:packs`, and the Playwright
+e2e suite must all pass (T8). New specs: a `SEED_DEMO` signature-moment e2e, a
+performance/scale test at ~400 daily entries, a Journal-at-390px e2e, a
+multi-voice-Arrival-at-390px e2e (Lewis & Clark), extended `axe` coverage on
+Start/Importer/Arrival/Journal, and the widened `copy.test.ts` sweep. Every
+pre-existing test stays green; a red verbatim or verify test means fix the data,
+never the test.
 
 ---
 
 ## Quality bar notes specific to this EPIC
 
-- **First-run / real choice.** The picker now offers two journeys. Each card
-  keeps exactly one primary action ("Begin this journey"), visibly the main
-  control, with distinct accessible names. The Muir card stays first and remains
-  the boot-gate / `SEED_DEMO` default (do not repoint `SEED_DEMO`; that is EPIC
-  2's surface and out of scope here).
-- **Mobile-first.** Two picker cards must stack cleanly at 390px with no
-  horizontal scroll and ~44px touch targets. A two-voice Arrival must stay
-  readable at 390px (the reading column is already capped; confirm stacked
-  voices do not overflow).
-- **Designed states.** No new empty/loading/error states are introduced. The
-  Journal's existing empty and reached states already cover the new pack.
-- **Perceived speed.** The pack is bundled JSON, no fetch, no query. Committing a
-  large source `.txt` must not enter the client bundle (T8 proves it).
-- **Copy sweep is part of DONE.** Sweep every authored string you add or edit
-  (title, companion, framingNote, every `approxNote`, every `approach`, README,
-  and the illustrative copy you finalize) for em-dashes/en-dashes, the banned
-  LLM vocabulary, and negative empty-state phrasing. `voices[].text`, `place`,
-  and `date` are primary-source/factual and exempt: never "fix" a keeper's 1804
-  spelling or punctuation.
-- **Accessibility.** Giving each Begin button a journey-specific accessible name
-  is required here (two identically named buttons fail §6 and confuse screen
-  readers), and each rendered voice must be programmatically attributed to its
-  keeper.
+- **The bar is the spec.** Meeting each clause above is in scope and needs no
+  permission. Exceeding it is drift: no animations nobody asked for, no design
+  system for a handful of screens, no optimization beyond what T2's tests prove
+  is needed, no rewriting copy that already clears the sweep and reads well.
+- **Protect the payoff.** Every change is judged against the differentiator: it
+  must keep the verbatim words legible, reachable, and honestly withheld. A
+  polish change that dilutes the words (softens a voice, buries the entry under
+  chrome, turns the reward into a score) is a defect even if it "looks nicer".
+- **Local-first security reality.** There are no accounts, no server data, and
+  no mutation/auth endpoints, so the bar's server-side authorization and rate
+  limiting do not apply; the applicable security facts are boundary validation
+  of the mile field and of a chosen backup/import file (already present) and no
+  secrets in the bundle (config arrives at runtime via `/config.js`). The README
+  security note states this; verify it stays accurate. Do not invent endpoints
+  to "add" auth or rate limiting; that would be a new feature and a Non-Goal.
+- **Don't manufacture churn.** Where a surface already clears the bar, the task
+  is to lock it with a test, not to restyle or reword it. The smallest change
+  that proves and holds the bar is the correct change.
 
 ---
 
 ## Notes and assumptions
 
-- **#8419 confirmed suitable.** Project Gutenberg #8419 is "The Journals of Lewis
-  and Clark, 1804-1806," beginning May 14, 1804 at Camp River Dubois, with daily
-  entries headed by bracketed keeper attributions (`[Clark, ...]`, `[Lewis, ...]`,
-  `[Ordway, ...]`) and multiple keepers writing on the same dates. This is what
-  makes the >= 40-milepost, multi-voice, Fort Mandan chapter achievable entirely
-  from a single public-domain source. No blocking question remains.
-- **~1,600 miles / chapter length.** `totalMiles` represents this chapter (St.
-  Louis to Fort Mandan), about 1,600 river miles, not the full expedition. Use
-  the Moulton edition purely to sanity-check cumulative mileage and entry dates;
-  never lift its text.
-- **Extensibility is free, not built.** A later leg is simply another pack file
-  registered in `index.ts`. This EPIC ships only the first chapter; do not build
-  scaffolding for future legs.
+- **No blocking questions.** The scope is a refinement of a delivered product
+  and every criterion above is provable against the existing surfaces; the run
+  should proceed without a human gate.
+- **`SEED_DEMO` default pack.** Staging seeds the Muir pack (first in the
+  registry), which crosses its first two real mileposts, leaving the third
+  withheld. T1 targets that default; do not repoint it. The single seeded facing
+  line (AC1.5) is added to whichever pack the seed builds, keyed to the first
+  reached milepost, and is swept copy.
+- **Frozen contracts.** `web/src/state/types.ts`, the store migrations, the pack
+  `SCHEMA.md` and validator, and both packs' verbatim text and verification are
+  not changed by this pass. Any apparent need to change one is a blocking
+  conflict, not a silent edit.
+- **Deliverable of a polish pass is proof.** The bulk of the diff is tests that
+  lock the bar; source/CSS/copy/README edits are surgical fixes to proven
+  shortfalls only.
