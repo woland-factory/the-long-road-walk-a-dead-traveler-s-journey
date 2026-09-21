@@ -31,3 +31,20 @@ export async function beginLewisClarkJourney(page: Page): Promise<void> {
   await page.getByRole("button", { name: "Begin Up the Missouri to Fort Mandan, 1804" }).click();
   await expect(page.getByLabel("Miles walked today")).toBeVisible();
 }
+
+// Boot as a stranger landing on staging: SEED_DEMO on, empty database. The
+// preview server serves a config.js with SEED_DEMO off, so we intercept it to
+// mirror the staging environment the factory injects. Each test gets a fresh
+// browser context, so IndexedDB is empty and the seed builds. Lands on the
+// populated Muir Trail with the guided walkthrough already resolved (seeded
+// miles mark it done before paint).
+export async function bootSeededDemo(page: Page): Promise<void> {
+  await page.route("**/config.js", (route) =>
+    route.fulfill({
+      contentType: "application/javascript",
+      body: 'window.__ENV__ = { SEED_DEMO: "1", SENTRY_DSN: "", UMAMI_URL: "", UMAMI_WEBSITE_ID: "" };',
+    }),
+  );
+  await page.goto("/");
+  await expect(page.getByTestId("odometer-value")).toBeVisible();
+}
