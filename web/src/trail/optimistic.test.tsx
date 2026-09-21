@@ -44,3 +44,19 @@ describe("the check-in is optimistic (AC2.3)", () => {
     expect(screen.getByTestId("odometer-value")).toHaveTextContent("6");
   });
 });
+
+describe("the updated total is announced to screen readers (AC4.5)", () => {
+  it("puts the odometer inside a polite live region, so a non-crossing check-in is not silent", async () => {
+    const user = userEvent.setup();
+    render(<Trail pack={muirPack} />);
+    await screen.findByText("Your road starts here");
+
+    // A check-in that crosses no milepost updates only the odometer total.
+    await user.type(screen.getByLabelText("Miles walked today"), "2");
+    await user.click(screen.getByRole("button", { name: "Log miles" }));
+
+    const region = screen.getByTestId("odometer-value").closest("[aria-live]");
+    expect(region).not.toBeNull();
+    expect(region).toHaveAttribute("aria-live", "polite");
+  });
+});
