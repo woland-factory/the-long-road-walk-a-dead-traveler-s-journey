@@ -33,7 +33,10 @@ describe("Lewis & Clark authored copy: no dashes", () => {
 describe("Lewis & Clark authored copy: no banned vocabulary", () => {
   const banned = [
     "seamlessly",
+    "seamless",
     "effortlessly",
+    "effortless",
+    "unlock",
     "elevate",
     "empower",
     "leverage",
@@ -41,7 +44,11 @@ describe("Lewis & Clark authored copy: no banned vocabulary", () => {
     "dive in",
     "fast-paced",
     "we've got you covered",
-    "unlock your",
+    "supercharge",
+    "streamline",
+    "revolutionize",
+    "cutting-edge",
+    "game-changer",
   ];
   it("has none of the banned words", () => {
     for (const word of banned) {

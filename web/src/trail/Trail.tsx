@@ -152,7 +152,7 @@ export function Trail({ pack }: { pack: JourneyPack }) {
 
       {status === "ready" && (
         <>
-          <section className="card">
+          <section className="card" aria-live="polite">
             {hasMiles && state ? <Odometer cumulativeMiles={state.cumulativeMiles} /> : <EmptyState />}
           </section>
 

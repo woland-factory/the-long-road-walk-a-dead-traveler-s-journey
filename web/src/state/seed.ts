@@ -1,6 +1,14 @@
 import type { JourneyPack } from "../packs/types";
 import type { WalkerState } from "./types";
 import { addMiles, freshState } from "./odometer";
+import { upsertFacingLine } from "./personalLog";
+
+// A short walker facing line for the first reached milepost, so the seeded
+// double journal shows a filled facing pair: the verbatim traveler entry
+// beside a real note from the walker, not a half-empty spread. Swept as
+// authored copy like any other visible string.
+const SEEDED_FACING_LINE =
+  "First light on the river path. My legs loosened after a mile and my head went quiet.";
 
 // Build a seeded walker whose logged miles have already crossed the pack's
 // first two mileposts, so a stranger sees two earned entries and one still
@@ -20,6 +28,15 @@ export function buildSeededState(pack: JourneyPack): WalkerState {
     // reached, fx-3 withheld. For Muir it crosses his first two real mileposts.
   } else if (marks.length === 1) {
     state = addMiles(state, marks[0].mileMark + 1, "2026-09-01", pack);
+  }
+
+  // Fill the facing line of the first reached milepost so the demo journal
+  // reads as a real pair. Keyed to the earliest reached mark.
+  const firstReached = marks
+    .filter((m) => state.reachedMilepostIds.includes(m.id))
+    .sort((a, b) => a.mileMark - b.mileMark)[0];
+  if (firstReached) {
+    state = upsertFacingLine(state, firstReached.id, SEEDED_FACING_LINE, "2026-09-01");
   }
 
   return state;

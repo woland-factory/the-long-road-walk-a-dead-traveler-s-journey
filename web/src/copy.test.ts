@@ -19,6 +19,8 @@ const FILES: string[] = [
   resolve(root, "src/trail/facingLine.ts"),
   resolve(root, "src/trail/states.tsx"),
   resolve(root, "src/trail/validate.ts"),
+  resolve(root, "src/trail/dateline.ts"),
+  resolve(root, "src/state/seed.ts"),
   resolve(root, "src/ErrorBoundary.tsx"),
   resolve(root, "src/firstrun/Start.tsx"),
   resolve(root, "src/firstrun/Walkthrough.tsx"),
@@ -63,7 +65,10 @@ describe("copy sweep: no dashes (AC11.1)", () => {
 describe("copy sweep: no banned vocabulary (AC11.2)", () => {
   const banned = [
     "seamlessly",
+    "seamless",
     "effortlessly",
+    "effortless",
+    "unlock",
     "elevate",
     "empower",
     "leverage",
@@ -71,7 +76,11 @@ describe("copy sweep: no banned vocabulary (AC11.2)", () => {
     "dive in",
     "fast-paced",
     "we've got you covered",
-    "unlock your",
+    "supercharge",
+    "streamline",
+    "revolutionize",
+    "cutting-edge",
+    "game-changer",
   ];
   for (const file of FILES) {
     it(`has none of the banned words in ${file.replace(repoRoot, ".")}`, () => {

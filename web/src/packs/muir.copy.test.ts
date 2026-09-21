@@ -32,7 +32,10 @@ describe("Muir authored copy: no dashes (AC6.3)", () => {
 describe("Muir authored copy: no banned vocabulary (AC6.3)", () => {
   const banned = [
     "seamlessly",
+    "seamless",
     "effortlessly",
+    "effortless",
+    "unlock",
     "elevate",
     "empower",
     "leverage",
@@ -40,7 +43,11 @@ describe("Muir authored copy: no banned vocabulary (AC6.3)", () => {
     "dive in",
     "fast-paced",
     "we've got you covered",
-    "unlock your",
+    "supercharge",
+    "streamline",
+    "revolutionize",
+    "cutting-edge",
+    "game-changer",
   ];
   it("has none of the banned words", () => {
     for (const word of banned) {
